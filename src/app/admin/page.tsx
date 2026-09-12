@@ -2,7 +2,7 @@ import { requireRole, getLocale } from "@/lib/session";
 import { getNetworkAnalytics } from "@/lib/domain/analytics";
 import { AppShell } from "@/components/AppShell";
 import { PageTitle, Card, Badge } from "@/components/ui";
-import { CLAIM_TYPE_LABEL, label, type Locale } from "@/lib/domain/constants";
+import { CLAIM_TYPE_LABEL, label } from "@/lib/domain/constants";
 
 function pct(x: number) {
   return `${Math.round(x * 100)}%`;

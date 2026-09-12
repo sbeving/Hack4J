@@ -1,0 +1,10 @@
+# Foundry build artifacts
+out/
+cache/
+broadcast/
+
+# Installed dependencies (re-fetch with `forge install`)
+lib/
+
+# Local env
+.env

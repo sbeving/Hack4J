@@ -5,8 +5,9 @@ import { ROLE_LABEL, ROLE_HOME, type Locale } from "@/lib/domain/constants";
 import { t } from "@/lib/i18n";
 import { toggleLocale, logout } from "@/lib/actions";
 import { DemoBadge } from "@/components/ui";
+import { getUnreadCount } from "@/lib/domain/notifications";
 
-export function AppShell({
+export async function AppShell({
   user,
   locale,
   children,
@@ -17,6 +18,7 @@ export function AppShell({
 }) {
   const orgName = locale === "ar" && user.org?.nameAr ? user.org.nameAr : user.org?.name;
   const userName = locale === "ar" && user.nameAr ? user.nameAr : user.name;
+  const unread = await getUnreadCount(user.id);
 
   return (
     <div className="flex min-h-full flex-col">
@@ -37,6 +39,18 @@ export function AppShell({
                 {ROLE_LABEL[user.role][locale]} · {orgName}
               </div>
             </div>
+            <Link
+              href="/notifications"
+              aria-label="Notifications"
+              className="relative rounded-lg p-2 text-base hover:bg-slate-100"
+            >
+              🔔
+              {unread > 0 ? (
+                <span className="absolute -end-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white">
+                  {unread}
+                </span>
+              ) : null}
+            </Link>
             <form action={toggleLocale}>
               <button className="rounded-lg border border-border px-3 py-1.5 text-xs font-semibold hover:bg-slate-50">
                 {t(locale, "nav.language")}
