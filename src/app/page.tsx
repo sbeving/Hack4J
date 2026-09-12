@@ -33,7 +33,10 @@ const ROLE_DESC: Record<Role, Record<Locale, string>> = {
 
 export default async function Home() {
   const locale = await getLocale();
-  const users = await prisma.user.findMany({ include: { org: true } });
+  const users = await prisma.user.findMany({
+    where: { id: { in: ["user-amira", "user-sami", "user-karim", "user-admin"] } },
+    include: { org: true },
+  });
   users.sort(
     (a, b) => ROLE_ORDER.indexOf(a.role as Role) - ROLE_ORDER.indexOf(b.role as Role)
   );
