@@ -1,0 +1,2 @@
+[     247ms] [ERROR] Failed to find a valid digest in the 'integrity' attribute for resource 'https://www.e-houwiya.tn/assets/js/jquery-3.2.1.slim.min.js' with computed SHA-384 integrity 'yDMg7VLgLXJ17leo4jeWJ+YGezsu52BKU3t8lLDpD7RNxMdu43+X1EJJjpxHQ4sh'. The resource has been blocked. @ https://www.e-houwiya.tn/accueil:0
+[    1558ms] [LOG] null @ https://www.e-houwiya.tn/main.849771e39b9bdc7dee4a.js:0

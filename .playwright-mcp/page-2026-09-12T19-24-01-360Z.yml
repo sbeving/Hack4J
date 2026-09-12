@@ -1,0 +1,241 @@
+- generic [active] [ref=f6e1]:
+  - dialog "cookieconsent" [ref=f6e2]:
+    - generic [ref=f6e3]:
+      - text: This website uses cookies to improve your experience.
+      - button "learn more about cookies" [ref=f6e4] [cursor=pointer]: Learn more
+    - button "dismiss cookie message" [ref=f6e6] [cursor=pointer]: Got it!
+  - generic [ref=f6e7]:
+    - text: 
+    - navigation [ref=f6e8]:
+      - generic [ref=f6e10]:
+        - link [ref=f6e13] [cursor=pointer]:
+          - /url: /fr
+          - img "logo" [ref=f6e14]
+        - generic [ref=f6e15]:
+          - list [ref=f6e17]:
+            - listitem [ref=f6e18]:
+              - link [ref=f6e19] [cursor=pointer]:
+                - /url: /fr
+                - strong [ref=f6e20]: PARTICULIER
+            - listitem [ref=f6e21]:
+              - link [ref=f6e22] [cursor=pointer]:
+                - /url: /fr/business
+                - strong [ref=f6e23]: BUSINESS
+            - listitem [ref=f6e24]:
+              - link [ref=f6e25] [cursor=pointer]:
+                - /url: /fr/developers
+                - strong [ref=f6e26]: DEVELOPER
+            - listitem [ref=f6e27]:
+              - link [ref=f6e28] [cursor=pointer]:
+                - /url: /fr/digigo
+                - strong [ref=f6e29]: DIGIGO
+            - listitem [ref=f6e30]:
+              - link [ref=f6e31] [cursor=pointer]:
+                - /url: /fr/pricing
+                - strong [ref=f6e32]: Tarification
+          - generic [ref=f6e33]:
+            - link "Créer un compte" [ref=f6e34] [cursor=pointer]:
+              - /url: https://app.flouci.com/account/register
+            - link "Connexion" [ref=f6e35] [cursor=pointer]:
+              - /url: https://app.flouci.com
+            - list [ref=f6e36]:
+              - listitem [ref=f6e37]:
+                - generic [ref=f6e38] [cursor=pointer]:
+                  - img "en" [ref=f6e39]
+                  - text: 
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - list:
+                          - listitem:
+                            - link "en English":
+                              - /url: /en
+                              - img "en"
+                              - text: English
+  - text:  
+  - generic [ref=f6e40]:
+    - generic [ref=f6e42]:
+      - generic [ref=f6e43]:
+        - img "logo" [ref=f6e45]
+        - paragraph [ref=f6e46]: DIGIGO est le nouvel identifiant électronique de Tuntrust (Agence Nationale de Certification Électronique) créé pour faciliter l'identification et l'accès aux services gouvernementaux et financiers à distance.
+      - generic [ref=f6e47]:
+        - link [ref=f6e48] [cursor=pointer]:
+          - /url: https://app.flouci.com/account/register
+          - strong [ref=f6e49]: Demander mon certificat
+        - link [ref=f6e50] [cursor=pointer]:
+          - /url: https://www.notion.so/Tout-savoir-sur-le-certificat-DIGIGO-Votre-guide-ultime-04fefee4310f45afbba8f2cdd30d2126
+          - strong [ref=f6e51]: Visiter notre guide Digigo
+    - generic [ref=f6e55]:
+      - heading "Pourquoi demander un certificat DIGIGO by Flouci?" [level=2] [ref=f6e56]
+      - generic [ref=f6e57]:
+        - generic [ref=f6e58]:
+          - img "Image" [ref=f6e59]
+          - text: Services eGouvernement
+          - paragraph [ref=f6e60]: Accédez aux services gouvernementaux en ligne grâce aux identifiants de votre DIGIGO
+        - generic [ref=f6e61]:
+          - img "Image" [ref=f6e62]
+          - text: Signatures électroniques
+          - paragraph [ref=f6e63]: Signez tous vos documents électroniquement, directement sur votre téléphone
+        - generic [ref=f6e64]:
+          - img "Image" [ref=f6e65]
+          - text: Partage de documents
+          - paragraph [ref=f6e66]: Envoyez vos documents signés électroniquement par email instantanément.
+        - generic [ref=f6e67]:
+          - img "Image" [ref=f6e68]
+          - text: Authentification à distance
+          - paragraph [ref=f6e69]: Utilisez votre identité digitale pour vous authentifier ou authentifier vos clients à distance
+    - generic [ref=f6e72]:
+      - generic [ref=f6e76]:
+        - heading "Accédez aux services gouvernementaux en ligne" [level=3] [ref=f6e77]
+        - generic [ref=f6e78]: Identifiez-vous auprès des services gouvernementaux en ligne en utilisant vos identifiants de signature électronique DIGIGO.
+        - link [ref=f6e80] [cursor=pointer]:
+          - /url: https://app.flouci.com/account/register
+          - strong [ref=f6e81]: Demander mon certificat Pro
+      - img "Image" [ref=f6e83]
+    - generic [ref=f6e86]:
+      - img "Image" [ref=f6e88]
+      - generic [ref=f6e92]:
+        - heading "Signez et légalisez vos documents personnels et professionnels sur votre téléphone" [level=3] [ref=f6e93]
+        - generic [ref=f6e94]: Pas la peine d’aller à la municipalité! Il vous suffit de photographier ou télécharger vos documents, image ou PDF, sur l’application et les signer électroniquement en quelques clics.
+    - generic [ref=f6e97]:
+      - generic [ref=f6e99]:
+        - generic [ref=f6e101]:
+          - heading "Authentifiez votre équipe et vos clients en ligne sur votre plateforme" [level=3] [ref=f6e102]
+          - generic [ref=f6e103]: Intégrez Flouci sur votre plateforme pour générer des certificats DIGIGO et offrir des packs de signatures électroniques à vos employés et clients.
+        - link [ref=f6e105] [cursor=pointer]:
+          - /url: ""
+          - strong [ref=f6e106]: Parler à un expert
+      - img "Image" [ref=f6e108]
+    - generic [ref=f6e111]:
+      - heading "DIGIGO personnel ou professionnel? Choisissez le certificat qui répond le mieux à vos besoins" [level=2] [ref=f6e113]
+      - generic [ref=f6e115]:
+        - generic [ref=f6e116]:
+          - img "Image" [ref=f6e117]
+          - heading "Certificat DIGIGO Personnel" [level=4] [ref=f6e118]
+          - paragraph [ref=f6e119]: Pour signer en votre nom sur vos documents personnels et officiels sur votre téléphone ou ordinateur au lieu d’aller à la municipalité.
+          - list [ref=f6e120]:
+            - listitem [ref=f6e121]:
+              - generic [ref=f6e122]: ✓
+              - text: Signer des documents personnels
+            - listitem [ref=f6e123]:
+              - generic [ref=f6e124]: ✓
+              - text: Valide pour 2 ans
+          - generic [ref=f6e126]:
+            - heading "80 dinars TTC" [level=4] [ref=f6e127]
+            - link [ref=f6e128] [cursor=pointer]:
+              - /url: https://app.flouci.com/register
+              - strong [ref=f6e129]: Obtenir mon certificat DIGIGO
+        - generic [ref=f6e131]:
+          - img "Image" [ref=f6e132]
+          - heading "Certificat DIGIGO Professionnel" [level=4] [ref=f6e133]
+          - paragraph [ref=f6e134]: Pour signer vos documents au nom de votre entreprise, ainsi que pour accéder aux services eGov tels que la télédéclaration fiscale.*
+          - list [ref=f6e135]:
+            - listitem [ref=f6e136]:
+              - generic [ref=f6e137]: ✓
+              - text: Accéder aux services gouvernementaux à distance
+            - listitem [ref=f6e138]:
+              - generic [ref=f6e139]: ✓
+              - text: Signer des documents personnels et professionnels
+            - listitem [ref=f6e140]:
+              - generic [ref=f6e141]: ✓
+              - text: Valide pour 2 ans
+          - generic [ref=f6e143]:
+            - heading "80 dinars TTC" [level=4] [ref=f6e144]
+            - link [ref=f6e145] [cursor=pointer]:
+              - /url: https://app.flouci.com/register
+              - strong [ref=f6e146]: Obtenir mon certificat DIGIGO
+      - paragraph [ref=f6e148]: "* Nos frais couvrent l'enregistrement video pour l'obtention du certificat Digigo. L'achat d'un forfait de signatures est parfois nécessaire pour accéder à des services e-gov."
+    - generic [ref=f6e151]:
+      - heading "Où puis-je utiliser mon certificat DIGIGO?" [level=2] [ref=f6e152]
+      - generic [ref=f6e153]:
+        - generic [ref=f6e154]:
+          - img "Image" [ref=f6e155]
+          - text: Signature électronique de contrats et conventions
+        - generic [ref=f6e156]:
+          - img "Image" [ref=f6e157]
+          - text: Télédéclaration et services gouvernementaux en ligne
+        - generic [ref=f6e158]:
+          - img "Image" [ref=f6e159]
+          - text: Légalisation de documents électroniquement
+    - contentinfo [ref=f6e160]:
+      - generic [ref=f6e161]:
+        - generic [ref=f6e162]:
+          - list [ref=f6e166]:
+            - listitem [ref=f6e167]:
+              - generic [ref=f6e168]: 
+              - text: Tunis, Tunisia
+            - listitem [ref=f6e169]:
+              - generic [ref=f6e170]: 
+              - text: English
+          - generic [ref=f6e171]:
+            - heading "Products" [level=6] [ref=f6e172]
+            - list [ref=f6e173]:
+              - listitem [ref=f6e174]:
+                - link "Flouci" [ref=f6e175] [cursor=pointer]:
+                  - /url: https://onelink.to/flouci
+              - listitem [ref=f6e176]:
+                - link "Flouci Developers" [ref=f6e177] [cursor=pointer]:
+                  - /url: https://app.flouci.com/
+              - listitem [ref=f6e178]:
+                - link "Botkeji" [ref=f6e179] [cursor=pointer]:
+                  - /url: https://www.kaoun.com/en/products#Botkeji
+          - generic [ref=f6e180]:
+            - heading "Developers" [level=6] [ref=f6e181]
+            - list [ref=f6e182]:
+              - listitem [ref=f6e183]:
+                - link "Documentation" [ref=f6e184] [cursor=pointer]:
+                  - /url: https://flouci.stoplight.io/docs/flouci-payment-apis
+              - listitem [ref=f6e185]:
+                - link "API reference" [ref=f6e186] [cursor=pointer]:
+                  - /url: https://flouci.stoplight.io/docs/flouci-payment-apis
+              - listitem [ref=f6e187]:
+                - link "Tutorials" [ref=f6e188] [cursor=pointer]:
+                  - /url: https://flouci.stoplight.io/docs/flouci-payment-apis
+          - generic [ref=f6e189]:
+            - heading "Company" [level=6] [ref=f6e190]
+            - list [ref=f6e191]:
+              - listitem [ref=f6e192]:
+                - link "Website" [ref=f6e193] [cursor=pointer]:
+                  - /url: https://www.kaoun.com/en/
+              - listitem [ref=f6e194]:
+                - link "Careers" [ref=f6e195] [cursor=pointer]:
+                  - /url: https://kaoun.freshteam.com/jobs
+              - listitem [ref=f6e196]:
+                - link "Privacy & terms" [ref=f6e197] [cursor=pointer]:
+                  - /url: /users-privacy-notice
+          - generic [ref=f6e198]:
+            - heading "Resources" [level=6] [ref=f6e199]
+            - list [ref=f6e200]:
+              - listitem [ref=f6e201]:
+                - link "Tarification" [ref=f6e202] [cursor=pointer]:
+                  - /url: /fr/pricing
+              - listitem [ref=f6e203]:
+                - link "Blog" [ref=f6e204] [cursor=pointer]:
+                  - /url: /blog
+              - listitem [ref=f6e205]:
+                - link "FAQs" [ref=f6e206] [cursor=pointer]:
+                  - /url: /fr/faq
+              - listitem [ref=f6e207]:
+                - link "Partenaires de confiance" [ref=f6e208] [cursor=pointer]:
+                  - /url: /fr/trusted_partners
+        - generic [ref=f6e209]:
+          - generic [ref=f6e211]:
+            - text: © 2026
+            - subscript [ref=f6e212]:
+              - generic [ref=f6e213]: 
+            - text: Kaoun S.A.R.L
+          - list [ref=f6e215]:
+            - listitem [ref=f6e216]:
+              - link "" [ref=f6e217] [cursor=pointer]:
+                - /url: https://www.twitter.com/flouciTN
+            - listitem [ref=f6e219]:
+              - link "" [ref=f6e220] [cursor=pointer]:
+                - /url: https://www.facebook.com/flouci
+            - listitem [ref=f6e222]:
+              - link "" [ref=f6e223] [cursor=pointer]:
+                - /url: https://www.instagram.com/flouci__
+  - generic [aria-hidden] [ref=f6e225]: Jira Service Management Widget
+  - iframe [ref=f6e226]:
+    - generic [ref=f7e1]:
+      - main "Help Center Widget Content"

@@ -1,11 +1,11 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
 import type { SessionUser } from "@/lib/session";
-import { ROLE_LABEL, ROLE_HOME, type Locale } from "@/lib/domain/constants";
-import { t } from "@/lib/i18n";
-import { toggleLocale, logout } from "@/lib/actions";
-import { DemoBadge } from "@/components/ui";
 import { getUnreadCount } from "@/lib/domain/notifications";
+import { navFor, CONSOLE_ROLES } from "@/components/nav/config";
+import { Sidebar } from "@/components/nav/Sidebar";
+import { Topbar } from "@/components/nav/Topbar";
+import { Icon } from "@/components/Icon";
+import type { Locale } from "@/lib/domain/constants";
 
 export async function AppShell({
   user,
@@ -16,60 +16,36 @@ export async function AppShell({
   locale: Locale;
   children: ReactNode;
 }) {
-  const orgName = locale === "ar" && user.org?.nameAr ? user.org.nameAr : user.org?.name;
-  const userName = locale === "ar" && user.nameAr ? user.nameAr : user.name;
   const unread = await getUnreadCount(user.id);
+  const isConsole = CONSOLE_ROLES.includes(user.role);
+  const items = navFor(user.role, locale);
+  const isAr = locale === "ar";
 
   return (
-    <div className="flex min-h-full flex-col">
-      <header className="sticky top-0 z-20 border-b border-border bg-card/90 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-          <div className="flex items-center gap-3">
-            <Link href={ROLE_HOME[user.role]} className="flex items-center gap-2">
-              <span className="text-xl font-black text-brand">صلح</span>
-              <span className="text-lg font-bold tracking-tight">Sulha</span>
-            </Link>
-            <DemoBadge label={t(locale, "demo.badge")} />
+    <div className="flex min-h-screen bg-paper">
+      {isConsole ? <Sidebar user={user} locale={locale} items={items} /> : null}
+
+      <div className="flex min-w-0 flex-1 flex-col">
+        <Topbar
+          user={user}
+          locale={locale}
+          unread={unread}
+          variant={isConsole ? "console" : "claimant"}
+          items={isConsole ? undefined : items}
+        />
+
+        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 md:px-8">{children}</main>
+
+        <footer className="border-t border-border bg-surface/60">
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 text-xs text-ink-muted md:px-8">
+            <span>Sulha · Hack4Justice 2026</span>
+            <span className="inline-flex items-center gap-1.5">
+              <Icon name="shield" size={14} className="text-primary" />
+              {isAr ? "السجل موثّق · بيانات عرض" : "Registre vérifié · données de démonstration"}
+            </span>
           </div>
-
-          <div className="flex items-center gap-2 text-sm">
-            <div className="hidden text-end sm:block">
-              <div className="font-semibold leading-tight">{userName}</div>
-              <div className="text-xs text-muted">
-                {ROLE_LABEL[user.role][locale]} · {orgName}
-              </div>
-            </div>
-            <Link
-              href="/notifications"
-              aria-label="Notifications"
-              className="relative rounded-lg p-2 text-base hover:bg-slate-100"
-            >
-              🔔
-              {unread > 0 ? (
-                <span className="absolute -end-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-rose-500 px-1 text-[10px] font-bold text-white">
-                  {unread}
-                </span>
-              ) : null}
-            </Link>
-            <form action={toggleLocale}>
-              <button className="rounded-lg border border-border px-3 py-1.5 text-xs font-semibold hover:bg-slate-50">
-                {t(locale, "nav.language")}
-              </button>
-            </form>
-            <form action={logout}>
-              <button className="rounded-lg px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100">
-                {t(locale, "nav.logout")}
-              </button>
-            </form>
-          </div>
-        </div>
-      </header>
-
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">{children}</main>
-
-      <footer className="border-t border-border py-4 text-center text-xs text-muted">
-        Sulha · Hack4Justice 2026 · <span className="text-amber-700 font-medium">Données de démonstration</span>
-      </footer>
+        </footer>
+      </div>
     </div>
   );
 }

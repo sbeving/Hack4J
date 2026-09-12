@@ -1,0 +1,313 @@
+- generic [ref=f8e3]:
+  - navigation [ref=f8e6]:
+    - generic [ref=f8e7]:
+      - img "App Store" [ref=f8e9]
+      - generic [ref=f8e14]:
+        - generic: Rechercher
+        - searchbox "Rechercher" [ref=f8e15]
+    - generic [ref=f8e17]:
+      - list [ref=f8e19]:
+        - listitem [ref=f8e20]:
+          - button "Aujourd’hui" [ref=f8e21] [cursor=pointer]
+        - listitem [ref=f8e25]:
+          - button "Jeux" [ref=f8e26] [cursor=pointer]
+        - listitem [ref=f8e30]:
+          - button "Apps" [ref=f8e31] [cursor=pointer]
+        - listitem [ref=f8e35]:
+          - button "Arcade" [ref=f8e36] [cursor=pointer]
+      - generic [ref=f8e40]:
+        - text: Plateforme
+        - list [ref=f8e41]:
+          - listitem [ref=f8e42]:
+            - link "iPhone" [ref=f8e43] [cursor=pointer]:
+              - /url: https://apps.apple.com/ci/iphone/today
+          - listitem [ref=f8e47]:
+            - link "iPad" [ref=f8e48] [cursor=pointer]:
+              - /url: https://apps.apple.com/ci/ipad/today
+          - listitem [ref=f8e52]:
+            - link "Mac" [ref=f8e53] [cursor=pointer]:
+              - /url: https://apps.apple.com/ci/mac/discover
+          - listitem [ref=f8e57]:
+            - link "Watch" [ref=f8e58] [cursor=pointer]:
+              - /url: https://apps.apple.com/ci/watch/apps-and-games
+          - listitem [ref=f8e62]:
+            - link "TV" [ref=f8e63] [cursor=pointer]:
+              - /url: https://apps.apple.com/ci/tv/discover
+  - generic [ref=f8e67]:
+    - main [ref=f8e68]:
+      - generic [ref=f8e69]:
+        - generic [ref=f8e80]:
+          - heading "E-Houwiya" [level=1] [ref=f8e81]
+          - paragraph [ref=f8e83]: Productivité
+          - paragraph [ref=f8e84]: Uniquement pour iPhone
+          - paragraph [ref=f8e85]: Gratuit · Conçue pour iPhone. Non validée pour macOS.
+          - button "Partager" [ref=f8e87] [cursor=pointer]
+        - generic [ref=f8e92]:
+          - button "Page précédente" [disabled] [ref=f8e93]
+          - list [ref=f8e94]:
+            - listitem [aria-hidden] [ref=f8e95]:
+              - link [ref=f8e97] [cursor=pointer]:
+                - /url: "#information"
+                - generic [ref=f8e99]:
+                  - term [ref=f8e100]:
+                    - generic [ref=f8e101]: Catégorie d’âge
+                  - definition [ref=f8e102]:
+                    - generic [ref=f8e103]: 4+
+                    - generic [ref=f8e104]: Ans
+            - listitem [aria-hidden] [ref=f8e106]:
+              - link [ref=f8e108] [cursor=pointer]:
+                - /url: "#information"
+                - generic [ref=f8e110]:
+                  - term [ref=f8e111]:
+                    - generic [ref=f8e112]: Catégorie
+                  - definition [ref=f8e113]:
+                    - generic [ref=f8e117]: Productivité
+            - listitem [aria-hidden] [ref=f8e119]:
+              - link [ref=f8e121] [cursor=pointer]:
+                - /url: https://apps.apple.com/ci/developer/agence-nationale-de-certification-electronique/id1445171688?platform=iphone
+                - generic [ref=f8e123]:
+                  - term [ref=f8e124]:
+                    - generic [ref=f8e125]: Création
+                  - definition [ref=f8e126]:
+                    - generic [ref=f8e128]: Agence Nationale de Certification Electronique
+            - listitem [aria-hidden] [ref=f8e130]:
+              - link [ref=f8e132] [cursor=pointer]:
+                - /url: "#information"
+                - generic [ref=f8e134]:
+                  - term [ref=f8e135]:
+                    - generic [ref=f8e136]: Langue
+                  - definition [ref=f8e137]:
+                    - generic [ref=f8e138]: EN
+                    - generic [ref=f8e139]: Anglais
+            - listitem [aria-hidden] [ref=f8e141]:
+              - link [ref=f8e143] [cursor=pointer]:
+                - /url: "#information"
+                - generic [ref=f8e145]:
+                  - term [ref=f8e146]:
+                    - generic [ref=f8e147]: Taille
+                  - definition [ref=f8e148]:
+                    - generic [ref=f8e149]: 47,1
+                    - generic [ref=f8e150]: Mo
+          - button "Page suivante" [ref=f8e152] [cursor=pointer]
+        - region "iPhone Aperçus d’apps et captures d’écran" [ref=f8e153]:
+          - generic [ref=f8e156]:
+            - button "Page précédente" [disabled] [ref=f8e157]
+            - list [ref=f8e158]:
+              - listitem [aria-hidden] [ref=f8e159]
+              - listitem [aria-hidden] [ref=f8e165]
+              - listitem [aria-hidden] [ref=f8e171]
+              - listitem [aria-hidden] [ref=f8e177]
+              - listitem [aria-hidden] [ref=f8e183]
+              - listitem [aria-hidden] [ref=f8e189]
+              - listitem [aria-hidden] [ref=f8e195]
+            - button "Page suivante" [ref=f8e196] [cursor=pointer]
+          - generic [ref=f8e197]: iPhone
+        - generic [ref=f8e201]:
+          - paragraph
+          - generic [ref=f8e202]: Identité digitale pour tous les tunisiens ! L’identité digitale sur mobile permet l’identification du demandeur de service en ligne d’une manière fiable, l’établissement simple de la signature électronique des documents, la réalisation des démarches administratives et la récupération des documents officiels en ligne d’une manière simple, 24 heures sur 24 et sans avoir à se déplacer à l’administration. L’application e-Houwiya permet à tous les Tunisiens résidents en Tunisie et à l’étranger, ayant 18 ans ou plus et détenteurs de carte d’identité nationale, d’obtenir une identité digitale sur mobile et de l’utiliser d’une manière sécurisée et simple. L’identité digitale sur mobile est liée à l’identifiant unique du citoyen et elle se base soit sur l’appareil téléphonique soit sur le numéro de téléphone pour la réception des codes de vérification. Les codes de vérification sont nécessaires dans chaque opération d’accès en ligne et de signature électronique effectuée en utilisant le certificat et les clés de signature du citoyen.
+          - button "plus" [ref=f8e205] [cursor=pointer]
+          - paragraph
+        - region "Notes et avis" [ref=f8e206]:
+          - heading "Notes et avis" [level=2] [ref=f8e209]
+          - list [ref=f8e210]:
+            - listitem [ref=f8e211]:
+              - generic [ref=f8e212]: Cette app n’a pas reçu suffisamment de notes ou d’avis pour en proposer un aperçu.
+        - region "Confidentialité de l’app" [ref=f8e213]:
+          - button [ref=f8e215] [cursor=pointer]:
+            - link "Confidentialité de l’app" [ref=f8e217]:
+              - /url: "#"
+              - heading "Confidentialité de l’app" [level=2] [ref=f8e219]
+          - paragraph [ref=f8e224]:
+            - text: Le développeur Agence Nationale de Certification Electronique a indiqué que les pratiques de l’app en matière de confidentialité peuvent inclure le traitement des données tel que décrit ci‑dessous. Pour en savoir plus, consultez la
+            - link "Politique de confidentialité du développeur" [ref=f8e225] [cursor=pointer]:
+              - /url: https://www.mobile-id.tn/home/condition
+              - text: politique de confidentialité du développeur
+            - text: .
+        - list [ref=f8e227]:
+          - listitem [ref=f8e228]:
+            - generic "Données établissant un lien avec vous" [ref=f8e229]:
+              - heading "Données établissant un lien avec vous" [level=3] [ref=f8e231]
+              - paragraph [ref=f8e232]: "Les données suivantes peuvent être collectées et liées à votre identité :"
+              - list [ref=f8e233]:
+                - listitem [ref=f8e234]: Coordonnées
+                - listitem [ref=f8e236]: Identifiants
+        - paragraph [ref=f8e239]:
+          - text: Les pratiques en matière de confidentialité peuvent varier, notamment en fonction des fonctionnalités que vous utilisez ou de votre âge.
+          - link "En savoir plus" [ref=f8e240] [cursor=pointer]:
+            - /url: https://apps.apple.com/ci/iphone/story/id1538632801
+        - region "Accessibilité" [ref=f8e241]:
+          - heading "Accessibilité" [level=2] [ref=f8e245]
+          - paragraph [ref=f8e249]:
+            - text: Le développeur n’a pas encore indiqué quelles fonctionnalités d’accessibilité sont prises en charge par cette app.
+            - link "En savoir plus" [ref=f8e250] [cursor=pointer]:
+              - /url: https://apps.apple.com/story/id1814164299
+        - region "Informations" [ref=f8e251]:
+          - heading "Informations" [level=2] [ref=f8e254]
+          - generic [ref=f8e255]:
+            - generic [ref=f8e256]:
+              - term [ref=f8e257]: Fournisseur
+              - definition [ref=f8e258]:
+                - list [ref=f8e259]:
+                  - listitem [ref=f8e260]: National Digital Certification Agency
+            - generic [ref=f8e261]:
+              - term [ref=f8e262]: Taille
+              - definition [ref=f8e263]:
+                - list [ref=f8e264]:
+                  - listitem [ref=f8e265]: 47,1 Mo
+            - generic [ref=f8e266]:
+              - term [ref=f8e267]: Catégorie
+              - definition [ref=f8e268]:
+                - list [ref=f8e269]:
+                  - listitem [ref=f8e270]: Productivité
+            - generic [ref=f8e271]:
+              - term [ref=f8e272]: Compatibilité
+              - definition [ref=f8e273]:
+                - group [ref=f8e274]:
+                  - generic "Nécessite iOS 13.0 ou version ultérieure." [ref=f8e275] [cursor=pointer]
+            - generic [ref=f8e276]:
+              - term [ref=f8e277]: Langues
+              - definition [ref=f8e278]:
+                - list [ref=f8e279]:
+                  - listitem [ref=f8e280]: Anglais
+            - generic [ref=f8e281]:
+              - term [ref=f8e282]: Âge
+              - definition [ref=f8e283]:
+                - group [ref=f8e284]:
+                  - generic "4+" [ref=f8e285] [cursor=pointer]
+            - generic [ref=f8e286]:
+              - term [ref=f8e287]: Copyright
+              - definition [ref=f8e288]:
+                - list [ref=f8e289]:
+                  - listitem [ref=f8e290]: © 2024 (c) MTC
+        - generic [ref=f8e292]:
+          - listitem [ref=f8e293]:
+            - link "Site web du développeur ↗" [ref=f8e295] [cursor=pointer]:
+              - /url: https://www.mobile-id.tn
+              - generic [ref=f8e296]: Site web du développeur
+              - text: ↗
+          - listitem [ref=f8e297]:
+            - link "Confidentialité ↗" [ref=f8e299] [cursor=pointer]:
+              - /url: https://www.mobile-id.tn/home/condition
+              - generic [ref=f8e300]: Confidentialité
+              - text: ↗
+        - region "Plus d’apps par Agence Nationale de Certification Electronique" [ref=f8e301]:
+          - link "Plus d’apps par Agence Nationale de Certification Electronique" [ref=f8e303] [cursor=pointer]:
+            - /url: https://apps.apple.com/ci/developer/agence-nationale-de-certification-electronique/id1445171688
+            - heading "Plus d’apps par Agence Nationale de Certification Electronique" [level=2] [ref=f8e305]
+          - generic [ref=f8e309]:
+            - button "Page précédente" [disabled] [ref=f8e310]
+            - list [ref=f8e311]:
+              - listitem [aria-hidden] [ref=f8e312]:
+                - link [ref=f8e316] [cursor=pointer]:
+                  - /url: https://apps.apple.com/ci/app/qr-check-tuntrust/id1445171689
+                  - generic [ref=f8e317]: Afficher
+                  - generic [ref=f8e323]:
+                    - generic [ref=f8e324]: Qr-Check TunTrust
+                    - paragraph [ref=f8e328]: Validation 2D-DOC
+            - button "Page suivante" [ref=f8e329] [cursor=pointer]
+        - region "Vous aimerez peut-être aussi" [ref=f8e330]:
+          - link "Vous aimerez peut-être aussi" [ref=f8e332] [cursor=pointer]:
+            - /url: https://apps.apple.com/ci/app/6503291164?see-all=customers-also-bought-apps&platform=iphone
+            - heading "Vous aimerez peut-être aussi" [level=2] [ref=f8e334]
+          - generic [ref=f8e338]:
+            - button "Page précédente" [disabled] [ref=f8e339]
+            - list [ref=f8e340]:
+              - listitem [aria-hidden] [ref=f8e341]:
+                - link [ref=f8e345] [cursor=pointer]:
+                  - /url: https://apps.apple.com/ci/app/code-de-la-route-tunisie/id6468992029
+                  - generic [ref=f8e346]: Afficher
+                  - generic [ref=f8e352]:
+                    - generic [ref=f8e353]: Code de la route tunisie
+                    - paragraph [ref=f8e357]: Code de la route Tunisie 2025
+              - listitem [aria-hidden] [ref=f8e358]:
+                - link [ref=f8e362] [cursor=pointer]:
+                  - /url: https://apps.apple.com/ci/app/zmorda-tn-achat-de-voiture/id6569254063
+                  - generic [ref=f8e363]: Afficher
+                  - generic [ref=f8e369]:
+                    - generic [ref=f8e370]: Zmorda.tn Achat de voiture
+                    - paragraph [ref=f8e374]: Auto Moto d'occasion Tunisie
+              - listitem [aria-hidden] [ref=f8e375]:
+                - link [ref=f8e379] [cursor=pointer]:
+                  - /url: https://apps.apple.com/ci/app/omnilock/id1645472970
+                  - generic [ref=f8e380]: Afficher
+                  - generic [ref=f8e386]:
+                    - generic [ref=f8e387]: OmniLock
+                    - paragraph [ref=f8e391]: Productivité
+              - listitem [aria-hidden] [ref=f8e392]:
+                - link [ref=f8e396] [cursor=pointer]:
+                  - /url: https://apps.apple.com/ci/app/workpoint-mobile-app/id1570657484
+                  - generic [ref=f8e397]: Afficher
+                  - generic [ref=f8e403]:
+                    - generic [ref=f8e404]: WorkPoint Mobile App
+                    - paragraph [ref=f8e408]: Productivité
+              - listitem [aria-hidden] [ref=f8e409]:
+                - link [ref=f8e413] [cursor=pointer]:
+                  - /url: https://apps.apple.com/ci/app/orange-max-it-rdc/id6447896435
+                  - generic [ref=f8e414]: Afficher
+                  - generic [ref=f8e420]:
+                    - generic [ref=f8e421]: Orange Max it - RDC
+                    - paragraph [ref=f8e425]: Productivité
+              - listitem [aria-hidden] [ref=f8e426]:
+                - link [ref=f8e430] [cursor=pointer]:
+                  - /url: https://apps.apple.com/ci/app/lockdown-privacy-proxy-gate/id1469783711
+                  - generic [ref=f8e431]: Afficher
+                  - generic [ref=f8e437]:
+                    - generic [ref=f8e438]: Lockdown Privacy - Proxy Gate
+                    - paragraph [ref=f8e442]: Home Server VPN Band Studio
+              - listitem [aria-hidden] [ref=f8e443]:
+                - link [ref=f8e447] [cursor=pointer]:
+                  - /url: https://apps.apple.com/ci/app/ben-jem%C3%A2a-motors-rdv/id6621267971
+                  - generic [ref=f8e448]: Afficher
+                  - generic [ref=f8e454]:
+                    - generic [ref=f8e455]: Ben Jemâa Motors RDV
+                    - paragraph [ref=f8e459]: Productivité
+              - listitem [aria-hidden] [ref=f8e460]:
+                - link [ref=f8e464] [cursor=pointer]:
+                  - /url: https://apps.apple.com/ci/app/dmanager-datamanager/id6478941471
+                  - generic [ref=f8e465]: Afficher
+                  - generic [ref=f8e471]:
+                    - generic [ref=f8e472]: dManager - datamanager
+                    - paragraph [ref=f8e476]: Productivité
+              - listitem [aria-hidden] [ref=f8e477]:
+                - link [ref=f8e481] [cursor=pointer]:
+                  - /url: https://apps.apple.com/ci/app/u9-app/id976062898
+                  - generic [ref=f8e482]: Afficher
+                  - generic [ref=f8e488]:
+                    - generic [ref=f8e489]: U9 App
+                    - paragraph [ref=f8e493]: Productivité
+              - listitem [aria-hidden] [ref=f8e494]:
+                - link [ref=f8e498] [cursor=pointer]:
+                  - /url: https://apps.apple.com/ci/app/infomaniak-swisstransfer/id6737686335
+                  - generic [ref=f8e499]: Afficher
+                  - generic [ref=f8e505]:
+                    - generic [ref=f8e506]: Infomaniak SwissTransfer
+                    - paragraph [ref=f8e510]: Productivité
+            - button "Page suivante" [ref=f8e511] [cursor=pointer]
+    - generic [ref=f8e513]:
+      - generic [ref=f8e515]:
+        - button "Côte d’Ivoire" [ref=f8e516] [cursor=pointer]
+        - list [ref=f8e517]:
+          - listitem [ref=f8e518]:
+            - link "Cette page est disponible en English (UK)" [ref=f8e519] [cursor=pointer]:
+              - /url: "?l=en-GB"
+              - text: English (UK)
+      - generic [ref=f8e520]:
+        - paragraph [ref=f8e521]:
+          - generic [ref=f8e522]:
+            - text: Copyright © 2026
+            - link "Apple Inc." [ref=f8e523] [cursor=pointer]:
+              - /url: https://www.apple.fr
+          - text: Tous droits réservés.
+        - list [ref=f8e524]:
+          - listitem [ref=f8e525]:
+            - link "Conditions générales des services Internet" [ref=f8e526] [cursor=pointer]:
+              - /url: https://www.apple.com/fr/legal/internet-services/
+          - listitem [ref=f8e527]:
+            - link "App Store et confidentialité" [ref=f8e528] [cursor=pointer]:
+              - /url: https://www.apple.com/legal/privacy/data/fr/app-store/
+          - listitem [ref=f8e529]:
+            - link "Avertissement concernant les cookies" [ref=f8e530] [cursor=pointer]:
+              - /url: https://www.apple.com/fr/legal/privacy/fr-ww/cookies/
+          - listitem [ref=f8e531]:
+            - link "Assistance" [ref=f8e532] [cursor=pointer]:
+              - /url: https://support.apple.com/fr-fr/billing

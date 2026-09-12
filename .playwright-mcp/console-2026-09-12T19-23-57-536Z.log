@@ -1,0 +1,4 @@
+[    3760ms] [WARNING] {msg: An error has occurred checking the feature gate. Only the first occurrence of this error is logged., gateName: use_frontend_feature_encoding_sdk_platform, error: Error: Client must be initialized before using this method
+    at Object.assertInitialized (https:/…} @ https://jsd-widget.atlassian.com/assets/iframe.js:139
+[    4338ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://jsd-widget.atlassian.com/api/embeddable/0e701a0d-4232-47d7-bc11-2787c0b03394/widget:0
+[    4338ms] [ERROR] JSD Widget: Encountered a problem retrieving widget configuration @ https://jsd-widget.atlassian.com/assets/iframe.js:139

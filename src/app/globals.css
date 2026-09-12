@@ -1,27 +1,87 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────────────────────
+   Sijill — The Reconciliation Ledger. Light-only design system.
+   teal = institution · cobalt = neutral mediator · cachet-red = official/verified
+   gold = ornament lines only · olive = resolved. See docs/DESIGN.md.
+   ───────────────────────────────────────────────────────────── */
 :root {
-  --background: #f6f7fb;
-  --foreground: #0f172a;
-  --card: #ffffff;
-  --muted: #64748b;
-  --border: #e2e8f0;
-  --brand: #4f46e5; /* indigo-600 */
-  --brand-ink: #3730a3;
-  --brand-soft: #eef2ff;
+  --paper: #fbfaf6;
+  --surface: #ffffff;
+  --surface-sand: #f1ece0;
+  --ink: #18211d;
+  --ink-muted: #556158;
+
+  --primary: #1e7a82;
+  --primary-deep: #0f5259;
+  --primary-tint: #e1efef;
+
+  --cobalt: #1f4e9b;
+  --cobalt-tint: #dee6f3;
+
+  --seal: #c8102e;
+  --seal-deep: #9e1b2f;
+  --gold: #b8892b;
+
+  --success: #5c7a3e;
+  --success-tint: #e9efe0;
+  --warning: #d06a2c;
+  --warning-tint: #f7ebe0;
+  --danger: #9e1b2f;
+  --danger-tint: #f6e3e5;
+
+  --border: #e4ddce;
+  --border-strong: #d6cbb5;
+
+  --elev-card: 0 1px 2px rgba(24, 33, 29, 0.05);
+  --elev-overlay: 0 4px 6px rgba(15, 82, 89, 0.06), 0 12px 24px rgba(15, 82, 89, 0.1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-muted: var(--muted);
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-surface-sand: var(--surface-sand);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+
+  --color-primary: var(--primary);
+  --color-primary-deep: var(--primary-deep);
+  --color-primary-tint: var(--primary-tint);
+
+  --color-cobalt: var(--cobalt);
+  --color-cobalt-tint: var(--cobalt-tint);
+
+  --color-seal: var(--seal);
+  --color-seal-deep: var(--seal-deep);
+  --color-gold: var(--gold);
+
+  --color-success: var(--success);
+  --color-success-tint: var(--success-tint);
+  --color-warning: var(--warning);
+  --color-warning-tint: var(--warning-tint);
+  --color-danger: var(--danger);
+  --color-danger-tint: var(--danger-tint);
+
   --color-border: var(--border);
-  --color-brand: var(--brand);
-  --color-brand-ink: var(--brand-ink);
-  --color-brand-soft: var(--brand-soft);
-  --font-sans: var(--font-jakarta), system-ui, -apple-system, sans-serif;
-  --font-arabic: var(--font-noto-arabic), var(--font-jakarta), sans-serif;
+  --color-border-strong: var(--border-strong);
+
+  /* Back-compat aliases so legacy class names adopt the new palette instantly. */
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --color-card: var(--surface);
+  --color-muted: var(--ink-muted);
+  --color-brand: var(--primary);
+  --color-brand-ink: var(--primary-deep);
+  --color-brand-soft: var(--primary-tint);
+
+  --font-sans: var(--font-plex), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-bricolage), var(--font-plex), ui-sans-serif, sans-serif;
+  --font-arabic: var(--font-plex-ar), var(--font-plex), sans-serif;
+  --font-kufi: var(--font-reem), var(--font-plex-ar), serif;
+
+  --radius-lg: 0.375rem; /* 6px — controls */
+  --radius-xl: 0.75rem; /* 12px — cards/tables/panels */
+  --radius-2xl: 1rem; /* 16px — modals/doc panels */
 }
 
 html {
@@ -29,21 +89,87 @@ html {
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--paper);
+  color: var(--ink);
   font-family: var(--font-sans);
+  font-feature-settings: "tnum" 1, "cv05" 1;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* Arabic / RTL uses the Arabic face everywhere. */
+/* Arabic / RTL: the Arabic face, no letter-spacing, more leading for diacritics. */
 :lang(ar),
 [dir="rtl"] {
   font-family: var(--font-arabic);
+  letter-spacing: 0 !important;
+}
+[dir="rtl"] {
+  line-height: 1.7;
 }
 
-/* Utility: reusable card surface. */
+::selection {
+  background: var(--primary-tint);
+  color: var(--primary-deep);
+}
+
+/* Focus ring — teal, always visible, 2px offset. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-lg);
+}
+
+/* ── Surfaces ── */
 @utility card {
-  background: var(--card);
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 1rem;
-  box-shadow: 0 1px 2px rgb(15 23 42 / 0.04), 0 8px 24px -12px rgb(15 23 42 / 0.08);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--elev-card);
+}
+@utility card-flat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+}
+@utility overlay {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--elev-overlay);
+}
+
+/* Status dot — a real element, never the ● character. */
+.dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  flex: none;
+}
+
+/* The manuscript-gold hairline rule (letterhead / seal keyline). */
+.gold-rule {
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--gold) 12%, var(--gold) 88%, transparent);
+  opacity: 0.55;
+}
+
+/* The Cachet Stamp — the one orchestrated motion moment. */
+@keyframes cachet-press {
+  0% { transform: scale(1.12) rotate(3deg); opacity: 0; }
+  60% { transform: scale(0.98) rotate(-1deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+.animate-cachet {
+  animation: cachet-press 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-cachet {
+    animation: none;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
