@@ -74,7 +74,7 @@ Own: `prisma/seed.ts`, package scripts, `.gitignore`, `.env.example`, README and
 Own: `session.ts`, authentication actions, Prisma session records and new domain policy helpers.
 
 - [ ] Gate the picker/sign-in action by demo mode and an explicit fixture allowlist; turning demo mode off disables that entry point.
-- [ ] Use opaque random session tokens with server-side expiry/revocation. Keep the convenient demo picker; do not bolt on an unnecessary full identity platform for the hackathon.
+- [ ] Use opaque random session tokens with server-side expiry/revocation. Disabling demo mode also invalidates or rejects existing demo sessions; without a real authentication provider, protected non-demo access fails closed. Keep the convenient demo picker for demo mode; do not bolt on an unnecessary full identity platform for the hackathon.
 - [ ] Centralize claimant/provider/institution relationships and evidence/artifact grants. Correct the notice-download exception that gives admins blanket access or providers unsent PDFs.
 
 **Gate:** forged raw user-ID cookies fail; expired/revoked sessions fail; another participant or an ungranted admin cannot fetch private artifacts; legitimate demo sessions work.
@@ -85,7 +85,7 @@ Own: `domain/schemas.ts`, money utilities, existing claim actions/services and d
 - [ ] Validate category/remedy enums, provider kind, narrative bounds, references and amounts at the server boundary. Drafts may be incomplete; submissions may not bypass their declared completeness rules.
 - [ ] Replace `parseFloat` input conversion with exact decimal-string parsing into integer millimes. Define accepted French/Arabic separators and digits; reject garbage suffixes, negative values, nonfinite values, extra decimals and values above the supported database range. Do not silently round user claims.
 - [ ] Let claimants edit draft narrative, amount, provider/category/reference/remedy and correct AI suggestions. Record confirmed revisions separately from raw extraction.
-- [ ] Make submission return missing fields/confirmations instead of changing state. Define category-specific evidence requirements explicitly; included evidence must be reviewed.
+- [ ] When prerequisites are missing, make submission return missing fields/confirmations without changing state. Valid reviewed submissions advance atomically to `filed`. Define category-specific evidence requirements explicitly; included evidence must be reviewed.
 
 **Gate:** invalid category/provider/amount cannot create an unreadable case; `900`, `900.000` and supported equivalent localized forms map to 900000 millimes; corrections survive refresh; incomplete submission remains draft with useful errors.
 

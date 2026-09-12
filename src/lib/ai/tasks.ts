@@ -2,11 +2,7 @@ import "server-only";
 import { z } from "zod";
 import type Anthropic from "@anthropic-ai/sdk";
 import { AI_ENABLED, jsonComplete } from "@/lib/ai/client";
-import {
-  CLAIM_TYPES,
-  type ClaimType,
-  type Priority,
-} from "@/lib/domain/constants";
+import { CLAIM_TYPES, type ClaimType } from "@/lib/domain/constants";
 
 // ── Evidence extraction ──────────────────────────────────────────────────────
 const ExtractionSchema = z.object({

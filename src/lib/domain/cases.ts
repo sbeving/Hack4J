@@ -4,7 +4,7 @@ import { classifyClaim, extractEvidence } from "@/lib/ai/tasks";
 import { recordEvent } from "@/lib/domain/events";
 import { saveFile } from "@/lib/storage";
 import { makeCaseNumber } from "@/lib/ids";
-import type { ClaimType, Priority } from "@/lib/domain/constants";
+import { CLAIM_TYPES, type ClaimType, type Priority } from "@/lib/domain/constants";
 
 function guessKind(mime: string): string {
   if (mime === "application/pdf") return "bill";
@@ -24,9 +24,15 @@ export async function createClaim(input: {
   const provider = await prisma.organization.findUnique({
     where: { id: input.providerOrgId },
   });
+  if (!provider || provider.kind !== "provider") {
+    throw new Error("invalid_provider");
+  }
 
+  // Accept an explicit claim type only if it is a known value; otherwise classify.
   let claimType: ClaimType | undefined =
-    input.claimType && input.claimType !== "auto" ? input.claimType : undefined;
+    input.claimType && input.claimType !== "auto" && CLAIM_TYPES.includes(input.claimType as ClaimType)
+      ? (input.claimType as ClaimType)
+      : undefined;
   let priority: Priority = "normal";
   let classificationSource = "manual";
   let rationale = "";
@@ -49,7 +55,7 @@ export async function createClaim(input: {
       claimType,
       claimantUserId: input.userId,
       providerOrgId: input.providerOrgId,
-      amountMillimes: input.amountMillimes,
+      amountMillimes: Math.max(0, Math.floor(input.amountMillimes || 0)),
       reference: input.reference,
       narrative: input.narrative,
       requestedRemedy: input.requestedRemedy,

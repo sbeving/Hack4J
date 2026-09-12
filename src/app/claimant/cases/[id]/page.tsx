@@ -9,6 +9,8 @@ import { Tracker } from "@/components/Tracker";
 import { EvidenceUploadForm } from "@/components/claimant/EvidenceUploadForm";
 import { NoticePanel } from "@/components/claimant/NoticePanel";
 import { ResolutionPanel } from "@/components/claimant/ResolutionPanel";
+import { IntegrityBadge } from "@/components/IntegrityBadge";
+import { verifyMany } from "@/lib/integrity";
 import { formatMillimes } from "@/lib/money";
 import {
   CLAIM_TYPE_LABEL,
@@ -20,7 +22,6 @@ import {
   type ClaimType,
   type Priority,
   type RequestedRemedy,
-  type Locale,
 } from "@/lib/domain/constants";
 
 function stateTone(s: CaseState) {
@@ -69,6 +70,7 @@ export default async function CaseDetailPage({
   const provider = isAr && c.providerOrg.nameAr ? c.providerOrg.nameAr : c.providerOrg.name;
   const serverNowISO = new Date().toISOString();
   const slaDueAtISO = c.slaDueAt ? new Date(c.slaDueAt).toISOString() : null;
+  const integrity = await verifyMany(c.evidence);
 
   return (
     <AppShell user={user} locale={locale}>
@@ -185,9 +187,9 @@ export default async function CaseDetailPage({
                           <span className="truncate font-semibold">{ev.filename}</span>
                           <Badge tone="neutral">{ev.kind}</Badge>
                         </div>
-                        <div className="mt-1 font-mono text-[11px] text-muted">
-                          keccak256 {shortHash(ev.contentHash)}
-                          <span className="ms-2 text-emerald-600">✓ {isAr ? "مجزّأ" : "hash vérifié"}</span>
+                        <div className="mt-1 flex items-center gap-2">
+                          <span className="font-mono text-[11px] text-muted">keccak256 {shortHash(ev.contentHash)}</span>
+                          <IntegrityBadge status={integrity.get(ev.id)} isAr={isAr} />
                         </div>
                       </div>
                       {ev.reviewState === "confirmed" ? (

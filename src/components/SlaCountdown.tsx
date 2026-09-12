@@ -14,14 +14,17 @@ export function SlaCountdown({
 }) {
   const isAr = locale === "ar";
   const due = new Date(dueAtISO).getTime();
-  // Anchor to server time to avoid client-clock skew.
-  const skew = Date.now() - new Date(serverNowISO).getTime();
-  const [now, setNow] = useState<number>(() => Date.now() - skew);
+  const serverNow = new Date(serverNowISO).getTime();
+  const [now, setNow] = useState<number>(serverNow);
 
   useEffect(() => {
-    const id = setInterval(() => setNow(Date.now() - skew), 1000);
+    // Anchor to server time to avoid client-clock skew (read the clock in the effect, not render).
+    const skew = Date.now() - serverNow;
+    const tick = () => setNow(Date.now() - skew);
+    tick();
+    const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, [skew]);
+  }, [serverNow]);
 
   const remaining = due - now;
   const overdue = remaining <= 0;

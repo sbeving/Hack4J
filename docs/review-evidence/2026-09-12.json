@@ -1,0 +1,224 @@
+{
+  "reviewDate": "2026-09-12",
+  "repository": "/Users/salehtouil/Desktop/Hack4Justice-IDEA3",
+  "baselineCommit": "c1911e54473a2dd036a477cfb8ab40197b5fa51c",
+  "scope": {
+    "intakeRuntimeSnapshot": "2026-09-12T17:52:55.946319+00:00",
+    "noticeSourceOnlySnapshot": "2026-09-12T18:08:18.644050+00:00",
+    "syntheticDataOnly": true,
+    "applicationFilesModifiedByReviewer": false,
+    "liveAiCalls": false,
+    "originalDatabaseReseeded": false
+  },
+  "runtime": {
+    "node": "26.7.0",
+    "next": "16.3.5",
+    "build": {
+      "command": "npm run build",
+      "snapshot": "intake",
+      "exitCode": 0
+    },
+    "lint": {
+      "command": "npm run lint",
+      "snapshot": "intake",
+      "exitCode": 0,
+      "warnings": [
+        "unused Locale in claimant case detail",
+        "unused Priority in AI tasks"
+      ]
+    },
+    "freshDatabaseSetup": {
+      "initialDbPush": "Schema engine error with no detail on missing SQLite file",
+      "recovery": "Initialize empty disposable SQLite file, then db push --skip-generate and seed",
+      "finalResult": "success"
+    },
+    "standaloneProbeHarness": "Resolved Next bundled server-only marker under react-server condition; application logic unchanged"
+  },
+  "probes": {
+    "validCaseId": "cmtyouwl000019kngp3pwfg3p",
+    "otherUserReadDenied": true,
+    "submitWithoutEvidence": {
+      "state": "filed",
+      "evidenceCount": 0,
+      "filingEventHash": null
+    },
+    "invalidInputPersisted": {
+      "id": "cmtyouwlk00079kngg0wmm4b7",
+      "claimType": "invalid_category",
+      "providerOrgId": "org-mediation",
+      "amountMillimes": -1000
+    },
+    "evidenceBeforeTamper": {
+      "caseId": "cmtyouwlm000b9kng3ruwpma8",
+      "id": "cmtyouwls000f9kng6zdev3um",
+      "verified": true,
+      "storageKey": "cmtyouwlm000b9kng3ruwpma8/8101efaa-7f96-49d5-9531-918f3b79fa35.txt"
+    },
+    "evidenceAfterTamper": {
+      "verified": true
+    },
+    "validPage": {
+      "status": 200,
+      "verifiedBadge": false
+    },
+    "invalidPage": {
+      "status": 500,
+      "verifiedBadge": false
+    },
+    "tamperedPage": {
+      "status": 200,
+      "verifiedBadge": true
+    }
+  },
+  "additionalObservedResults": {
+    "invalidCategoryBreaksClaimantList": true,
+    "rawAdminUserIdCookieAccepted": true,
+    "demoPickerAvailableWithDemoModeFalse": true,
+    "otherRolePageRedirected": true,
+    "utf8Hash0x1234MatchesTextEncoding": false,
+    "browserCreateClaimSaved": true,
+    "browserSubmitWithZeroEvidenceFiled": true,
+    "localeSwitchPreservedInput": true,
+    "mobileViewport": {
+      "width": 360,
+      "height": 800
+    },
+    "desktopViewportObserved": {
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "notRuntimeVerified": [
+    "later notice/PDF additions",
+    "live Foundry model quality/availability",
+    "microphone service",
+    "on-chain anchoring",
+    "external legal delivery",
+    "concurrency/load",
+    "full accessibility audit"
+  ],
+  "sha256": {
+    "intake": {
+      ".claude/launch.json": "96d58efdc6eb59bf274ca67e2f990b05b24d1ac39f96efc725585d0ddd7be9e0",
+      ".gitignore": "057a7777a26c72f6c3f9b0af6bdc699e763807567c315c90f6eaa70462ff37f3",
+      "AGENTS.md": "d5da65c28107de372ea6ec27cb8bffa945126510d16264932e94e8d5818144b7",
+      "BUILD_PLAN.md": "b53c6a3d0fbd9657e5a2976303336c58440f1d194cb4e5b4aba9e142801bcc0e",
+      "CLAUDE.md": "22e1c1871e197d052858efbf7586e624def2017e7a15b65f723c6b115807437c",
+      "README.md": "d44916cb0182d197c9b979242000aa92a5cb9a60ee1a4a2cd98b8659a9244eed",
+      "docs/CONTEXT.md": "87df4516cca3a371230673f89d4f461edff505ebe0a08edd8c6c0d3d0d15acb7",
+      "docs/TECHNICAL_PRD.md": "6cf60bd9633b288ff6cbedfa633c50a819c517da70ef4e0ef1637bb52edab420",
+      "docs/legal/tunisian-references.md": "ebca64185f70099d1f8604f6f609a5bdf90b9a37523eea688b85588e546e7e01",
+      "eslint.config.mjs": "870f1adccecf3051cbcd9fd307cef51d7633cf510979c181a81f4b1797273493",
+      "legal/clauses.json": "15a1ab67e3b1064a460e65f319e81a594d513f92d969acad60bc6f00daeace44",
+      "next.config.ts": "96e97667670093d96929e8282a749840a05be5e3e186ceca1a2ad91a530f9877",
+      "package-lock.json": "7306e459e9356105edc6af66d2e252312f19fab13dbb7dd1ddfeb907b8665987",
+      "package.json": "83a8b3b51e10abeca8a8c44f1ae8d395cdb36824962596b8c3a367c0cae19f09",
+      "postcss.config.mjs": "dfac7ac2d86d326a0e5adb024e7943c181393ed17a5fcb8f0315b24c7da6ddde",
+      "prisma/schema.prisma": "8fca9da14112dd5128657521631300a86de3ee5cc1afe225475f650ba391de30",
+      "prisma/seed.ts": "ea6ca8d251e9362f64959049bf4dbbaff6b9edadac9e2f68f3462b0d31ad3820",
+      "public/file.svg": "2b67812c325c199a02536cdbeea0c593a72f707d323b72ee3e08dbab06753bd4",
+      "public/globe.svg": "b614b9bf183925957661ac851498fe1d8029fd43a62fbfed86f9e2624a57e7cf",
+      "public/next.svg": "55995dfad6ecb4945a1e856ddca03c5e16aa5bf13fd21b4df6a74ae79357bcfc",
+      "public/vercel.svg": "f081337b2fee635b455b63275406a3e7f39d6a014e25ad90dab5a67e62a12ac4",
+      "public/window.svg": "644768c4aaeb4767bce293344eeb0c125fb804a94d801440424072202d85e3a1",
+      "scripts/ai-smoke.ts": "f442e6f2755e456452bad8361db2aa34fb19bf83066ccabd43fd1869ed7054b4",
+      "src/app/admin/page.tsx": "0095b861912631978b67bb4b9df60ed82cba4667aca6b20f3a27ba1f0d2ad8a8",
+      "src/app/claimant/cases/[id]/page.tsx": "cc07735b12ad161e812df1f7c4038fa6eabf1fc400e206e2ae152386a001f454",
+      "src/app/claimant/new/page.tsx": "4b49e0f0245f5a627fce734ac1443cae9da3d6720906a55acf92cf6c918713e3",
+      "src/app/claimant/page.tsx": "23cfd1c5e2c333eb28e7e1dbcfbf7b27b9f4d0109caa524e84fab9702a2b1916",
+      "src/app/favicon.ico": "2b8ad2d33455a8f736fc3a8ebf8f0bdea8848ad4c0db48a2833bd0f9cd775932",
+      "src/app/globals.css": "dc37608b7f8eb3b896295a2c095114396c21110c378a7cbe46258f7c341cdd66",
+      "src/app/institution/page.tsx": "132981c7ecea176e08a871d3e7b9778a18894640314ceb3750c5a2321421b160",
+      "src/app/layout.tsx": "cf2d0a8a5ed52e0ce7f636daa4d8b915bd167476b49a988b3a95a24c02a4e2cf",
+      "src/app/page.tsx": "c072809aa06820d5354082a89bb92e4331f3eec77d2185f6bb5b8afd4da85d94",
+      "src/app/provider/page.tsx": "3239b9c9809c4ddda0e189e4bd2e57c631b55fc2b3c3273d75cb59e5a520592a",
+      "src/components/AppShell.tsx": "a8507332608ff84c518448c9e1d5ee27a32b94d4b3d418bba7f0df593c5d9994",
+      "src/components/SubmitButton.tsx": "42b4f618755ea626518c440d31fce63c0f86f7a3c31d4a31cacdc169dffc9508",
+      "src/components/Tracker.tsx": "e96b5f2fcc242146e90508e0f543f3b7d3aa1f4adc1146d7383339f583aa7a1d",
+      "src/components/claimant/EvidenceUploadForm.tsx": "c76bdb1f2e679887259e932ea3433e74bea60f9e421a5e5034f7467736cfb318",
+      "src/components/claimant/NewClaimForm.tsx": "04a12e5c4b80535f11e98058be14dd002b6722f5ab1c44e600828035d463c46f",
+      "src/components/ui.tsx": "2bd1754653c1dbac4fa348768385aca5329da41eeb51f136b1c096a094656df5",
+      "src/lib/actions.ts": "e67443547dae7abcbba694eb6977003a273723572de22fc1fa6443033fe83287",
+      "src/lib/ai/client.ts": "ab7718da29dbc045b2b3c0bd9e59f0d0de99937ab1001bb83617ca8907ba0e68",
+      "src/lib/ai/tasks.ts": "3217a1d076f2d2bb0f060d48fd9ba7cac73cd9cf33d2d33a843fa0bef5f4a4c7",
+      "src/lib/canonical.ts": "22eb9acfacccbc51ed1ceadcc628d7daa02243f6099ace03e8aa61a90e604158",
+      "src/lib/db.ts": "f71cfcc1d409c29f10370f7c7eaf6990f92bc378820a9a5034382017adf060cf",
+      "src/lib/domain/cases.ts": "3cc8167aa4324499c9e8dc5f93bf80471b4c10f932b9e0afc9dfd3f789a12b5b",
+      "src/lib/domain/claim-actions.ts": "a16a4d7b44f924098cbf6acc3e5d92eff80130798f73a798e4098aa2bb959be7",
+      "src/lib/domain/constants.ts": "b4c1a0c068b5dc810519eefd984e1f318a5fbb72e1c8604c832fd3384716a681",
+      "src/lib/domain/events.ts": "09b8cd5eedbeaee28ec57508c95345ffc12354ca0d318dc8aa367473f4e7fdcc",
+      "src/lib/hash.ts": "c3d6ef9f5c3331da90944cce9d4525e231dc83aca94e3699d4b8777863f24e1b",
+      "src/lib/i18n/index.ts": "6562b2a7dfc3381dbe8363f6b9afd1997715b168ef7e00737ff26e539d321c43",
+      "src/lib/ids.ts": "3217edee75f0696de7328cda3f65ebbe1a2c271d559cb239181123f373df1854",
+      "src/lib/money.ts": "b10e182b71783b347947cb4213038da7c4a7dced4f6ce078624b920710754a20",
+      "src/lib/session.ts": "6b2891cba65eb83629800accdb70c09722319d9c8afe850ac17a814e9a8eb815",
+      "src/lib/storage.ts": "290b2c4e22024d2e8ad6b451b9381d0b486d796e99c9a7e1dc29cee8ff0ef914",
+      "tsconfig.json": "5c51df4c59f4510d8c7dadf07a5c32132228826a3b331da5e286207b4df7ef9c"
+    },
+    "notice": {
+      ".claude/launch.json": "96d58efdc6eb59bf274ca67e2f990b05b24d1ac39f96efc725585d0ddd7be9e0",
+      ".gitignore": "057a7777a26c72f6c3f9b0af6bdc699e763807567c315c90f6eaa70462ff37f3",
+      "AGENTS.md": "d5da65c28107de372ea6ec27cb8bffa945126510d16264932e94e8d5818144b7",
+      "BUILD_PLAN.md": "45a40f17d42a98a2d9f4ef7e433684847a0ab1b8f67b8921010ac23a6025e3f4",
+      "CLAUDE.md": "22e1c1871e197d052858efbf7586e624def2017e7a15b65f723c6b115807437c",
+      "README.md": "d44916cb0182d197c9b979242000aa92a5cb9a60ee1a4a2cd98b8659a9244eed",
+      "docs/CONTEXT.md": "87df4516cca3a371230673f89d4f461edff505ebe0a08edd8c6c0d3d0d15acb7",
+      "docs/TECHNICAL_PRD.md": "6cf60bd9633b288ff6cbedfa633c50a819c517da70ef4e0ef1637bb52edab420",
+      "docs/legal/tunisian-references.md": "ebca64185f70099d1f8604f6f609a5bdf90b9a37523eea688b85588e546e7e01",
+      "eslint.config.mjs": "870f1adccecf3051cbcd9fd307cef51d7633cf510979c181a81f4b1797273493",
+      "legal/clauses.json": "15a1ab67e3b1064a460e65f319e81a594d513f92d969acad60bc6f00daeace44",
+      "next.config.ts": "96e97667670093d96929e8282a749840a05be5e3e186ceca1a2ad91a530f9877",
+      "package-lock.json": "dd8f001a4b9a3cf80edb98e2f4900c535012fff584bb5ead70bf1e120d5ce656",
+      "package.json": "4b52acc59c756ce089ada0a16b281b94e4ea4bb9489af1b60e9c6b69e3029e1e",
+      "postcss.config.mjs": "dfac7ac2d86d326a0e5adb024e7943c181393ed17a5fcb8f0315b24c7da6ddde",
+      "prisma/schema.prisma": "8fca9da14112dd5128657521631300a86de3ee5cc1afe225475f650ba391de30",
+      "prisma/seed.ts": "ea6ca8d251e9362f64959049bf4dbbaff6b9edadac9e2f68f3462b0d31ad3820",
+      "public/file.svg": "2b67812c325c199a02536cdbeea0c593a72f707d323b72ee3e08dbab06753bd4",
+      "public/globe.svg": "b614b9bf183925957661ac851498fe1d8029fd43a62fbfed86f9e2624a57e7cf",
+      "public/next.svg": "55995dfad6ecb4945a1e856ddca03c5e16aa5bf13fd21b4df6a74ae79357bcfc",
+      "public/vercel.svg": "f081337b2fee635b455b63275406a3e7f39d6a014e25ad90dab5a67e62a12ac4",
+      "public/window.svg": "644768c4aaeb4767bce293344eeb0c125fb804a94d801440424072202d85e3a1",
+      "scripts/ai-smoke.ts": "f442e6f2755e456452bad8361db2aa34fb19bf83066ccabd43fd1869ed7054b4",
+      "src/app/admin/page.tsx": "0095b861912631978b67bb4b9df60ed82cba4667aca6b20f3a27ba1f0d2ad8a8",
+      "src/app/api/notices/[noticeId]/pdf/route.ts": "a0bd0144f6fb6992831052e57ace3cd2dfb383628ee4b55b34e911d8a54e9b1e",
+      "src/app/claimant/cases/[id]/page.tsx": "f1224de27f8aafe3d15b1de9359c5d0390612f68377496d7bb0402cc4f9b154a",
+      "src/app/claimant/new/page.tsx": "4b49e0f0245f5a627fce734ac1443cae9da3d6720906a55acf92cf6c918713e3",
+      "src/app/claimant/page.tsx": "23cfd1c5e2c333eb28e7e1dbcfbf7b27b9f4d0109caa524e84fab9702a2b1916",
+      "src/app/favicon.ico": "2b8ad2d33455a8f736fc3a8ebf8f0bdea8848ad4c0db48a2833bd0f9cd775932",
+      "src/app/globals.css": "dc37608b7f8eb3b896295a2c095114396c21110c378a7cbe46258f7c341cdd66",
+      "src/app/institution/page.tsx": "132981c7ecea176e08a871d3e7b9778a18894640314ceb3750c5a2321421b160",
+      "src/app/layout.tsx": "cf2d0a8a5ed52e0ce7f636daa4d8b915bd167476b49a988b3a95a24c02a4e2cf",
+      "src/app/page.tsx": "c072809aa06820d5354082a89bb92e4331f3eec77d2185f6bb5b8afd4da85d94",
+      "src/app/provider/page.tsx": "3239b9c9809c4ddda0e189e4bd2e57c631b55fc2b3c3273d75cb59e5a520592a",
+      "src/components/AppShell.tsx": "a8507332608ff84c518448c9e1d5ee27a32b94d4b3d418bba7f0df593c5d9994",
+      "src/components/SlaCountdown.tsx": "4de00359bba799860a9e4dd894af79fa99413a4bd6c817f91a3658b206863dfb",
+      "src/components/SubmitButton.tsx": "42b4f618755ea626518c440d31fce63c0f86f7a3c31d4a31cacdc169dffc9508",
+      "src/components/Tracker.tsx": "e96b5f2fcc242146e90508e0f543f3b7d3aa1f4adc1146d7383339f583aa7a1d",
+      "src/components/claimant/EvidenceUploadForm.tsx": "c76bdb1f2e679887259e932ea3433e74bea60f9e421a5e5034f7467736cfb318",
+      "src/components/claimant/NewClaimForm.tsx": "04a12e5c4b80535f11e98058be14dd002b6722f5ab1c44e600828035d463c46f",
+      "src/components/claimant/NoticePanel.tsx": "fc3a5a365c9958305672c359f8a3c1506501db12a2d49a881739470fd65c9bd7",
+      "src/components/ui.tsx": "2bd1754653c1dbac4fa348768385aca5329da41eeb51f136b1c096a094656df5",
+      "src/lib/actions.ts": "e67443547dae7abcbba694eb6977003a273723572de22fc1fa6443033fe83287",
+      "src/lib/ai/client.ts": "ab7718da29dbc045b2b3c0bd9e59f0d0de99937ab1001bb83617ca8907ba0e68",
+      "src/lib/ai/tasks.ts": "3217a1d076f2d2bb0f060d48fd9ba7cac73cd9cf33d2d33a843fa0bef5f4a4c7",
+      "src/lib/canonical.ts": "22eb9acfacccbc51ed1ceadcc628d7daa02243f6099ace03e8aa61a90e604158",
+      "src/lib/db.ts": "f71cfcc1d409c29f10370f7c7eaf6990f92bc378820a9a5034382017adf060cf",
+      "src/lib/domain/cases.ts": "3cc8167aa4324499c9e8dc5f93bf80471b4c10f932b9e0afc9dfd3f789a12b5b",
+      "src/lib/domain/claim-actions.ts": "a16a4d7b44f924098cbf6acc3e5d92eff80130798f73a798e4098aa2bb959be7",
+      "src/lib/domain/constants.ts": "b4c1a0c068b5dc810519eefd984e1f318a5fbb72e1c8604c832fd3384716a681",
+      "src/lib/domain/events.ts": "09b8cd5eedbeaee28ec57508c95345ffc12354ca0d318dc8aa367473f4e7fdcc",
+      "src/lib/domain/notice-actions.ts": "690fa89d8d8327a0e040f5578a1401c0823c6acb47dd612622ca7386520d367d",
+      "src/lib/domain/notice.ts": "b4fe6edeaed558c064d909927d77a6e8a93a2056c1f975e8fd594493951b9406",
+      "src/lib/hash.ts": "c3d6ef9f5c3331da90944cce9d4525e231dc83aca94e3699d4b8777863f24e1b",
+      "src/lib/i18n/index.ts": "6562b2a7dfc3381dbe8363f6b9afd1997715b168ef7e00737ff26e539d321c43",
+      "src/lib/ids.ts": "3217edee75f0696de7328cda3f65ebbe1a2c271d559cb239181123f373df1854",
+      "src/lib/money.ts": "b10e182b71783b347947cb4213038da7c4a7dced4f6ce078624b920710754a20",
+      "src/lib/notice/template.ts": "64f1e97bd54fe2efcaca88d883dd0508f0f540116153d37fab1fff433ab66a14",
+      "src/lib/pdf/fonts.ts": "25d9100caf47c145f8c7a470c188e2646746f1d64806e155f7be250cb8a77ad9",
+      "src/lib/pdf/render.ts": "4f847cf1509847c521d3d79904345d8bb102db92d55ee3b3bd4d54034bbc4c7c",
+      "src/lib/session.ts": "6b2891cba65eb83629800accdb70c09722319d9c8afe850ac17a814e9a8eb815",
+      "src/lib/storage.ts": "290b2c4e22024d2e8ad6b451b9381d0b486d796e99c9a7e1dc29cee8ff0ef914",
+      "tsconfig.json": "5c51df4c59f4510d8c7dadf07a5c32132228826a3b331da5e286207b4df7ef9c"
+    }
+  }
+}

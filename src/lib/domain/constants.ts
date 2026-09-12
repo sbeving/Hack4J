@@ -223,3 +223,13 @@ export const TRANSITIONS: Record<Command, TransitionRule> = {
 export function canFire(command: Command, state: CaseState): boolean {
   return TRANSITIONS[command]?.from.includes(state) ?? false;
 }
+
+/** Safe label lookup — tolerates unknown keys (bad/legacy data) without crashing. */
+export function label(
+  map: Record<string, Record<Locale, string>>,
+  key: string,
+  locale: Locale,
+  fallback?: string
+): string {
+  return map[key]?.[locale] ?? fallback ?? key;
+}

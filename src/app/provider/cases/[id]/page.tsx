@@ -6,6 +6,8 @@ import { Card, Badge, PageTitle } from "@/components/ui";
 import { SlaCountdown } from "@/components/SlaCountdown";
 import { Tracker } from "@/components/Tracker";
 import { ProviderActions } from "@/components/provider/ProviderActions";
+import { IntegrityBadge } from "@/components/IntegrityBadge";
+import { verifyMany } from "@/lib/integrity";
 import { formatMillimes, millimesToTnd } from "@/lib/money";
 import {
   CLAIM_TYPE_LABEL,
@@ -43,6 +45,7 @@ export default async function ProviderCaseDetail({ params }: PageProps<"/provide
   const state = c.state as CaseState;
   const business = isAr && c.claimantUser.org?.nameAr ? c.claimantUser.org.nameAr : c.claimantUser.org?.name;
   const serverNowISO = new Date().toISOString();
+  const integrity = await verifyMany(c.evidence);
   const sentNotice = c.notices.find((n) => n.status === "sent");
   const responses = c.responses.filter((r) => r.kind !== "ai_suggestion");
 
@@ -133,7 +136,7 @@ export default async function ProviderCaseDetail({ params }: PageProps<"/provide
                   <Card key={ev.id} className="p-3">
                     <div className="flex items-center justify-between gap-2">
                       <span className="truncate text-sm font-semibold">{ev.filename}</span>
-                      <span className="shrink-0 text-xs text-emerald-600">✓ {isAr ? "بصمة سليمة" : "intègre"}</span>
+                      <IntegrityBadge status={integrity.get(ev.id)} isAr={isAr} />
                     </div>
                     <div className="font-mono text-[11px] text-muted">keccak256 {shortHash(ev.contentHash)}</div>
                     {exSummary(ev.extracted) ? (

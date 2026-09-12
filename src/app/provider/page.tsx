@@ -8,8 +8,8 @@ import { formatMillimes } from "@/lib/money";
 import {
   CLAIM_TYPE_LABEL,
   STATE_LABEL,
+  label,
   type CaseState,
-  type ClaimType,
 } from "@/lib/domain/constants";
 
 function stateTone(s: CaseState) {
@@ -73,10 +73,10 @@ export default async function ProviderHome() {
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="font-mono text-sm font-semibold">{c.caseNumber}</span>
-                      <Badge tone={stateTone(state)}>{STATE_LABEL[state][locale]}</Badge>
+                      <Badge tone={stateTone(state)}>{label(STATE_LABEL, c.state, locale)}</Badge>
                     </div>
                     <div className="mt-1 text-sm text-muted">
-                      {CLAIM_TYPE_LABEL[c.claimType as ClaimType][locale]} · {business} · {c.evidence.length}{" "}
+                      {label(CLAIM_TYPE_LABEL, c.claimType, locale)} · {business} · {c.evidence.length}{" "}
                       {isAr ? "دليل" : "preuve(s)"}
                     </div>
                   </div>
