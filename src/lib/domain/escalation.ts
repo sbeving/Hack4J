@@ -2,6 +2,7 @@ import "server-only";
 import { keccak256, concat } from "viem";
 import { prisma } from "@/lib/db";
 import { recordEvent } from "@/lib/domain/events";
+import { anchor } from "@/lib/ledger";
 import { verifyMany } from "@/lib/integrity";
 import { keccakOfString } from "@/lib/hash";
 import { saveArtifact } from "@/lib/storage";
@@ -173,6 +174,8 @@ export async function escalateAndFileDossier(caseId: string, userId: string) {
       filedAt: new Date(),
     },
   });
+
+  await anchor({ caseId, subjectType: "dossier", subjectId: dossier.id, digest: bundleHash });
 
   // Assign + grant the institution atomically with the state transition.
   await prisma.case.update({

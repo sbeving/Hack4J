@@ -2,6 +2,7 @@ import "server-only";
 import { prisma } from "@/lib/db";
 import { classifyClaim, extractEvidence } from "@/lib/ai/tasks";
 import { recordEvent } from "@/lib/domain/events";
+import { anchor } from "@/lib/ledger";
 import { saveFile } from "@/lib/storage";
 import { makeCaseNumber } from "@/lib/ids";
 import { CLAIM_TYPES, type ClaimType, type Priority } from "@/lib/domain/constants";
@@ -112,6 +113,12 @@ export async function addEvidence(input: {
     },
   });
 
+  await anchor({
+    caseId: input.caseId,
+    subjectType: "evidence",
+    subjectId: ev.id,
+    digest: stored.contentHash,
+  });
   await recordEvent(input.caseId, "evidence_added", {
     actor: input.userId,
     payload: {
@@ -160,6 +167,7 @@ export async function getCaseForClaimant(caseId: string, userId: string) {
       events: { orderBy: { sequence: "asc" } },
       dossiers: { orderBy: { createdAt: "desc" } },
       mediations: { include: { settlements: { orderBy: { createdAt: "desc" } } }, orderBy: { createdAt: "desc" } },
+      anchors: { orderBy: { submittedAt: "asc" } },
     },
   });
 }

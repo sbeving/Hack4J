@@ -1,12 +1,13 @@
 import "server-only";
 import { prisma } from "@/lib/db";
 import { recordEvent } from "@/lib/domain/events";
+import { anchor } from "@/lib/ledger";
 import { canonicalJson } from "@/lib/canonical";
 import { keccakOfString } from "@/lib/hash";
 import { renderHtmlToPdf } from "@/lib/pdf/render";
 import { saveArtifact } from "@/lib/storage";
 import { buildSettlementHtml, type SettlementSnapshot } from "@/lib/settlement/build";
-import { REMEDY_LABEL, label, type RequestedRemedy } from "@/lib/domain/constants";
+import { REMEDY_LABEL, label } from "@/lib/domain/constants";
 
 const ACTIVE = ["dossier_filed", "in_mediation", "settlement_pending", "settled", "closed_unsettled"];
 
@@ -35,6 +36,7 @@ export async function getResolverCase(caseId: string, orgId: string) {
       dossiers: { orderBy: { createdAt: "desc" } },
       mediations: { include: { settlements: { orderBy: { createdAt: "desc" } } }, orderBy: { createdAt: "desc" } },
       events: { orderBy: { sequence: "asc" } },
+      anchors: { orderBy: { submittedAt: "asc" } },
     },
   });
 }
@@ -182,6 +184,7 @@ export async function recordSettlement(caseId: string, orgId: string, resolverId
     data: { status: "recorded", pdfKey: stored.storageKey, recordedAt: new Date() },
   });
   await prisma.case.update({ where: { id: caseId }, data: { state: "settled", version: { increment: 1 } } });
+  await anchor({ caseId, subjectType: "settlement", subjectId: settlementId, digest: settlement.termsHash });
   await recordEvent(caseId, "settlement_recorded", { actor: resolverId, payload: { settlementId, contentHash: stored.contentHash } });
 
   const agents = await prisma.user.findMany({ where: { orgId: c.providerOrgId, role: "provider_agent" }, select: { id: true } });

@@ -1,6 +1,7 @@
 import "server-only";
 import { prisma } from "@/lib/db";
 import { recordEvent } from "@/lib/domain/events";
+import { anchor } from "@/lib/ledger";
 import { buildNoticeHtml, type NoticeFacts } from "@/lib/notice/template";
 import { renderHtmlToPdf } from "@/lib/pdf/render";
 import { saveArtifact } from "@/lib/storage";
@@ -94,6 +95,9 @@ export async function sendNotice(caseId: string, noticeId: string, userId: strin
     },
   });
 
+  if (notice.contentHash) {
+    await anchor({ caseId, subjectType: "notice", subjectId: noticeId, digest: notice.contentHash });
+  }
   await recordEvent(caseId, "notice_sent", {
     actor: userId,
     payload: { noticeId, effectId, simulated: true },

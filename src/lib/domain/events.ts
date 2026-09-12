@@ -2,6 +2,7 @@ import "server-only";
 import { prisma } from "@/lib/db";
 import { keccakOfString } from "@/lib/hash";
 import { canonicalJson } from "@/lib/canonical";
+import { anchor } from "@/lib/ledger";
 
 export type EventVisibility =
   | "shared"
@@ -30,7 +31,7 @@ export async function recordEvent(
   const payloadStr = opts?.payload !== undefined ? canonicalJson(opts.payload) : null;
   const payloadHash = payloadStr ? keccakOfString(payloadStr) : null;
 
-  return prisma.caseEvent.create({
+  const ev = await prisma.caseEvent.create({
     data: {
       caseId,
       sequence,
@@ -42,4 +43,10 @@ export async function recordEvent(
       prevHash: last?.payloadHash ?? null,
     },
   });
+
+  // Anchor the event's commitment to the append-only ledger.
+  const digest = payloadHash ?? keccakOfString(canonicalJson({ caseId, sequence, type }));
+  await anchor({ caseId, subjectType: "event", subjectId: ev.id, digest });
+
+  return ev;
 }

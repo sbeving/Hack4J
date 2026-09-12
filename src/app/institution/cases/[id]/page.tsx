@@ -7,6 +7,7 @@ import { Tracker } from "@/components/Tracker";
 import { IntegrityBadge } from "@/components/IntegrityBadge";
 import { DossierPanel } from "@/components/DossierPanel";
 import { SettlementPanel } from "@/components/SettlementPanel";
+import { AuditTimeline } from "@/components/AuditTimeline";
 import { ResolverActions } from "@/components/institution/ResolverActions";
 import { verifyMany } from "@/lib/integrity";
 import { formatMillimes } from "@/lib/money";
@@ -72,6 +73,12 @@ export default async function ResolverCaseDetail({ params }: PageProps<"/institu
       <Card className="p-6">
         <Tracker state={state} locale={locale} />
       </Card>
+
+      {c.anchors.length ? (
+        <div className="mt-6">
+          <AuditTimeline events={c.events} anchors={c.anchors} locale={locale} />
+        </div>
+      ) : null}
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-1">

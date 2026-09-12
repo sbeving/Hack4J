@@ -14,6 +14,7 @@ import { verifyMany } from "@/lib/integrity";
 import { EscalationPanel } from "@/components/claimant/EscalationPanel";
 import { DossierPanel } from "@/components/DossierPanel";
 import { SettlementPanel } from "@/components/SettlementPanel";
+import { AuditTimeline } from "@/components/AuditTimeline";
 import { escalationEligibility } from "@/lib/domain/escalation";
 import { formatMillimes } from "@/lib/money";
 import {
@@ -135,6 +136,12 @@ export default async function CaseDetailPage({
       {c.mediations.length ? (
         <div className="mt-6">
           <SettlementPanel caseId={c.id} role="claimant" mediations={c.mediations} locale={locale} />
+        </div>
+      ) : null}
+
+      {c.anchors.length ? (
+        <div className="mt-6">
+          <AuditTimeline events={c.events} anchors={c.anchors} locale={locale} />
         </div>
       ) : null}
 

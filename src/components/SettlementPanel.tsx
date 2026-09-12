@@ -2,7 +2,7 @@ import { acknowledgeTermsAction } from "@/lib/domain/settlement-actions";
 import { SubmitButton } from "@/components/SubmitButton";
 import { Card, Badge } from "@/components/ui";
 import { formatMillimes } from "@/lib/money";
-import { REMEDY_LABEL, label, type Locale, type RequestedRemedy } from "@/lib/domain/constants";
+import { REMEDY_LABEL, label, type Locale } from "@/lib/domain/constants";
 
 type SettlementLite = {
   id: string;
