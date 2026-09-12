@@ -1,4 +1,5 @@
 import { Card, Badge } from "@/components/ui";
+import { Icon } from "@/components/Icon";
 import type { Locale } from "@/lib/domain/constants";
 
 type Ev = { id: string; sequence: number; type: string; actor: string | null; ts: Date };
@@ -55,7 +56,7 @@ export function AuditTimeline({
   return (
     <Card className="p-5">
       <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-sm font-bold uppercase tracking-wide text-muted">
+        <h3 className="font-display text-[15px] font-semibold text-ink">
           {isAr ? "سجلّ التدقيق (على السلسلة)" : "Registre d'audit (on-chain)"}
         </h3>
         <Badge tone={adapter === "anvil" ? "success" : "neutral"}>
@@ -69,27 +70,28 @@ export function AuditTimeline({
           return (
             <li key={e.id} className="relative">
               <span className="absolute -start-4 top-1 grid h-3 w-3 place-items-center">
-                <span className="h-2 w-2 rounded-full bg-brand" />
+                <span className="dot h-2 w-2 rounded-full bg-primary" />
               </span>
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <div className="text-sm font-semibold">{eventLabel(e.type, locale)}</div>
-                  <div className="text-xs text-muted">
+                  <div className="text-sm font-semibold text-ink">{eventLabel(e.type, locale)}</div>
+                  <div className="text-xs text-ink-muted">
                     #{e.sequence} · {new Date(e.ts).toLocaleString(isAr ? "ar-TN" : "fr-TN")}
                     {e.actor ? ` · ${e.actor}` : ""}
                   </div>
                 </div>
                 {a?.txHash ? (
                   <div className="text-end">
-                    <div className="font-mono text-[10px] text-slate-500">
+                    <div className="text-[10px] text-ink-muted">
                       tx {a.txHash.slice(0, 10)}…{a.txHash.slice(-6)}
                     </div>
-                    <div className="text-[10px] text-emerald-600">
-                      ✓ {isAr ? "مثبّت · كتلة" : "ancré · bloc"} {a.blockNumber}
+                    <div className="flex items-center gap-1 text-[10px] text-success">
+                      <Icon name="check" className="h-3 w-3" />
+                      {isAr ? "مثبّت · كتلة" : "ancré · bloc"} {a.blockNumber}
                     </div>
                   </div>
                 ) : (
-                  <span className="text-[10px] text-amber-600">{isAr ? "قيد التثبيت" : "ancrage en attente"}</span>
+                  <span className="text-[10px] text-warning">{isAr ? "قيد التثبيت" : "ancrage en attente"}</span>
                 )}
               </div>
             </li>

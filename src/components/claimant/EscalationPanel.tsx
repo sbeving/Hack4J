@@ -4,6 +4,7 @@ import { useState } from "react";
 import { escalateAction } from "@/lib/domain/escalation-actions";
 import { SubmitButton } from "@/components/SubmitButton";
 import { Card } from "@/components/ui";
+import { Icon } from "@/components/Icon";
 import type { Locale } from "@/lib/domain/constants";
 
 export function EscalationPanel({
@@ -19,16 +20,17 @@ export function EscalationPanel({
   const [consent, setConsent] = useState(false);
 
   return (
-    <Card className="border-amber-300 bg-amber-50 p-5">
-      <h3 className="text-sm font-bold uppercase tracking-wide text-amber-800">
+    <Card className="border-border bg-cobalt-tint p-5">
+      <h3 className="flex items-center gap-2 text-[15px] font-semibold text-ink font-display">
+        <Icon name="scales" className="text-cobalt" />
         {isAr ? "التصعيد إلى الوسيط المحايد" : "Escalade vers le médiateur neutre"}
       </h3>
-      <p className="mt-1 text-sm text-amber-900">
+      <p className="mt-1 text-sm text-ink-muted">
         {isAr ? "سبب مؤهِّل: " : "Motif éligible : "}
-        <b>{reason}</b>
+        <b className="text-ink">{reason}</b>
       </p>
       <form action={escalateAction.bind(null, caseId)} className="mt-3 space-y-3">
-        <label className="flex items-start gap-2 text-sm text-slate-700">
+        <label className="flex items-start gap-2 text-sm text-ink-muted">
           <input
             type="checkbox"
             name="consent"

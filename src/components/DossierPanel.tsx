@@ -1,4 +1,5 @@
 import { Card, Badge } from "@/components/ui";
+import { Icon } from "@/components/Icon";
 import type { Locale } from "@/lib/domain/constants";
 
 type DossierLite = {
@@ -22,20 +23,20 @@ export function DossierPanel({ dossier, locale }: { dossier: DossierLite; locale
   const mismatches = manifest.filter((m) => m.integrity === "mismatch").length;
 
   return (
-    <Card className="border-violet-200 p-5">
+    <Card className="border-border p-5">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-bold uppercase tracking-wide text-muted">
+        <h3 className="text-[15px] font-semibold text-ink font-display">
           {isAr ? "الملفّ الموحّد" : "Dossier standardisé"}
         </h3>
         <Badge tone="success">{isAr ? "تم الإرسال" : "transmis"}</Badge>
       </div>
 
-      <div className="mt-2 grid gap-1 text-xs text-muted">
-        <div>snapshot <span className="font-mono">{dossier.snapshotId.slice(0, 8)}…</span> · v{dossier.version}</div>
+      <div className="mt-2 grid gap-1 text-xs text-ink-muted">
+        <div>snapshot <span>{dossier.snapshotId.slice(0, 8)}…</span> · v{dossier.version}</div>
         {dossier.bundleHash ? (
           <div>
             bundle keccak256{" "}
-            <span className="font-mono">{dossier.bundleHash.slice(0, 14)}…{dossier.bundleHash.slice(-6)}</span>
+            <span>{dossier.bundleHash.slice(0, 14)}…{dossier.bundleHash.slice(-6)}</span>
           </div>
         ) : null}
       </div>
@@ -46,10 +47,10 @@ export function DossierPanel({ dossier, locale }: { dossier: DossierLite; locale
         </span>
         {mismatches > 0 ? (
           <Badge tone="danger">
-            ⚠ {mismatches} {isAr ? "متلاعب بها" : "altérée(s)"}
+            <Icon name="alert" /> {mismatches} {isAr ? "متلاعب بها" : "altérée(s)"}
           </Badge>
         ) : (
-          <Badge tone="success">✓ {isAr ? "المانيفست سليم" : "manifeste intègre"}</Badge>
+          <Badge tone="success"><Icon name="check" /> {isAr ? "المانيفست سليم" : "manifeste intègre"}</Badge>
         )}
       </div>
 
@@ -58,17 +59,17 @@ export function DossierPanel({ dossier, locale }: { dossier: DossierLite; locale
           href={`/api/dossiers/${dossier.id}/pdf`}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-2 rounded-lg border border-border bg-white px-4 py-2 text-sm font-semibold hover:bg-slate-50"
+          className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2 text-sm font-semibold hover:bg-surface-sand"
         >
-          📄 {isAr ? "الملفّ (PDF)" : "Dossier (PDF)"}
+          <Icon name="document" /> {isAr ? "الملفّ (PDF)" : "Dossier (PDF)"}
         </a>
         <a
           href={`/api/dossiers/${dossier.id}/json`}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-2 rounded-lg border border-border bg-white px-4 py-2 text-sm font-semibold hover:bg-slate-50"
+          className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2 text-sm font-semibold hover:bg-surface-sand"
         >
-          {"{ }"} JSON
+          <Icon name="braces" /> JSON
         </a>
       </div>
     </Card>

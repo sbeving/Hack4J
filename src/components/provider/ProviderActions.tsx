@@ -33,7 +33,7 @@ export function ProviderActions({
 
   if (state === "resolution_proposed") {
     return (
-      <div className="rounded-lg bg-amber-50 p-4 text-sm text-amber-800">
+      <div className="rounded-lg bg-warning-tint p-4 text-sm text-warning">
         {isAr
           ? "تم اقتراح حل — في انتظار قبول/رفض العميل."
           : "Résolution proposée — en attente de l'acceptation du client."}
@@ -42,7 +42,7 @@ export function ProviderActions({
   }
   if (!["notice_sent", "provider_review"].includes(state)) {
     return (
-      <div className="rounded-lg bg-slate-50 p-4 text-sm text-muted">
+      <div className="rounded-lg bg-surface-sand p-4 text-sm text-ink-muted">
         {isAr ? "لا يوجد إجراء متاح في هذه الحالة." : "Aucune action disponible dans cet état."}
       </div>
     );
@@ -84,20 +84,20 @@ export function ProviderActions({
       ) : null}
 
       {panel === "contest" ? (
-        <form action={contestAction.bind(null, caseId)} className="space-y-2 rounded-lg border border-rose-200 bg-rose-50 p-3">
+        <form action={contestAction.bind(null, caseId)} className="space-y-2 rounded-lg border border-border bg-danger-tint p-3">
           <textarea name="message" required rows={2} placeholder={L.msg}
-            className="w-full rounded-lg border border-border px-3 py-2 text-sm" />
+            className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm" />
           <SubmitButton variant="danger">{L.contest}</SubmitButton>
         </form>
       ) : null}
 
       {panel === "remedy" ? (
-        <form action={proposeRemedyAction.bind(null, caseId)} className="space-y-3 rounded-lg border border-emerald-200 bg-emerald-50 p-3">
+        <form action={proposeRemedyAction.bind(null, caseId)} className="space-y-3 rounded-lg border border-border bg-success-tint p-3">
           <div className="grid gap-3 sm:grid-cols-2">
             <label className="block text-sm">
               <span className="mb-1 block font-semibold">{L.type}</span>
               <select name="remedyType" defaultValue={REMEDIES.includes(suggestedRemedyType as RequestedRemedy) ? suggestedRemedyType : "correct_bill"}
-                className="w-full rounded-lg border border-border bg-white px-3 py-2 text-sm">
+                className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm">
                 {REMEDIES.map((r) => (
                   <option key={r} value={r}>{REMEDY_LABEL[r][locale]}</option>
                 ))}
@@ -110,7 +110,7 @@ export function ProviderActions({
             </label>
           </div>
           <textarea name="message" rows={2} placeholder={L.msg}
-            className="w-full rounded-lg border border-border px-3 py-2 text-sm" />
+            className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm" />
           <SubmitButton>{L.send}</SubmitButton>
         </form>
       ) : null}

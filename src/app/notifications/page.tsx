@@ -49,7 +49,7 @@ export default async function NotificationsPage() {
       </div>
 
       {notifs.length === 0 ? (
-        <Card className="p-12 text-center text-sm text-muted">
+        <Card className="p-12 text-center text-sm text-ink-muted">
           {isAr ? "لا توجد إشعارات." : "Aucune notification."}
         </Card>
       ) : (
@@ -64,15 +64,15 @@ export default async function NotificationsPage() {
             const text = NOTIF_LABEL[n.type]?.[locale] ?? n.type;
             return (
               <Link key={n.id} href={n.caseId ? casePath(user.role, n.caseId) : "#"} className="block">
-                <Card className={`flex items-center justify-between gap-3 p-4 transition hover:shadow-md ${n.readAt ? "opacity-70" : ""}`}>
+                <Card className={`flex items-center justify-between gap-3 p-4 transition ${n.readAt ? "opacity-70" : ""}`}>
                   <div className="flex items-center gap-3">
-                    {!n.readAt ? <span className="h-2 w-2 shrink-0 rounded-full bg-brand" /> : <span className="h-2 w-2" />}
+                    {!n.readAt ? <span className="dot h-2 w-2 shrink-0 rounded-full bg-primary" /> : <span className="h-2 w-2" />}
                     <div>
-                      <div className={`text-sm ${n.readAt ? "" : "font-semibold"}`}>{text}</div>
-                      {caseNumber ? <div className="font-mono text-xs text-muted">{caseNumber}</div> : null}
+                      <div className={`text-sm text-ink ${n.readAt ? "" : "font-semibold"}`}>{text}</div>
+                      {caseNumber ? <div className="text-xs text-ink-muted">{caseNumber}</div> : null}
                     </div>
                   </div>
-                  <div className="text-xs text-muted">
+                  <div className="text-xs text-ink-muted">
                     {new Date(n.createdAt).toLocaleString(isAr ? "ar-TN" : "fr-TN")}
                   </div>
                 </Card>

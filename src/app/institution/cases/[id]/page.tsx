@@ -2,7 +2,8 @@ import { notFound } from "next/navigation";
 import { requireRole, getLocale } from "@/lib/session";
 import { getResolverCase } from "@/lib/domain/resolver";
 import { AppShell } from "@/components/AppShell";
-import { Card, Badge, PageTitle } from "@/components/ui";
+import { Card, Badge, PageTitle, SectionHead } from "@/components/ui";
+import { Icon } from "@/components/Icon";
 import { Tracker } from "@/components/Tracker";
 import { IntegrityBadge } from "@/components/IntegrityBadge";
 import { DossierPanel } from "@/components/DossierPanel";
@@ -50,19 +51,16 @@ export default async function ResolverCaseDetail({ params }: PageProps<"/institu
   }
   const bothAcknowledged = acks.some((a) => a.party === "claimant") && acks.some((a) => a.party === "provider");
 
-  const brand = (() => {
-    try {
-      return JSON.parse(c.institutionOrg?.branding ?? "{}") as { color?: string; initials?: string };
-    } catch {
-      return {};
-    }
-  })();
-
   return (
     <AppShell user={user} locale={locale}>
-      <div className="mb-5 flex items-center gap-3 rounded-xl p-4 text-white" style={{ background: brand.color ?? "#6D28D9" }}>
-        <span className="grid h-9 w-9 place-items-center rounded-lg bg-white/20 text-xs font-black">{brand.initials ?? "⚖️"}</span>
-        <span className="font-bold">{isAr && c.institutionOrg?.nameAr ? c.institutionOrg.nameAr : c.institutionOrg?.name}</span>
+      <div className="card-flat mb-5 flex items-center gap-3 border-s-[3px] border-s-cobalt p-4">
+        <span className="grid h-10 w-10 place-items-center rounded-lg bg-cobalt-tint text-cobalt">
+          <Icon name="scales" size={20} />
+        </span>
+        <div>
+          <div className="text-xs text-ink-muted">{isAr ? "الوحدة المؤسّسية المحايدة" : "Module institutionnel neutre"}</div>
+          <div className="font-semibold text-ink">{isAr && c.institutionOrg?.nameAr ? c.institutionOrg.nameAr : c.institutionOrg?.name}</div>
+        </div>
       </div>
 
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -83,15 +81,15 @@ export default async function ResolverCaseDetail({ params }: PageProps<"/institu
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-1">
           <Card className="p-5">
-            <h3 className="mb-3 text-sm font-bold uppercase tracking-wide text-muted">{isAr ? "الملفّ" : "Le litige"}</h3>
+            <SectionHead>{isAr ? "الملفّ" : "Le litige"}</SectionHead>
             <dl className="space-y-2 text-sm">
-              <div className="flex justify-between gap-3"><dt className="text-muted">{isAr ? "المبلغ" : "Montant"}</dt><dd className="font-medium">{formatMillimes(c.amountMillimes, locale)}</dd></div>
-              <div className="flex justify-between gap-3"><dt className="text-muted">{isAr ? "سبب التصعيد" : "Motif escalade"}</dt><dd className="text-end font-medium">{c.escalationReason ?? "—"}</dd></div>
+              <div className="flex justify-between gap-3"><dt className="text-ink-muted">{isAr ? "المبلغ" : "Montant"}</dt><dd className="font-medium">{formatMillimes(c.amountMillimes, locale)}</dd></div>
+              <div className="flex justify-between gap-3"><dt className="text-ink-muted">{isAr ? "سبب التصعيد" : "Motif escalade"}</dt><dd className="text-end font-medium">{c.escalationReason ?? "—"}</dd></div>
             </dl>
             {dossier?.summary ? (
-              <div className="mt-3 rounded-lg bg-brand-soft/40 p-3 text-sm">
-                <div className="text-xs font-semibold uppercase text-brand-ink">{isAr ? "ملخّص محايد (IA)" : "Résumé neutre (IA)"}</div>
-                <p className="mt-1 text-slate-700" dir="auto">{dossier.summary}</p>
+              <div className="mt-3 rounded-lg bg-primary-tint p-3 text-sm">
+                <div className="text-xs font-semibold text-primary-deep">{isAr ? "ملخّص محايد (IA)" : "Résumé neutre (IA)"}</div>
+                <p className="mt-1 text-ink" dir="auto">{dossier.summary}</p>
               </div>
             ) : null}
           </Card>
@@ -102,11 +100,11 @@ export default async function ResolverCaseDetail({ params }: PageProps<"/institu
         <div className="space-y-6 lg:col-span-2">
           {/* Tamper-check */}
           <div>
-            <h3 className="mb-2 text-sm font-bold uppercase tracking-wide text-muted">
+            <SectionHead>
               {isAr ? "التحقّق من سلامة الأدلة" : "Contrôle d'intégrité (tamper-check)"}
-            </h3>
+            </SectionHead>
             {c.evidence.length === 0 ? (
-              <Card className="p-4 text-sm text-muted">{isAr ? "لا أدلة." : "Aucune preuve."}</Card>
+              <Card className="p-4 text-sm text-ink-muted">{isAr ? "لا أدلة." : "Aucune preuve."}</Card>
             ) : (
               <div className="space-y-2">
                 {c.evidence.map((ev) => (
@@ -115,8 +113,8 @@ export default async function ResolverCaseDetail({ params }: PageProps<"/institu
                       <span className="truncate text-sm font-semibold">{ev.filename}</span>
                       <IntegrityBadge status={integrity.get(ev.id)} isAr={isAr} />
                     </div>
-                    <div className="font-mono text-[11px] text-muted">keccak256 {shortHash(ev.contentHash)}</div>
-                    {exSummary(ev.extracted) ? <p className="mt-1 text-sm text-slate-600" dir="auto">{exSummary(ev.extracted)}</p> : null}
+                    <div className="text-[11px] text-ink-muted">keccak256 {shortHash(ev.contentHash)}</div>
+                    {exSummary(ev.extracted) ? <p className="mt-1 text-sm text-ink-muted" dir="auto">{exSummary(ev.extracted)}</p> : null}
                   </Card>
                 ))}
               </div>
