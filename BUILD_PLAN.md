@@ -21,8 +21,8 @@ lights up; DEMO / simulated labels present; Agency Benefit number on screen.
 |---|-------|--------|----------|
 | 0 | Scaffold + auth + shell | ✅ done | Repo, Prisma schema, seed, demo login (real role checks), bilingual RTL shell, 4 role dashboards |
 | 1 | Intake + Evidence + Classify | ✅ done | Claim intake (Derja voice), evidence upload + keccak256 + Claude vision extraction, AI classify/route, claimant case list + detail + tracker |
-| 2 | Notice + Tracker | ⏳ next | Mise en demeure PDF (AR/FR), SLA clock, notifications (tracker component already built) |
-| 3 | Provider desk | ⬜ | Inbox + SLA timers, acknowledge/resolve/contest, escalation trigger |
+| 2 | Notice + Tracker | ✅ done | Bilingual AR/FR Mise en demeure PDF (Puppeteer, COC-cited), send + simulated delivery, live SLA countdown, notifications, demo bill asset (vision-verified) |
+| 3 | Provider desk | ⏳ next | Inbox + SLA timers, acknowledge/resolve/contest, escalation trigger |
 | 4 | Dossier + Resolver console | ⬜ | Dossier PDF+JSON+manifest, resolver queue, tamper-check, mediation, PV, 2 institutional API endpoints |
 | 5 | Ledger | ⬜ | Anchor evidence/notice/dossier/events + audit timeline (memory adapter; Anvil if time) |
 | 6 | Analytics + Agency Benefit | ⬜ | Seeded historical cases, KPI dashboard, Agency Benefit model, bilingual pass, DEMO labels |
