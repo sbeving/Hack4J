@@ -7,6 +7,7 @@ import { Card, Badge, PageTitle } from "@/components/ui";
 import { SubmitButton } from "@/components/SubmitButton";
 import { Tracker } from "@/components/Tracker";
 import { EvidenceUploadForm } from "@/components/claimant/EvidenceUploadForm";
+import { NoticePanel } from "@/components/claimant/NoticePanel";
 import { formatMillimes } from "@/lib/money";
 import {
   CLAIM_TYPE_LABEL,
@@ -65,6 +66,8 @@ export default async function CaseDetailPage({
 
   const state = c.state as CaseState;
   const provider = isAr && c.providerOrg.nameAr ? c.providerOrg.nameAr : c.providerOrg.name;
+  const serverNowISO = new Date().toISOString();
+  const slaDueAtISO = c.slaDueAt ? new Date(c.slaDueAt).toISOString() : null;
 
   return (
     <AppShell user={user} locale={locale}>
@@ -80,6 +83,26 @@ export default async function CaseDetailPage({
       <Card className="p-6">
         <Tracker state={state} locale={locale} />
       </Card>
+
+      {/* Formal notice + SLA (once filed) */}
+      {state !== "draft" && state !== "withdrawn" ? (
+        <div className="mt-6">
+          <NoticePanel
+            caseId={c.id}
+            state={state}
+            notices={c.notices.map((n) => ({
+              id: n.id,
+              status: n.status,
+              version: n.version,
+              sentAt: n.sentAt,
+              deadlineDays: n.deadlineDays,
+            }))}
+            slaDueAtISO={slaDueAtISO}
+            serverNowISO={serverNowISO}
+            locale={locale}
+          />
+        </div>
+      ) : null}
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         {/* Left: summary + AI classification */}
@@ -200,7 +223,7 @@ export default async function CaseDetailPage({
             </div>
           )}
 
-          {/* Actions */}
+          {/* Draft submit action */}
           {state === "draft" ? (
             <Card className="flex flex-wrap items-center justify-between gap-3 border-brand/30 bg-brand-soft/40 p-4">
               <p className="text-sm text-slate-700">
@@ -214,13 +237,7 @@ export default async function CaseDetailPage({
                 </SubmitButton>
               </form>
             </Card>
-          ) : (
-            <Card className="border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">
-              {isAr
-                ? "تم إيداع المطلب. الخطوة التالية: توليد الإنذار الرسمي (Mise en demeure)."
-                : "Réclamation déposée. Prochaine étape : générer la mise en demeure."}
-            </Card>
-          )}
+          ) : null}
         </div>
       </div>
     </AppShell>
