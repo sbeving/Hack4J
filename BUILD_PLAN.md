@@ -24,8 +24,8 @@ lights up; DEMO / simulated labels present; Agency Benefit number on screen.
 | 2 | Notice + Tracker | ✅ done | Bilingual AR/FR Mise en demeure PDF (Puppeteer, COC-cited), send + simulated delivery, live SLA countdown, notifications, demo bill asset (vision-verified) |
 | 3 | Provider desk | ✅ done | Branded inbox + SLA timers, AI neutral summary + suggested resolution, acknowledge/request-info/contest/propose-remedy, claimant accept/decline → resolved. Hardening: real keccak256 re-verification (genuine tamper-check), input validation, safe label lookups |
 | 4 | Dossier + Resolver console | ✅ done | Escalation (eligibility + consent) → dossier PDF (fixed 8 sections) + JSON + integrity manifest + bundle hash; resolver console (branded, AI neutral summary, tamper-check) → accept → schedule mediation → publish terms → party acknowledge → record PV de Conciliation → settled; 2 bearer-auth institutional API endpoints (documented in docs/institutional-api.md) |
-| 5 | Ledger | ⏳ next | Anchor evidence/notice/dossier/events + audit timeline (memory adapter; Anvil if time) |
-| 6 | Analytics + Agency Benefit | ⬜ | Seeded historical cases, KPI dashboard, Agency Benefit model, bilingual pass, DEMO labels |
+| 5 | Ledger | ✅ done | Salted keccak256 commitment anchoring (domain-separated) of evidence/notice/dossier/settlement + every lifecycle event; on-chain audit timeline UI with tx/block per event; memory adapter (default, labeled "simulation") + Anvil adapter ready (`LEDGER=anvil`) |
+| 6 | Analytics + Agency Benefit | ⏳ next | Seeded historical cases, KPI dashboard, Agency Benefit model, bilingual pass, DEMO labels |
 | 7 | Rehearse | ⬜ | Seed golden case, run §20 script, kill demo-breakers |
 
 ## Graded must-have coverage map
