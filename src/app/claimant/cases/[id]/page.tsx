@@ -8,6 +8,7 @@ import { SubmitButton } from "@/components/SubmitButton";
 import { Tracker } from "@/components/Tracker";
 import { EvidenceUploadForm } from "@/components/claimant/EvidenceUploadForm";
 import { NoticePanel } from "@/components/claimant/NoticePanel";
+import { ResolutionPanel } from "@/components/claimant/ResolutionPanel";
 import { formatMillimes } from "@/lib/money";
 import {
   CLAIM_TYPE_LABEL,
@@ -101,6 +102,12 @@ export default async function CaseDetailPage({
             serverNowISO={serverNowISO}
             locale={locale}
           />
+        </div>
+      ) : null}
+
+      {state !== "draft" ? (
+        <div className="mt-6">
+          <ResolutionPanel caseId={c.id} state={state} responses={c.responses} locale={locale} />
         </div>
       ) : null}
 

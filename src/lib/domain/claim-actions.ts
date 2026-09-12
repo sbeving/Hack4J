@@ -81,3 +81,68 @@ export async function submitClaimAction(caseId: string) {
   revalidatePath(`/claimant/cases/${caseId}`);
   revalidatePath("/claimant");
 }
+
+async function notifyProviderAgents(
+  providerOrgId: string,
+  caseId: string,
+  caseNumber: string,
+  type: string
+) {
+  const agents = await prisma.user.findMany({
+    where: { orgId: providerOrgId, role: "provider_agent" },
+    select: { id: true },
+  });
+  if (agents.length) {
+    await prisma.notification.createMany({
+      data: agents.map((a) => ({
+        userId: a.id,
+        caseId,
+        type,
+        messageKey: `notif.${type}`,
+        params: JSON.stringify({ caseNumber }),
+      })),
+    });
+  }
+}
+
+export async function acceptRemedyAction(caseId: string, responseId: string) {
+  const user = await requireRole("claimant");
+  const c = await prisma.case.findFirst({ where: { id: caseId, claimantUserId: user.id } });
+  if (!c || c.state !== "resolution_proposed") throw new Error("not_actionable");
+  const resp = await prisma.providerResponse.findFirst({
+    where: { id: responseId, caseId, kind: "remedy_proposal" },
+  });
+  if (!resp) throw new Error("proposal_not_found");
+
+  await prisma.providerResponse.update({
+    where: { id: responseId },
+    data: { claimantDisposition: "accepted" },
+  });
+  await prisma.case.update({
+    where: { id: caseId },
+    data: { state: "resolved", version: { increment: 1 } },
+  });
+  await recordEvent(caseId, "claimant_accepted_remedy", { actor: user.id, payload: { responseId } });
+  await notifyProviderAgents(c.providerOrgId, caseId, c.caseNumber, "remedy_accepted");
+  revalidatePath(`/claimant/cases/${caseId}`);
+  revalidatePath("/claimant");
+}
+
+export async function declineRemedyAction(caseId: string, responseId: string) {
+  const user = await requireRole("claimant");
+  const c = await prisma.case.findFirst({ where: { id: caseId, claimantUserId: user.id } });
+  if (!c || c.state !== "resolution_proposed") throw new Error("not_actionable");
+
+  await prisma.providerResponse.update({
+    where: { id: responseId },
+    data: { claimantDisposition: "declined" },
+  });
+  await prisma.case.update({
+    where: { id: caseId },
+    data: { state: "provider_review", version: { increment: 1 } },
+  });
+  await recordEvent(caseId, "claimant_declined_remedy", { actor: user.id, payload: { responseId } });
+  await notifyProviderAgents(c.providerOrgId, caseId, c.caseNumber, "remedy_declined");
+  revalidatePath(`/claimant/cases/${caseId}`);
+  revalidatePath("/claimant");
+}
