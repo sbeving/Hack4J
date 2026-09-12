@@ -1,0 +1,50 @@
+# Sulha — Build Plan & Status
+
+Single source of truth for the 24h build. See `docs/CONTEXT.md` (product PRD) and
+`docs/TECHNICAL_PRD.md` (technical spec). This plan is the **hackathon-scoped** slice:
+one seeded golden-path case that lights up **every graded must-have**.
+
+## Win condition
+The §20 demo script runs live end-to-end without a crash; every graded box visibly
+lights up; DEMO / simulated labels present; Agency Benefit number on screen.
+
+## Stack (locked)
+- **Next.js 16 + React 19 + TypeScript + Tailwind v4** — one monolith, all 4 role consoles + API.
+- **Prisma 6 + SQLite** (`prisma/dev.db`). Amounts are integer **millimes** (`Int`).
+- **Claude via Azure Foundry** (`AI_MODEL=claude-opus-4-8`) — vision OCR/extraction, classification, notice slot-fill, dossier summary.
+- **Puppeteer** → bilingual AR-RTL / FR PDFs. **viem** keccak256 + optional Anvil.
+- **Ledger adapter**: `memory` (default, never breaks on stage) | `anvil` (real, optional).
+
+## Phases (checkpoint-driven — always runnable)
+
+| # | Phase | Status | Delivers |
+|---|-------|--------|----------|
+| 0 | Scaffold + auth + shell | ✅ done | Repo, Prisma schema, seed, demo login (real role checks), bilingual RTL shell, 4 role dashboards |
+| 1 | Intake + Evidence + Classify | ⏳ next | File a claim (Derja voice), upload evidence, keccak256, Claude vision extraction, classify/route |
+| 2 | Notice + Tracker | ⬜ | Mise en demeure PDF (AR/FR), delivery-app tracker, SLA clock, notifications |
+| 3 | Provider desk | ⬜ | Inbox + SLA timers, acknowledge/resolve/contest, escalation trigger |
+| 4 | Dossier + Resolver console | ⬜ | Dossier PDF+JSON+manifest, resolver queue, tamper-check, mediation, PV, 2 institutional API endpoints |
+| 5 | Ledger | ⬜ | Anchor evidence/notice/dossier/events + audit timeline (memory adapter; Anvil if time) |
+| 6 | Analytics + Agency Benefit | ⬜ | Seeded historical cases, KPI dashboard, Agency Benefit model, bilingual pass, DEMO labels |
+| 7 | Rehearse | ⬜ | Seed golden case, run §20 script, kill demo-breakers |
+
+## Graded must-have coverage map
+- **F2 Evidence + verify** → Phase 1 (upload + keccak256 + vision extraction; tamper demo)
+- **F4 Mise en demeure** → Phase 2 (versioned template, slot-fill only, AR/FR PDF)
+- **F7 Dossier** → Phase 4 (fixed-section PDF+JSON, integrity manifest)
+- **F8 Resolver + Public API Hook** → Phase 4 (console + 2 bearer-auth `/institutional/*` endpoints)
+- **Agency Benefit** → Phase 6
+- **F9 on-chain** → Phase 5
+
+## Suggested split (solo + 1 coworker on Windows)
+- **Lead (Mac):** core golden path (intake → notice → dossier → resolver), AI adapter, ledger.
+- **Coworker (Windows):** provider desk polish, analytics/Agency-Benefit dashboard, bilingual
+  string sweep, legal template content, seed data. All cross-platform (npm scripts, SQLite, bundled Chromium).
+
+## Fallback ladder (if behind)
+Cut in this order: real Anvil → `memory`; provider white-label theming; Derja voice → textarea;
+live AI → recorded fixtures (`AI_ENABLED=false`).
+
+## Environment
+Copy `.env.example` → `.env`, fill `ANTHROPIC_FOUNDRY_API_KEY`. `LEDGER=memory` and
+`DEMO_MODE=true` by default. Never commit `.env` (gitignored).
