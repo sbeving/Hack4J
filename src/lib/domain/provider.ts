@@ -36,6 +36,7 @@ export async function getProviderCase(caseId: string, orgId: string) {
       notices: { orderBy: { createdAt: "desc" } },
       responses: { orderBy: { createdAt: "asc" } },
       events: { orderBy: { sequence: "asc" } },
+      mediations: { include: { settlements: { orderBy: { createdAt: "desc" } } }, orderBy: { createdAt: "desc" } },
     },
   });
 }

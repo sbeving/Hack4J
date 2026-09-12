@@ -7,11 +7,12 @@ import type { ComponentProps } from "react";
 export function SubmitButton({
   children,
   pendingLabel,
+  disabled,
   ...props
 }: ComponentProps<typeof Button> & { pendingLabel?: string }) {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" disabled={pending} {...props}>
+    <Button type="submit" disabled={pending || disabled} {...props}>
       {pending ? (
         <>
           <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent" />

@@ -7,6 +7,7 @@ import { SlaCountdown } from "@/components/SlaCountdown";
 import { Tracker } from "@/components/Tracker";
 import { ProviderActions } from "@/components/provider/ProviderActions";
 import { IntegrityBadge } from "@/components/IntegrityBadge";
+import { SettlementPanel } from "@/components/SettlementPanel";
 import { verifyMany } from "@/lib/integrity";
 import { formatMillimes, millimesToTnd } from "@/lib/money";
 import {
@@ -169,6 +170,10 @@ export default async function ProviderCaseDetail({ params }: PageProps<"/provide
                 ))}
               </div>
             </div>
+          ) : null}
+
+          {c.mediations.length ? (
+            <SettlementPanel caseId={c.id} role="provider_agent" mediations={c.mediations} locale={locale} />
           ) : null}
 
           {/* Actions */}

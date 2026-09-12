@@ -11,6 +11,10 @@ import { NoticePanel } from "@/components/claimant/NoticePanel";
 import { ResolutionPanel } from "@/components/claimant/ResolutionPanel";
 import { IntegrityBadge } from "@/components/IntegrityBadge";
 import { verifyMany } from "@/lib/integrity";
+import { EscalationPanel } from "@/components/claimant/EscalationPanel";
+import { DossierPanel } from "@/components/DossierPanel";
+import { SettlementPanel } from "@/components/SettlementPanel";
+import { escalationEligibility } from "@/lib/domain/escalation";
 import { formatMillimes } from "@/lib/money";
 import {
   CLAIM_TYPE_LABEL,
@@ -71,6 +75,11 @@ export default async function CaseDetailPage({
   const serverNowISO = new Date().toISOString();
   const slaDueAtISO = c.slaDueAt ? new Date(c.slaDueAt).toISOString() : null;
   const integrity = await verifyMany(c.evidence);
+  const dossier = c.dossiers[0] ?? null;
+  const elig =
+    ["notice_sent", "provider_review", "resolution_proposed"].includes(state) && !dossier
+      ? await escalationEligibility(c.id, user.id)
+      : null;
 
   return (
     <AppShell user={user} locale={locale}>
@@ -110,6 +119,22 @@ export default async function CaseDetailPage({
       {state !== "draft" ? (
         <div className="mt-6">
           <ResolutionPanel caseId={c.id} state={state} responses={c.responses} locale={locale} />
+        </div>
+      ) : null}
+
+      {dossier ? (
+        <div className="mt-6">
+          <DossierPanel dossier={dossier} locale={locale} />
+        </div>
+      ) : elig?.eligible ? (
+        <div className="mt-6">
+          <EscalationPanel caseId={c.id} reason={elig.reason} locale={locale} />
+        </div>
+      ) : null}
+
+      {c.mediations.length ? (
+        <div className="mt-6">
+          <SettlementPanel caseId={c.id} role="claimant" mediations={c.mediations} locale={locale} />
         </div>
       ) : null}
 

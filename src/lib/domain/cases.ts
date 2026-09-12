@@ -158,6 +158,8 @@ export async function getCaseForClaimant(caseId: string, userId: string) {
       notices: { orderBy: { createdAt: "desc" } },
       responses: { orderBy: { createdAt: "asc" } },
       events: { orderBy: { sequence: "asc" } },
+      dossiers: { orderBy: { createdAt: "desc" } },
+      mediations: { include: { settlements: { orderBy: { createdAt: "desc" } } }, orderBy: { createdAt: "desc" } },
     },
   });
 }
