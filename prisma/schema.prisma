@@ -1,0 +1,246 @@
+// Sulha — claims & dispute-management platform (Hack4Justice 2026, Challenge B)
+// SQLite for the hackathon. String fields stand in for enums (SQLite has none);
+// allowed values are enforced in the app layer (see src/lib/domain).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ── Identity ──────────────────────────────────────────────────────────────
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  nameAr    String?
+  role      String // claimant | provider_agent | resolver | admin
+  lang      String   @default("fr") // ar | fr
+  phone     String?
+  orgId     String?
+  org       Organization? @relation(fields: [orgId], references: [id])
+  createdAt DateTime @default(now())
+
+  claimantCases     Case[]             @relation("claimantUser")
+  providerResponses ProviderResponse[]
+  mediations        Mediation[]
+  notifications     Notification[]
+}
+
+model Organization {
+  id         String  @id @default(cuid())
+  kind       String // msme | provider | institution | operator
+  name       String
+  nameAr     String?
+  branding   String? // JSON: { logo, color }
+  stateOwned Boolean @default(false)
+  slaHours   Int     @default(72)
+  createdAt  DateTime @default(now())
+
+  users            User[]
+  providerCases    Case[] @relation("providerOrg")
+  institutionCases Case[] @relation("institutionOrg")
+}
+
+// ── Case + lifecycle ──────────────────────────────────────────────────────
+model Case {
+  id              String   @id @default(cuid())
+  caseNumber      String   @unique
+  claimType       String // billing_error | service_interruption | delivery_failure | deposit_refund | service_damage
+  claimantUserId  String
+  claimantUser    User     @relation("claimantUser", fields: [claimantUserId], references: [id])
+  providerOrgId   String
+  providerOrg     Organization @relation("providerOrg", fields: [providerOrgId], references: [id])
+  institutionOrgId String?
+  institutionOrg   Organization? @relation("institutionOrg", fields: [institutionOrgId], references: [id])
+
+  amountMillimes  Int      @default(0) // 900000 = 900.000 TND
+  currency        String   @default("TND")
+  reference       String?  // provider contract/invoice ref
+  narrative       String
+  requestedRemedy String?  // correct_bill | refund | restore_service | compensation
+  priority        String   @default("normal") // low | normal | high | urgent
+  state           String   @default("draft")
+  version         Int      @default(1)
+
+  slaStartedAt    DateTime?
+  slaDueAt        DateTime?
+  escalationReason String?
+  mode            String   @default("demo") // demo | live
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  evidence   Evidence[]
+  notices    Notice[]
+  responses  ProviderResponse[]
+  dossiers   Dossier[]
+  mediations Mediation[]
+  events     CaseEvent[]
+  anchors    AnchorReceipt[]
+
+  @@index([claimantUserId, updatedAt])
+  @@index([providerOrgId, state, slaDueAt])
+  @@index([institutionOrgId, state, updatedAt])
+}
+
+model Evidence {
+  id                String   @id @default(cuid())
+  caseId            String
+  case              Case     @relation(fields: [caseId], references: [id])
+  submittedByUserId String?
+  kind              String // bill | contract | receipt | photo | email | chat | other
+  filename          String
+  mime              String
+  byteCount         Int
+  storageKey        String   // path under /storage (immutable original)
+  contentHash       String   // keccak256, 0x…
+  extracted         String?  // JSON: [{ field, suggestedValue, source, uncertainty, reviewStatus }]
+  reviewState       String   @default("needs_confirmation") // needs_confirmation | confirmed
+  verified          Boolean  @default(false)
+  supersedesId      String?
+  createdAt         DateTime @default(now())
+
+  @@index([caseId])
+}
+
+model Notice {
+  id              String   @id @default(cuid())
+  caseId          String
+  case            Case     @relation(fields: [caseId], references: [id])
+  version         Int      @default(1)
+  templateVersion String
+  factsSnapshot   String   // JSON snapshot of confirmed facts at generation
+  pdfKey          String?
+  contentHash     String?
+  deadlineDays    Int      @default(15)
+  legalBasis      String?
+  status          String   @default("generated") // generated | approved | sent
+  approvedAt      DateTime?
+  sentAt          DateTime?
+  deliveryReceipt String?  // JSON: { channel, effectId, acceptedAt, simulated }
+  createdAt       DateTime @default(now())
+
+  @@index([caseId])
+}
+
+model ProviderResponse {
+  id                  String   @id @default(cuid())
+  caseId              String
+  case                Case     @relation(fields: [caseId], references: [id])
+  actorUserId         String?
+  actor               User?    @relation(fields: [actorUserId], references: [id])
+  kind                String // acknowledgement | info_request | contest | remedy_proposal
+  message             String?
+  remedyType          String?
+  amountMillimes      Int?
+  claimantDisposition String?  // accepted | declined | pending
+  createdAt           DateTime @default(now())
+
+  @@index([caseId])
+}
+
+model Dossier {
+  id              String   @id @default(cuid())
+  caseId          String
+  case            Case     @relation(fields: [caseId], references: [id])
+  version         Int      @default(1)
+  snapshotId      String
+  pdfKey          String?
+  jsonKey         String?
+  summary         String?
+  manifest        String   // JSON array of { evidenceId, hash, anchorId, ... }
+  bundleHash      String?
+  throughEventSeq Int      @default(0)
+  filedAt         DateTime?
+  createdAt       DateTime @default(now())
+
+  @@index([caseId])
+}
+
+model Mediation {
+  id             String   @id @default(cuid())
+  caseId         String
+  case           Case     @relation(fields: [caseId], references: [id])
+  resolverUserId String?
+  resolver       User?    @relation(fields: [resolverUserId], references: [id])
+  scheduledAt    DateTime?
+  timezone       String   @default("Africa/Tunis")
+  status         String   @default("scheduled") // scheduled | held | closed
+  meetingLink    String?
+  createdAt      DateTime @default(now())
+
+  settlements Settlement[]
+
+  @@index([caseId])
+}
+
+model Settlement {
+  id               String   @id @default(cuid())
+  mediationId      String
+  mediation        Mediation @relation(fields: [mediationId], references: [id])
+  version          Int      @default(1)
+  termsHash        String
+  terms            String   // JSON: obligations
+  pdfKey           String?
+  status           String   @default("proposed") // proposed | acknowledged | recorded
+  acknowledgements String?  // JSON: [{ party, at }]
+  recordedAt       DateTime?
+  createdAt        DateTime @default(now())
+}
+
+model CaseEvent {
+  id          String   @id @default(cuid())
+  caseId      String
+  case        Case     @relation(fields: [caseId], references: [id])
+  sequence    Int
+  type        String
+  actor       String?
+  visibility  String   @default("shared") // shared | claimant_private | provider_private | institution_private
+  payload     String?  // canonical JSON
+  payloadHash String?
+  prevHash    String?
+  demo        Boolean  @default(true)
+  ts          DateTime @default(now())
+
+  @@unique([caseId, sequence])
+  @@index([caseId, sequence])
+}
+
+model AnchorReceipt {
+  id              String   @id @default(cuid())
+  caseId          String?
+  case            Case?    @relation(fields: [caseId], references: [id])
+  subjectType     String // evidence | notice | dossier | event | settlement
+  subjectId       String
+  subjectVersion  Int      @default(1)
+  rawDigest       String
+  salt            String
+  commitment      String
+  anchorId        String   @unique
+  chainId         Int?
+  contractAddress String?
+  txHash          String?
+  blockNumber     Int?
+  status          String   @default("pending") // pending | confirmed | failed
+  adapter         String   @default("memory") // memory | anvil
+  submittedAt     DateTime @default(now())
+  confirmedAt     DateTime?
+
+  @@index([caseId])
+}
+
+model Notification {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  caseId     String?
+  type       String
+  messageKey String
+  params     String?  // JSON
+  readAt     DateTime?
+  createdAt  DateTime @default(now())
+
+  @@index([userId, readAt])
+}
