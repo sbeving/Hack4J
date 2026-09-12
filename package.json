@@ -17,6 +17,7 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@anthropic-ai/foundry-sdk": "^0.4.6",
     "@anthropic-ai/sdk": "^0.125.0",
     "@prisma/client": "^6.19.3",
     "clsx": "^2.1.1",

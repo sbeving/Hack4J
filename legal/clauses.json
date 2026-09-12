@@ -1,0 +1,84 @@
+{
+  "templateVersion": "0.1.0-demo",
+  "jurisdiction": "TN",
+  "_meta": {
+    "purpose": "Vetted clause scaffolds for the Sulha bilingual 'Mise en demeure' generator. DEMO ONLY.",
+    "language": { "fr": "French (LTR)", "ar": "Arabic (RTL, dir=rtl)" },
+    "slots": [
+      "{{claimantName}}",
+      "{{claimantOrg}}",
+      "{{providerName}}",
+      "{{amount}}",
+      "{{reference}}",
+      "{{claimDate}}",
+      "{{deadlineDays}}",
+      "{{city}}",
+      "{{date}}"
+    ],
+    "slotNotes": {
+      "{{amount}}": "Pre-formatted TND string, e.g. '1 250,000 TND'. Generator formats; template only prints.",
+      "{{deadlineDays}}": "Default 15 (conservative 'délai raisonnable', COC art. 269). May be shortened to 8 for a simple monetary claim. NOT a statutory figure.",
+      "{{date}}": "Date the notice is issued.",
+      "{{claimDate}}": "Date of the disputed event / due date of the obligation."
+    },
+    "sources": {
+      "coc_mise_en_demeure": "COC arts. 268-274 — https://www.jurisitetunisie.com/tunisie/codes/coc/Coc1042.htm",
+      "coc_effect_interest": "COC art. 278 (interest 'du jour de l'interpellation') — same URL",
+      "cpcc_injonction": "CPCC arts. 59-60 — https://www.jurisitetunisie.com/tunisie/codes/cpcc/cpcc1055.htm",
+      "consumer_law": "Loi n° 92-117 du 7 dec 1992 — https://faolex.fao.org/docs/pdf/Tun190410.pdf"
+    },
+    "caveat": "Templates for a hackathon MVP. Not legal advice. A qualified Tunisian lawyer must validate before any real use. Article numbers must be re-verified against the official JORT text."
+  },
+  "disclaimer": {
+    "fr": "Document de démonstration généré automatiquement, fourni à titre indicatif uniquement. Il ne constitue pas un conseil juridique et doit être vérifié et validé par un avocat avant tout usage réel.",
+    "ar": "هذا المستند نموذج تجريبي يُنشَأ آليًّا لأغراض العرض فقط، ولا يُعدّ استشارة قانونية، ويجب مراجعته والمصادقة عليه من قِبَل محامٍ مختصّ قبل أيّ استعمال فعليّ."
+  },
+  "notice": {
+    "title": {
+      "fr": "MISE EN DEMEURE",
+      "ar": "إنذار / إعذار"
+    },
+    "salutation": {
+      "fr": "À l'attention du représentant légal de {{providerName}},",
+      "ar": "إلى السيّد(ة) الممثّل القانوني لـ {{providerName}}،"
+    },
+    "bodyByClaimType": {
+      "billing_error": {
+        "fr": "Je soussigné(e) {{claimantName}}, agissant pour le compte de {{claimantOrg}}, conteste par la présente la facture référencée {{reference}} émise par {{providerName}}, d'un montant de {{amount}}, que j'estime erronée. Malgré mes démarches, aucune régularisation n'est intervenue à ce jour ({{claimDate}}).",
+        "ar": "أنا الممضي(ة) أسفله {{claimantName}}، بصفتي نائباً(ة) عن {{claimantOrg}}، أعترض بمقتضى هذا الإنذار على الفاتورة ذات المرجع {{reference}} الصادرة عن {{providerName}} بمبلغ قدره {{amount}}، والتي أعتبرها غير صحيحة. ورغم مساعيّ، لم تتمّ أيّة تسوية إلى حدّ تاريخه ({{claimDate}})."
+      },
+      "service_interruption": {
+        "fr": "Je soussigné(e) {{claimantName}}, pour le compte de {{claimantOrg}}, constate une interruption ou une défaillance du service fourni par {{providerName}} (référence {{reference}}), survenue le {{claimDate}}, en méconnaissance des obligations contractuelles de continuité du service. Le préjudice subi est évalué à {{amount}}.",
+        "ar": "أنا الممضي(ة) أسفله {{claimantName}}، عن {{claimantOrg}}، أُعايِن انقطاعاً أو إخلالاً في الخدمة المُسداة من قِبَل {{providerName}} (المرجع {{reference}})، حصل بتاريخ {{claimDate}}، خلافاً للالتزامات التعاقدية القاضية بضمان استمرارية الخدمة. ويُقدَّر الضرر اللاحق بـ {{amount}}."
+      },
+      "delivery_failure": {
+        "fr": "Je soussigné(e) {{claimantName}}, pour le compte de {{claimantOrg}}, mets en demeure {{providerName}} pour non-livraison ou livraison non conforme de la commande référencée {{reference}}, dont l'exécution était due au plus tard le {{claimDate}}. La somme en jeu s'élève à {{amount}}.",
+        "ar": "أنا الممضي(ة) أسفله {{claimantName}}، عن {{claimantOrg}}، أُعذِر {{providerName}} بسبب عدم تسليم الطلبية ذات المرجع {{reference}} أو تسليمها على وجه غير مطابق، وقد كان تنفيذها مستحقًّا في أجل أقصاه {{claimDate}}. ويبلغ المبلغ موضوع النزاع {{amount}}."
+      },
+      "deposit_refund": {
+        "fr": "Je soussigné(e) {{claimantName}}, pour le compte de {{claimantOrg}}, réclame à {{providerName}} le remboursement de la somme de {{amount}} (dépôt ou avance, référence {{reference}}), exigible depuis le {{claimDate}} et demeurée impayée.",
+        "ar": "أنا الممضي(ة) أسفله {{claimantName}}، عن {{claimantOrg}}، أُطالِب {{providerName}} بإرجاع مبلغ {{amount}} (ضمان أو تسبقة، المرجع {{reference}})، المُستحَقّ منذ {{claimDate}} والذي بقي غير مُسدَّد."
+      },
+      "service_damage": {
+        "fr": "Je soussigné(e) {{claimantName}}, pour le compte de {{claimantOrg}}, tiens {{providerName}} pour responsable des dommages causés à l'occasion de la prestation référencée {{reference}}, survenus le {{claimDate}}, dont la réparation est évaluée à {{amount}}.",
+        "ar": "أنا الممضي(ة) أسفله {{claimantName}}، عن {{claimantOrg}}، أُحمِّل {{providerName}} مسؤولية الأضرار الحاصلة بمناسبة الخدمة ذات المرجع {{reference}}، والتي وقعت بتاريخ {{claimDate}}، ويُقدَّر جبرها بـ {{amount}}."
+      }
+    },
+    "legalBasis": {
+      "fr": "Vu les articles 268 à 274 du Code des Obligations et des Contrats relatifs à la mise en demeure du débiteur, et l'article 278 du même Code aux termes duquel les dommages-intérêts et les intérêts de retard sont dus à compter du jour de l'interpellation.",
+      "ar": "بناءً على الفصول من 268 إلى 274 من مجلة الالتزامات والعقود المتعلّقة بإعذار المدين، وعلى الفصل 278 من نفس المجلة الذي بمقتضاه تُستحَقّ غرامات جبر الضرر وفوائد التأخير ابتداءً من يوم الإعذار."
+    },
+    "deadlineClause": {
+      "fr": "En conséquence, je vous mets en demeure de régulariser la situation et de vous exécuter dans un délai de {{deadlineDays}} jours à compter de la réception de la présente.",
+      "ar": "وعليه، فإنّي أُعذِركم بتسوية الوضعية والوفاء بالتزاماتكم في أجل {{deadlineDays}} يومًا ابتداءً من تاريخ تسلُّم هذا الإنذار."
+    },
+    "consequences": {
+      "fr": "À défaut d'exécution dans le délai imparti, je me réserve le droit d'engager toute action judiciaire utile — notamment une procédure d'injonction de payer ou une action devant la juridiction compétente — et de réclamer les intérêts de retard ainsi que la réparation du préjudice, conformément à la loi.",
+      "ar": "وفي صورة عدم التنفيذ داخل الأجل المذكور، أحتفظ بحقّي في مباشرة كلّ إجراء قضائيّ مفيد — ولا سيّما إجراء الإذن بالدفع أو رفع دعوى أمام المحكمة المختصّة — وفي المطالبة بفوائد التأخير وجبر الضرر، طبق القانون."
+    },
+    "closing": {
+      "fr": "Fait à {{city}}, le {{date}}.\n{{claimantName}} — {{claimantOrg}}",
+      "ar": "حُرِّر بـ {{city}} في {{date}}.\n{{claimantName}} — {{claimantOrg}}"
+    }
+  }
+}

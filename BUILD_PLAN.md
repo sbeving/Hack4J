@@ -20,8 +20,8 @@ lights up; DEMO / simulated labels present; Agency Benefit number on screen.
 | # | Phase | Status | Delivers |
 |---|-------|--------|----------|
 | 0 | Scaffold + auth + shell | ✅ done | Repo, Prisma schema, seed, demo login (real role checks), bilingual RTL shell, 4 role dashboards |
-| 1 | Intake + Evidence + Classify | ⏳ next | File a claim (Derja voice), upload evidence, keccak256, Claude vision extraction, classify/route |
-| 2 | Notice + Tracker | ⬜ | Mise en demeure PDF (AR/FR), delivery-app tracker, SLA clock, notifications |
+| 1 | Intake + Evidence + Classify | ✅ done | Claim intake (Derja voice), evidence upload + keccak256 + Claude vision extraction, AI classify/route, claimant case list + detail + tracker |
+| 2 | Notice + Tracker | ⏳ next | Mise en demeure PDF (AR/FR), SLA clock, notifications (tracker component already built) |
 | 3 | Provider desk | ⬜ | Inbox + SLA timers, acknowledge/resolve/contest, escalation trigger |
 | 4 | Dossier + Resolver console | ⬜ | Dossier PDF+JSON+manifest, resolver queue, tamper-check, mediation, PV, 2 institutional API endpoints |
 | 5 | Ledger | ⬜ | Anchor evidence/notice/dossier/events + audit timeline (memory adapter; Anvil if time) |
