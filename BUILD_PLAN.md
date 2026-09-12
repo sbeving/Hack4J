@@ -26,7 +26,9 @@ lights up; DEMO / simulated labels present; Agency Benefit number on screen.
 | 4 | Dossier + Resolver console | ✅ done | Escalation (eligibility + consent) → dossier PDF (fixed 8 sections) + JSON + integrity manifest + bundle hash; resolver console (branded, AI neutral summary, tamper-check) → accept → schedule mediation → publish terms → party acknowledge → record PV de Conciliation → settled; 2 bearer-auth institutional API endpoints (documented in docs/institutional-api.md) |
 | 5 | Ledger | ✅ done | Salted keccak256 commitment anchoring (domain-separated) of evidence/notice/dossier/settlement + every lifecycle event; on-chain audit timeline UI with tx/block per event; memory adapter (default, labeled "simulation") + Anvil adapter ready (`LEDGER=anvil`) |
 | 6 | Analytics + Agency Benefit | ✅ done | 15 seeded historical cases (extra MSMEs keep Amira's list clean), admin KPI dashboard (volume/type/provider/avg-resolution/SLA/pre-escalation), Agency Benefit panel (transparent model: hours + folders + exchanges saved) |
-| 7 | Rehearse | ⏳ next | Golden-case seed + §20 demo script + kill demo-breakers; optional real Anvil |
+| 7 | Rehearse + polish | ✅ done | Notifications bell + page, DEMO_SCRIPT.md (3-min walkthrough), real Solidity ledger (`contracts/SulhaLedger.sol` + Foundry tests + deploy, ABI matches the adapter) for the optional Anvil path |
+
+**Status: all phases complete.** Full golden path verified end-to-end (intake → classify → notice → SLA → provider → contest → escalate → dossier → resolver → mediation → PV → settled) plus institutional API, on-chain audit timeline, and Agency Benefit dashboard. Every graded must-have (F2/F4/F7/F8/Agency Benefit/F9) demonstrated live.
 
 ## Graded must-have coverage map
 - **F2 Evidence + verify** → Phase 1 (upload + keccak256 + vision extraction; tamper demo)

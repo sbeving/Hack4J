@@ -49,4 +49,7 @@ Amira (MSME claimant) · Sami (STEG provider desk) · Karim (neutral mediator) �
 - **Docs**: `docs/CONTEXT.md` (product PRD), `docs/TECHNICAL_PRD.md` (spec), `BUILD_PLAN.md` (roadmap + status).
 
 ## Status
-See [`BUILD_PLAN.md`](BUILD_PLAN.md). Phase 0 (scaffold + auth + bilingual shell) is complete.
+**All phases complete** — see [`BUILD_PLAN.md`](BUILD_PLAN.md) and the 3-min walkthrough in
+[`DEMO_SCRIPT.md`](DEMO_SCRIPT.md). The full golden path (file → classify → notice → SLA → provider →
+escalate → dossier → resolver → mediation → PV → settled), the institutional API, the on-chain audit
+timeline, and the Agency Benefit dashboard are all working. Real Solidity ledger in [`contracts/`](contracts/).
