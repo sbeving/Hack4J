@@ -1,15 +1,36 @@
 import "server-only";
 import puppeteer, { type Browser } from "puppeteer";
 
+const LAUNCH_ARGS = ["--no-sandbox", "--disable-setuid-sandbox", "--font-render-hinting=none"];
+
 let browserPromise: Promise<Browser> | null = null;
 
-async function getBrowser(): Promise<Browser> {
-  if (!browserPromise) {
-    browserPromise = puppeteer.launch({
-      headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox", "--font-render-hinting=none"],
-    });
+async function launchBrowser(): Promise<Browser> {
+  try {
+    return await puppeteer.launch({ headless: true, args: LAUNCH_ARGS });
+  } catch (bundledError) {
+    // The bundled Chromium download can be absent or incomplete (on Windows an
+    // antivirus may quarantine it mid-extract). Fall back to a system Chrome
+    // before failing the render.
+    try {
+      return await puppeteer.launch({ headless: true, args: LAUNCH_ARGS, channel: "chrome" });
+    } catch {
+      throw bundledError;
+    }
   }
+}
+
+async function getBrowser(): Promise<Browser> {
+  if (browserPromise) {
+    try {
+      const existing = await browserPromise;
+      if (existing.connected) return existing;
+    } catch {
+      // A cached failure (or a crashed browser) must not poison every later render.
+    }
+    browserPromise = null;
+  }
+  browserPromise = launchBrowser();
   return browserPromise;
 }
 

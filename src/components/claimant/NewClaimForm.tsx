@@ -146,6 +146,7 @@ export function NewClaimForm({
         <textarea
           name="narrative"
           required
+          minLength={5}
           value={narrative}
           onChange={(e) => setNarrative(e.target.value)}
           rows={5}

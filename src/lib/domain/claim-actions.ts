@@ -18,8 +18,11 @@ export async function createClaimAction(formData: FormData) {
   const reference = String(formData.get("reference") ?? "").trim() || undefined;
   const requestedRemedy = String(formData.get("requestedRemedy") ?? "").trim() || undefined;
 
-  if (!providerOrgId || narrative.length < 5) {
-    throw new Error("Fournisseur et description requis.");
+  if (!providerOrgId) {
+    throw new Error("Veuillez choisir un fournisseur.");
+  }
+  if (narrative.length < 5) {
+    throw new Error("La description doit contenir au moins 5 caractères.");
   }
 
   const created = await Cases.createClaim({
