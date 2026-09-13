@@ -3,6 +3,7 @@ import { requireRole, getLocale } from "@/lib/session";
 import { getProviderCase, getOrCreateSuggestion } from "@/lib/domain/provider";
 import { AppShell } from "@/components/AppShell";
 import { Card, Badge, PageTitle } from "@/components/ui";
+import { Icon } from "@/components/Icon";
 import { SlaCountdown } from "@/components/SlaCountdown";
 import { Tracker } from "@/components/Tracker";
 import { ProviderActions } from "@/components/provider/ProviderActions";
@@ -60,15 +61,18 @@ export default async function ProviderCaseDetail({ params }: PageProps<"/provide
 
   return (
     <AppShell user={user} locale={locale}>
-      <div
-        className="mb-5 flex items-center justify-between rounded-xl p-4 text-white"
-        style={{ background: brand.color ?? "#0B6BB2" }}
-      >
+      <div className="card-flat mb-5 flex items-center justify-between gap-3 border-s-[3px] p-4" style={{ borderInlineStartColor: brand.color ?? "var(--primary)" }}>
         <div className="flex items-center gap-3">
-          <span className="grid h-9 w-9 place-items-center rounded-lg bg-white/20 text-xs font-black">
+          <span
+            className="grid h-10 w-10 place-items-center rounded-lg text-xs font-bold text-white"
+            style={{ background: brand.color ?? "var(--primary)" }}
+          >
             {brand.initials ?? "?"}
           </span>
-          <span className="font-bold">{isAr && c.providerOrg.nameAr ? c.providerOrg.nameAr : c.providerOrg.name}</span>
+          <div>
+            <div className="text-xs text-ink-muted">{isAr ? "مكتب المزوّد" : "Guichet fournisseur"}</div>
+            <div className="font-semibold text-ink">{isAr && c.providerOrg.nameAr ? c.providerOrg.nameAr : c.providerOrg.name}</div>
+          </div>
         </div>
         {c.slaDueAt && SLA_STATES.includes(state) ? (
           <SlaCountdown dueAtISO={new Date(c.slaDueAt).toISOString()} serverNowISO={serverNowISO} locale={locale} />
@@ -87,38 +91,38 @@ export default async function ProviderCaseDetail({ params }: PageProps<"/provide
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-1">
           <Card className="p-5">
-            <h3 className="mb-3 text-sm font-bold uppercase tracking-wide text-muted">{isAr ? "المطلب" : "Réclamation"}</h3>
+            <h3 className="mb-3 text-[15px] font-semibold text-ink">{isAr ? "المطلب" : "Réclamation"}</h3>
             <dl className="space-y-2 text-sm">
               <Row label={isAr ? "العميل" : "Client"} value={business ?? "—"} />
               <Row label={isAr ? "المبلغ المتنازع" : "Montant contesté"} value={formatMillimes(c.amountMillimes, locale)} />
               {c.reference ? <Row label={isAr ? "المرجع" : "Référence"} value={c.reference} /> : null}
             </dl>
-            <p className="mt-3 border-t border-border pt-3 text-sm text-slate-600" dir="auto">{c.narrative}</p>
+            <p className="mt-3 border-t border-border pt-3 text-sm text-ink-muted" dir="auto">{c.narrative}</p>
             {sentNotice ? (
               <a href={`/api/notices/${sentNotice.id}/pdf`} target="_blank" rel="noreferrer"
-                className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-brand hover:underline">
-                📄 {isAr ? "الإنذار الرسمي" : "Mise en demeure"}
+                className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">
+                <Icon name="document" className="h-4 w-4" /> {isAr ? "الإنذار الرسمي" : "Mise en demeure"}
               </a>
             ) : null}
           </Card>
 
           {suggestion ? (
-            <Card className="border-indigo-200 bg-brand-soft/40 p-5">
+            <Card className="border-border bg-primary-tint p-5">
               <div className="mb-2 flex items-center gap-2">
-                <h3 className="text-sm font-bold uppercase tracking-wide text-brand-ink">
+                <h3 className="text-[15px] font-semibold text-primary-deep">
                   {isAr ? "مساعدة الذكاء الاصطناعي" : "Assistance IA"}
                 </h3>
                 {suggestion.source === "fallback" ? <Badge tone="warning">{isAr ? "تقريبي" : "repli"}</Badge> : null}
               </div>
-              <p className="text-sm text-slate-700" dir="auto">{suggestion.neutralSummary}</p>
-              <div className="mt-3 rounded-lg bg-white p-3 text-sm">
-                <div className="text-xs font-semibold uppercase text-muted">{isAr ? "حل مقترح" : "Résolution suggérée"}</div>
+              <p className="text-sm text-ink-muted" dir="auto">{suggestion.neutralSummary}</p>
+              <div className="mt-3 rounded-lg bg-surface p-3 text-sm">
+                <div className="text-xs font-semibold text-ink-muted">{isAr ? "حل مقترح" : "Résolution suggérée"}</div>
                 <p className="mt-1" dir="auto">{suggestion.suggestedResolution}</p>
                 <Badge tone="info" className="mt-2">
                   {REMEDY_LABEL[suggestion.suggestedRemedyType as RequestedRemedy]?.[locale] ?? suggestion.suggestedRemedyType}
                 </Badge>
               </div>
-              <p className="mt-2 text-[11px] text-muted">{isAr ? "اقتراح غير مُلزِم — القرار لك." : "Suggestion non contraignante — la décision vous appartient."}</p>
+              <p className="mt-2 text-[11px] text-ink-muted">{isAr ? "اقتراح غير مُلزِم — القرار لك." : "Suggestion non contraignante — la décision vous appartient."}</p>
             </Card>
           ) : null}
         </div>
@@ -126,11 +130,11 @@ export default async function ProviderCaseDetail({ params }: PageProps<"/provide
         <div className="space-y-6 lg:col-span-2">
           {/* Verified evidence */}
           <div>
-            <h3 className="mb-2 text-sm font-bold uppercase tracking-wide text-muted">
+            <h3 className="mb-2 text-[15px] font-semibold text-ink">
               {isAr ? "الأدلة المُتحقَّقة" : "Preuves vérifiées"} ({c.evidence.length})
             </h3>
             {c.evidence.length === 0 ? (
-              <Card className="p-4 text-sm text-muted">{isAr ? "لا توجد أدلة." : "Aucune preuve."}</Card>
+              <Card className="p-4 text-sm text-ink-muted">{isAr ? "لا توجد أدلة." : "Aucune preuve."}</Card>
             ) : (
               <div className="space-y-2">
                 {c.evidence.map((ev) => (
@@ -139,9 +143,9 @@ export default async function ProviderCaseDetail({ params }: PageProps<"/provide
                       <span className="truncate text-sm font-semibold">{ev.filename}</span>
                       <IntegrityBadge status={integrity.get(ev.id)} isAr={isAr} />
                     </div>
-                    <div className="font-mono text-[11px] text-muted">keccak256 {shortHash(ev.contentHash)}</div>
+                    <div className="text-[11px] text-ink-muted">keccak256 {shortHash(ev.contentHash)}</div>
                     {exSummary(ev.extracted) ? (
-                      <p className="mt-1 text-sm text-slate-600" dir="auto">{exSummary(ev.extracted)}</p>
+                      <p className="mt-1 text-sm text-ink-muted" dir="auto">{exSummary(ev.extracted)}</p>
                     ) : null}
                   </Card>
                 ))}
@@ -152,7 +156,7 @@ export default async function ProviderCaseDetail({ params }: PageProps<"/provide
           {/* Response history */}
           {responses.length > 0 ? (
             <div>
-              <h3 className="mb-2 text-sm font-bold uppercase tracking-wide text-muted">{isAr ? "التبادلات" : "Échanges"}</h3>
+              <h3 className="mb-2 text-[15px] font-semibold text-ink">{isAr ? "التبادلات" : "Échanges"}</h3>
               <div className="space-y-2">
                 {responses.map((r) => (
                   <Card key={r.id} className="p-3 text-sm">
@@ -162,9 +166,9 @@ export default async function ProviderCaseDetail({ params }: PageProps<"/provide
                       </Badge>
                       {r.amountMillimes ? <span className="font-semibold">{formatMillimes(r.amountMillimes, locale)}</span> : null}
                     </div>
-                    {r.message ? <p className="mt-1 text-slate-600" dir="auto">{r.message}</p> : null}
+                    {r.message ? <p className="mt-1 text-ink-muted" dir="auto">{r.message}</p> : null}
                     {r.claimantDisposition && r.claimantDisposition !== "pending" ? (
-                      <div className="mt-1 text-xs text-muted">{isAr ? "رد العميل: " : "Client : "}{r.claimantDisposition}</div>
+                      <div className="mt-1 text-xs text-ink-muted">{isAr ? "رد العميل: " : "Client : "}{r.claimantDisposition}</div>
                     ) : null}
                   </Card>
                 ))}
@@ -195,7 +199,7 @@ export default async function ProviderCaseDetail({ params }: PageProps<"/provide
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between gap-3">
-      <dt className="text-muted">{label}</dt>
+      <dt className="text-ink-muted">{label}</dt>
       <dd className="text-end font-medium">{value}</dd>
     </div>
   );

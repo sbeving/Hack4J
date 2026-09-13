@@ -3,7 +3,7 @@ import { requireRole, getLocale } from "@/lib/session";
 import { getCaseForClaimant } from "@/lib/domain/cases";
 import { submitClaimAction, confirmEvidenceAction } from "@/lib/domain/claim-actions";
 import { AppShell } from "@/components/AppShell";
-import { Card, Badge, PageTitle } from "@/components/ui";
+import { Card, Badge, PageTitle, SectionHead } from "@/components/ui";
 import { SubmitButton } from "@/components/SubmitButton";
 import { Tracker } from "@/components/Tracker";
 import { EvidenceUploadForm } from "@/components/claimant/EvidenceUploadForm";
@@ -149,9 +149,7 @@ export default async function CaseDetailPage({
         {/* Left: summary + AI classification */}
         <div className="space-y-6 lg:col-span-1">
           <Card className="p-5">
-            <h3 className="mb-3 text-sm font-bold uppercase tracking-wide text-muted">
-              {isAr ? "الملخّص" : "Résumé"}
-            </h3>
+            <SectionHead className="mb-3">{isAr ? "الملخّص" : "Résumé"}</SectionHead>
             <dl className="space-y-2 text-sm">
               <Row label={isAr ? "المزوّد" : "Fournisseur"} value={provider} />
               <Row
@@ -166,15 +164,15 @@ export default async function CaseDetailPage({
                 />
               ) : null}
             </dl>
-            <p className="mt-3 border-t border-border pt-3 text-sm text-slate-600" dir="auto">
+            <p className="mt-3 border-t border-border pt-3 text-sm text-ink-muted" dir="auto">
               {c.narrative}
             </p>
           </Card>
 
           <Card className="p-5">
-            <h3 className="mb-3 text-sm font-bold uppercase tracking-wide text-muted">
+            <SectionHead className="mb-3">
               {isAr ? "التصنيف بالذكاء الاصطناعي" : "Classification IA"}
-            </h3>
+            </SectionHead>
             <div className="flex flex-wrap gap-2">
               <Badge tone="brand">{CLAIM_TYPE_LABEL[c.claimType as ClaimType][locale]}</Badge>
               <Badge tone="info">
@@ -182,9 +180,9 @@ export default async function CaseDetailPage({
                 {PRIORITY_LABEL[c.priority as Priority][locale]}
               </Badge>
             </div>
-            <p className="mt-3 text-xs text-muted">
+            <p className="mt-3 text-xs text-ink-muted">
               {isAr ? "التوجيه إلى: " : "Routé vers : "}
-              <span className="font-semibold text-foreground">
+              <span className="font-semibold text-ink">
                 {CLAIM_TYPE_DESK[c.claimType as ClaimType][locale]}
               </span>
             </p>
@@ -194,9 +192,9 @@ export default async function CaseDetailPage({
         {/* Right: evidence */}
         <div className="space-y-4 lg:col-span-2">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold uppercase tracking-wide text-muted">
+            <SectionHead>
               {isAr ? "الأدلة" : "Preuves"} ({c.evidence.length})
-            </h3>
+            </SectionHead>
           </div>
 
           {state === "draft" ? (
@@ -204,7 +202,7 @@ export default async function CaseDetailPage({
           ) : null}
 
           {c.evidence.length === 0 ? (
-            <Card className="p-6 text-center text-sm text-muted">
+            <Card className="p-6 text-center text-sm text-ink-muted">
               {isAr ? "لم تتم إضافة أي دليل بعد." : "Aucune preuve ajoutée pour l'instant."}
             </Card>
           ) : (
@@ -220,7 +218,7 @@ export default async function CaseDetailPage({
                           <Badge tone="neutral">{ev.kind}</Badge>
                         </div>
                         <div className="mt-1 flex items-center gap-2">
-                          <span className="font-mono text-[11px] text-muted">keccak256 {shortHash(ev.contentHash)}</span>
+                          <span className="text-[11px] text-ink-muted">keccak256 {shortHash(ev.contentHash)}</span>
                           <IntegrityBadge status={integrity.get(ev.id)} isAr={isAr} />
                         </div>
                       </div>
@@ -236,21 +234,21 @@ export default async function CaseDetailPage({
                     </div>
 
                     {ex ? (
-                      <div className="mt-3 rounded-lg bg-slate-50 p-3 text-sm">
+                      <div className="mt-3 rounded-lg bg-surface-sand p-3 text-sm">
                         <div className="mb-1 flex items-center gap-2">
-                          <span className="text-xs font-semibold text-brand">
+                          <span className="text-xs font-semibold text-primary">
                             {isAr ? "استخراج بالذكاء الاصطناعي" : "Extraction IA"}
                           </span>
                           {ex.source === "fallback" ? (
                             <Badge tone="warning">{isAr ? "غير متاح" : "indisponible"}</Badge>
                           ) : null}
                         </div>
-                        {ex.summary ? <p className="text-slate-700" dir="auto">{ex.summary}</p> : null}
+                        {ex.summary ? <p className="text-ink" dir="auto">{ex.summary}</p> : null}
                         {ex.fields && ex.fields.length > 0 ? (
                           <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
                             {ex.fields.slice(0, 6).map((f, i) => (
                               <div key={i} className="flex justify-between gap-2">
-                                <dt className="text-muted">{f.label}</dt>
+                                <dt className="text-ink-muted">{f.label}</dt>
                                 <dd className="text-end font-medium" dir="auto">{f.value}</dd>
                               </div>
                             ))}
@@ -266,8 +264,8 @@ export default async function CaseDetailPage({
 
           {/* Draft submit action */}
           {state === "draft" ? (
-            <Card className="flex flex-wrap items-center justify-between gap-3 border-brand/30 bg-brand-soft/40 p-4">
-              <p className="text-sm text-slate-700">
+            <Card className="flex flex-wrap items-center justify-between gap-3 border-primary/30 bg-primary-tint p-4">
+              <p className="text-sm text-ink">
                 {isAr
                   ? "بعد إضافة الأدلة، أودِع المطلب لتوليد الإنذار الرسمي."
                   : "Une fois les preuves ajoutées, déposez la réclamation pour générer la mise en demeure."}
@@ -288,7 +286,7 @@ export default async function CaseDetailPage({
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between gap-3">
-      <dt className="text-muted">{label}</dt>
+      <dt className="text-ink-muted">{label}</dt>
       <dd className="text-end font-medium">{value}</dd>
     </div>
   );

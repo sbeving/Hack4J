@@ -38,10 +38,10 @@ export function SlaCountdown({
   return (
     <div
       className={`inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-semibold ${
-        overdue ? "bg-rose-100 text-rose-700" : "bg-emerald-50 text-emerald-700"
+        overdue ? "bg-danger-tint text-seal" : "bg-success-tint text-success"
       }`}
     >
-      <span className={`inline-block h-2 w-2 rounded-full ${overdue ? "bg-rose-500" : "bg-emerald-500 animate-pulse"}`} />
+      <span className={`dot ${overdue ? "bg-seal" : "bg-success animate-pulse"}`} />
       {overdue
         ? isAr
           ? `تجاوز الأجل +${clock}`

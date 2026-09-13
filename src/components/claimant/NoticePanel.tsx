@@ -1,4 +1,5 @@
 import { Card, Badge } from "@/components/ui";
+import { Icon } from "@/components/Icon";
 import { SubmitButton } from "@/components/SubmitButton";
 import { SlaCountdown } from "@/components/SlaCountdown";
 import { generateNoticeAction, sendNoticeAction } from "@/lib/domain/notice-actions";
@@ -56,7 +57,7 @@ export function NoticePanel({
   return (
     <Card className="p-5">
       <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-sm font-bold uppercase tracking-wide text-muted">{L.title}</h3>
+        <h3 className="text-[15px] font-semibold text-ink">{L.title}</h3>
         {slaDueAtISO && SLA_STATES.includes(state) ? (
           <SlaCountdown dueAtISO={slaDueAtISO} serverNowISO={serverNowISO} locale={locale} />
         ) : null}
@@ -71,7 +72,7 @@ export function NoticePanel({
               </span>
               <Badge tone="warning">{L.simulated}</Badge>
             </div>
-            <div className="text-xs text-muted">
+            <div className="text-xs text-ink-muted">
               {sent.sentAt
                 ? new Date(sent.sentAt).toLocaleString(isAr ? "ar-TN" : "fr-TN")
                 : ""}{" "}
@@ -82,22 +83,22 @@ export function NoticePanel({
             href={pdfHref(sent.id)}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg border border-border bg-white px-4 py-2 text-sm font-semibold hover:bg-slate-50"
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2 text-sm font-semibold hover:bg-surface-sand"
           >
-            📄 {L.download}
+            <Icon name="download" /> {L.download}
           </a>
         </div>
       ) : generated ? (
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm text-slate-700">{L.ready}</p>
+          <p className="text-sm text-ink">{L.ready}</p>
           <div className="flex items-center gap-2">
             <a
               href={pdfHref(generated.id)}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg border border-border bg-white px-4 py-2 text-sm font-semibold hover:bg-slate-50"
+              className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2 text-sm font-semibold hover:bg-surface-sand"
             >
-              📄 {L.preview}
+              <Icon name="document" /> {L.preview}
             </a>
             <form action={sendNoticeAction.bind(null, caseId, generated.id)}>
               <SubmitButton pendingLabel={L.sending}>{L.send}</SubmitButton>
@@ -106,7 +107,7 @@ export function NoticePanel({
         </div>
       ) : (
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm text-slate-600">{L.hint}</p>
+          <p className="text-sm text-ink-muted">{L.hint}</p>
           <form action={generateNoticeAction.bind(null, caseId)}>
             <SubmitButton pendingLabel={L.generating}>{L.generate}</SubmitButton>
           </form>

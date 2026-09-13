@@ -1,6 +1,6 @@
 import { acceptRemedyAction, declineRemedyAction } from "@/lib/domain/claim-actions";
 import { SubmitButton } from "@/components/SubmitButton";
-import { Card, Badge } from "@/components/ui";
+import { Card, Badge, SectionHead } from "@/components/ui";
 import { formatMillimes } from "@/lib/money";
 import { REMEDY_LABEL, type CaseState, type Locale, type RequestedRemedy } from "@/lib/domain/constants";
 
@@ -42,9 +42,9 @@ export function ResolutionPanel({
 
   return (
     <Card className="p-5">
-      <h3 className="mb-3 text-sm font-bold uppercase tracking-wide text-muted">
+      <SectionHead className="mb-3">
         {isAr ? "ردود المزوّد" : "Réponses du fournisseur"}
-      </h3>
+      </SectionHead>
 
       <div className="space-y-2">
         {visible.map((r) => (
@@ -55,9 +55,9 @@ export function ResolutionPanel({
               </Badge>
               {r.amountMillimes ? <span className="font-semibold">{formatMillimes(r.amountMillimes, locale)}</span> : null}
             </div>
-            {r.message ? <p className="mt-1 text-slate-600" dir="auto">{r.message}</p> : null}
+            {r.message ? <p className="mt-1 text-ink-muted" dir="auto">{r.message}</p> : null}
             {r.claimantDisposition && r.claimantDisposition !== "pending" ? (
-              <div className="mt-1 text-xs text-muted">
+              <div className="mt-1 text-xs text-ink-muted">
                 {isAr ? "قرارك: " : "Votre décision : "}
                 {r.claimantDisposition === "accepted" ? (isAr ? "قبول" : "accepté") : isAr ? "رفض" : "refusé"}
               </div>
@@ -67,13 +67,13 @@ export function ResolutionPanel({
       </div>
 
       {proposal ? (
-        <div className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+        <div className="mt-4 rounded-lg border border-border bg-success-tint p-4">
           <div className="font-semibold">
             {isAr ? "المزوّد يقترح: " : "Le fournisseur propose : "}
             {REMEDY_LABEL[proposal.remedyType as RequestedRemedy]?.[locale] ?? proposal.remedyType}
             {proposal.amountMillimes ? ` · ${formatMillimes(proposal.amountMillimes, locale)}` : ""}
           </div>
-          {proposal.message ? <p className="mt-1 text-sm text-slate-700" dir="auto">{proposal.message}</p> : null}
+          {proposal.message ? <p className="mt-1 text-sm text-ink-muted" dir="auto">{proposal.message}</p> : null}
           <div className="mt-3 flex gap-2">
             <form action={acceptRemedyAction.bind(null, caseId, proposal.id)}>
               <SubmitButton>{isAr ? "قبول الحل" : "Accepter"}</SubmitButton>

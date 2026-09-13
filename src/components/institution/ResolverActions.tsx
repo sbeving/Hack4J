@@ -47,7 +47,7 @@ export function ResolverActions({
       : "Idéalement, les deux parties accusent réception avant l'enregistrement.",
   };
 
-  const field = "w-full rounded-lg border border-border bg-white px-3 py-2 text-sm";
+  const field = "w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm";
 
   if (state === "dossier_filed") {
     return (
@@ -68,7 +68,7 @@ export function ResolverActions({
           <SubmitButton variant="outline">{L.schedule}</SubmitButton>
         </form>
 
-        <form action={publishTermsAction.bind(null, caseId)} className="space-y-3 rounded-lg border border-emerald-200 bg-emerald-50 p-3">
+        <form action={publishTermsAction.bind(null, caseId)} className="space-y-3 rounded-xl border border-border bg-success-tint p-3">
           <label className="block text-sm">
             <span className="mb-1 block font-semibold">{L.obligations}</span>
             <textarea name="obligations" required rows={3} className={field} />
@@ -102,7 +102,7 @@ export function ResolverActions({
   if (state === "settlement_pending" && currentSettlementId) {
     return (
       <div className="space-y-3">
-        {!bothAcknowledged ? <p className="text-xs text-amber-700">{L.ackNote}</p> : null}
+        {!bothAcknowledged ? <p className="text-xs text-warning">{L.ackNote}</p> : null}
         <form action={recordSettlementAction.bind(null, caseId, currentSettlementId)}>
           <SubmitButton pendingLabel={isAr ? "توليد PV…" : "Génération du PV…"}>{L.record}</SubmitButton>
         </form>
@@ -129,11 +129,11 @@ function CloseForm({
 }) {
   return (
     <div>
-      <Button variant="ghost" onClick={() => setShow(!show)} className="text-rose-600">
+      <Button variant="ghost" onClick={() => setShow(!show)} className="text-danger">
         {L.close}
       </Button>
       {show ? (
-        <form action={closeUnsettledAction.bind(null, caseId)} className="mt-2 space-y-2 rounded-lg border border-rose-200 bg-rose-50 p-3">
+        <form action={closeUnsettledAction.bind(null, caseId)} className="mt-2 space-y-2 rounded-lg border border-border bg-danger-tint p-3">
           <input name="reason" placeholder={L.reason} className={field} />
           <SubmitButton variant="danger">{L.confirm}</SubmitButton>
         </form>

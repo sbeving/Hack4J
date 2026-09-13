@@ -22,14 +22,14 @@ export function EvidenceUploadForm({
         await addEvidenceAction(caseId, fd);
         formRef.current?.reset();
       }}
-      className="flex flex-wrap items-center gap-3 rounded-xl border border-dashed border-border bg-slate-50 p-4"
+      className="flex flex-wrap items-center gap-3 rounded-xl border border-dashed border-border bg-surface-sand p-4"
     >
       <input
         type="file"
         name="file"
         required
         accept=".png,.jpg,.jpeg,.pdf,.txt,.md,image/*,application/pdf"
-        className="text-sm file:me-3 file:rounded-lg file:border-0 file:bg-brand file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-white"
+        className="text-sm file:me-3 file:rounded-lg file:border-0 file:bg-primary file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-white"
       />
       <SubmitButton pendingLabel={isAr ? "استخراج بالذكاء الاصطناعي…" : "Extraction IA…"}>
         {isAr ? "رفع + تحليل" : "Téléverser + analyser"}
