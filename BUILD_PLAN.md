@@ -1,4 +1,4 @@
-# Sulha — Build Plan & Status
+# Moufehma — Build Plan & Status
 
 Single source of truth for the 24h build. See `docs/CONTEXT.md` (product PRD) and
 `docs/TECHNICAL_PRD.md` (technical spec). This plan is the **hackathon-scoped** slice:

@@ -1,4 +1,4 @@
-# Sulha — Technical Product Requirements Document
+# Moufehma — Technical Product Requirements Document
 
 **Version:** 2.0 · **Date:** 12 September 2026  
 **Product:** MSME claims and dispute management for commercial service-provider disputes  
@@ -6,7 +6,7 @@
 **Status:** Proposed implementation specification; no implementation is asserted by this document.  
 **Source:** [CONTEXT.md](CONTEXT.md). The supplied context is the product input, not an independently verified legal opinion or official judging brief.
 
-Sulha is a shared claims network with three distinct workspaces: an MSME files and follows a claim, a provider desk attempts resolution, and an independent institution handles an escalation. The recommended MVP is one responsive web application, one FastAPI application, PostgreSQL, private object storage, and a background worker. AI assists with language and document preparation. A ledger anchors commitments to evidence and activity; PostgreSQL remains the authority for workflow and access.
+Moufehma is a shared claims network with three distinct workspaces: an MSME files and follows a claim, a provider desk attempts resolution, and an independent institution handles an escalation. The recommended MVP is one responsive web application, one FastAPI application, PostgreSQL, private object storage, and a background worker. AI assists with language and document preparation. A ledger anchors commitments to evidence and activity; PostgreSQL remains the authority for workflow and access.
 
 This specification makes architecture, data movement, sequence, user interactions, and completion criteria explicit. It preserves the source's formal notice, evidence, standardized dossier, institutional module, and Agency Benefit requirements. Proposed changes include draft saving, claimant acceptance before a provider resolution closes a claim, and explicit consent before sharing an escalation.
 
@@ -666,7 +666,7 @@ A session records institution, officer, participants, timezone, appointment revi
 
 Settlement terms specify parties, obligations, remedy type, amounts, performance dates, any open condition, and the terms version. Each party acknowledges that exact version. Any amendment creates a new version and requires fresh acknowledgements. The resolver's final record references both acknowledgements and a ready PDF.
 
-The **PV de Conciliation** template and the institution's authority require validation. Before that, exports are labelled **Draft settlement record — demonstration**. A click acknowledgement records user intent inside Sulha; it is not represented as ANCE signing, payment completion, or enforceable adjudication. An unagreed case can produce a handoff package, labelled **Prepared for external review**, without claiming that an Injonction de payer or other court action was filed.
+The **PV de Conciliation** template and the institution's authority require validation. Before that, exports are labelled **Draft settlement record — demonstration**. A click acknowledgement records user intent inside Moufehma; it is not represented as ANCE signing, payment completion, or enforceable adjudication. An unagreed case can produce a handoff package, labelled **Prepared for external review**, without claiming that an Injonction de payer or other court action was filed.
 
 ## 10. AI processing contract
 
@@ -755,7 +755,7 @@ Local Anvil demonstrates hashing, inclusion, and verification mechanics. It does
 | Resolver `/institution` | Escalated claims, Mediation, Agency Benefit | Assigned/unassigned institutional queue, with completeness indicators |
 | Admin `/admin` | Organizations, SLA policies, Network analytics, Operations | Configuration and failed background work; no unrestricted case-content feed |
 
-Shared chrome includes Sulha identity, current actor/organization, Arabic/French switch, notifications, and session controls. Provider branding applies to its desk's logo and accent within an accessible theme. It must not replace Sulha's neutral cross-provider identity or imply that the provider controls the resolver.
+Shared chrome includes Moufehma identity, current actor/organization, Arabic/French switch, notifications, and session controls. Provider branding applies to its desk's logo and accent within an accessible theme. It must not replace Moufehma's neutral cross-provider identity or imply that the provider controls the resolver.
 
 ### 12.2 Claimant usage flow
 
@@ -784,7 +784,7 @@ flowchart TD
     M -->|No agreement| OUT[Outcome and optional handoff package]
 ```
 
-**Example usage:** Amira, acting for a synthetic workshop, disputes `900.000 TND` on an electricity bill. She chooses the provider, records or types the issue, corrects OCR if necessary, confirms the disputed amount rather than the invoice total, and reviews the notice. After simulated delivery she sees the provider's next action and deadline. If the provider contests or misses the SLA, she reviews the neutral institution and dossier contents before sharing. In mediation, she acknowledges an exact proposed correction/refund obligation; Sulha records that agreement without claiming the correction or payment has already occurred.
+**Example usage:** Amira, acting for a synthetic workshop, disputes `900.000 TND` on an electricity bill. She chooses the provider, records or types the issue, corrects OCR if necessary, confirms the disputed amount rather than the invoice total, and reviews the notice. After simulated delivery she sees the provider's next action and deadline. If the provider contests or misses the SLA, she reviews the neutral institution and dossier contents before sharing. In mediation, she acknowledges an exact proposed correction/refund obligation; Moufehma records that agreement without claiming the correction or payment has already occurred.
 
 ### 12.3 Screen specifications
 
@@ -818,7 +818,7 @@ All screens use the same API action codes and localization dictionary. The serve
 
 ```text
 ┌──────────────────────────────────────┐
-│ Sulha      Language     Notifications│
+│ Moufehma      Language     Notifications│
 │ Case SLH-DEMO-001                    │
 │ Provider · Billing · 900.000 TND     │
 ├──────────────────────────────────────┤

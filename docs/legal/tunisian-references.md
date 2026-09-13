@@ -1,4 +1,4 @@
-# Tunisian Legal References — "Mise en demeure" Generator (Sulha)
+# Tunisian Legal References — "Mise en demeure" Generator (Moufehma)
 
 > **Purpose.** Citable legal grounding for the bilingual (FR/AR) *mise en demeure* (formal notice)
 > generator used by Tunisian MSMEs against commercial service providers (STEG, SONEDE, La Poste,
@@ -106,7 +106,7 @@ n° 83 du 15 décembre 1992.
 - Ministère du commerce (scope): <http://www.commerce.gov.tn/Fr/controle-de-la-qualite-des-produits-et-des-services_11_126>
 
 **Scope & relevance:**
-- The law covers **all products, *including services*** — so it is on-point for the Sulha use cases
+- The law covers **all products, *including services*** — so it is on-point for the Moufehma use cases
   (utilities, delivery, telecom services). Product categories are defined at **art. 2** (industrial,
   agricultural or artisanal products, components, etc.).
 - It establishes the consumer's **right to information and to a guarantee (garantie)**, bans
@@ -252,4 +252,4 @@ but for probative strength in Tunisia:
 
 ---
 
-*Compiled 2026-09-12 for the Sulha MVP. All URLs above were opened during research.*
+*Compiled 2026-09-12 for the Moufehma MVP. All URLs above were opened during research.*

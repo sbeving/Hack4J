@@ -1,4 +1,4 @@
-# Sulha — Demo Script (≈3 min)
+# Moufehma — Demo Script (≈3 min)
 
 ## Before the demo
 ```bash

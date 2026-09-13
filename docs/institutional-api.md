@@ -1,7 +1,7 @@
-# Sulha — Institutional Public API Hook
+# Moufehma — Institutional Public API Hook
 
 Two authenticated REST endpoints let a mediation / consumer-protection institution's own
-system pull escalated claims from Sulha. This is the "Public API Hook" mandatory module (F8).
+system pull escalated claims from Moufehma. This is the "Public API Hook" mandatory module (F8).
 
 **Auth:** `Authorization: Bearer <INSTITUTION_API_TOKEN>` (per-institution hashed credentials in
 production; a single static demo token maps to the seeded institution here). No token → `401`.

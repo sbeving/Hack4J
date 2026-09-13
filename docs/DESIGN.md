@@ -1,4 +1,4 @@
-# Sijill — Sulha Design System
+# Sijill — Moufehma Design System
 
 **Concept:** *The Reconciliation Ledger.* A Tunisian civic institution that issues verifiable
 settlements, built on the grammar of the official seal (cachet) pressed onto document paper.
@@ -24,7 +24,7 @@ settlements, built on the grammar of the official seal (cachet) pressed onto doc
 | `border` / `border-strong` | `#E4DDCE` / `#D6CBB5` | warm sand hairlines |
 
 ## Type
-- **Bricolage Grotesque** — display/headings + "Sulha" wordmark (`font-display`).
+- **Bricolage Grotesque** — display/headings + "Moufehma" wordmark (`font-display`).
 - **IBM Plex Sans** — body/UI/labels (`font-sans`, tnum figures global).
 - **IBM Plex Sans Arabic** — all Arabic, RTL (`font-arabic`, auto via `:lang(ar)`).
 - **Reem Kufi** — the `صلح` seal glyph only (`font-kufi`).

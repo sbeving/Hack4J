@@ -1,6 +1,6 @@
-# Sulha on-chain ledger (`SulhaLedger`)
+# Moufehma on-chain ledger (`SulhaLedger`)
 
-`SulhaLedger` is the real, reviewable smart contract behind Sulha's optional
+`SulhaLedger` is the real, reviewable smart contract behind Moufehma's optional
 on-chain anchoring path. It is a **minimal, append-only commitment registry**:
 each `anchorId` maps to exactly one 32-byte `commitment`, and once written that
 mapping is immutable.

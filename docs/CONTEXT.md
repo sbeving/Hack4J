@@ -1,4 +1,4 @@
-# Sulha — Product Requirements Document (PRD)
+# Moufehma — Product Requirements Document (PRD)
 ### MSME Claims & Dispute-Management Platform for Service-Provider Disputes (incl. State-Owned Enterprises)
 
 **Event:** Hack4Justice 2026 (HiiL Tunisia) — Challenge B
@@ -27,7 +27,7 @@ This PRD builds **Idea B** — a claims/complaints platform where MSMEs raise is
 Tunisian MSMEs depend on a handful of monopoly service providers — electricity/gas (STEG), water (SONEDE), post/logistics (La Poste, delivery firms), telecom, rail (SNCFT). When one of them overbills, cuts a service, or fails a delivery, the MSME has **no alternative provider** and a huge power asymmetry. The provider's complaint process is opaque, paper-based, and slow; formal legal action costs more than the disputed amount. So the MSME absorbs the loss. On the other side, provider desks and mediation/consumer bodies drown in unorganized paper claims, missing evidence, and manual backlogs.
 
 ### 1.2 Product
-**Sulha** (صلح — "amicable settlement") is a bilingual (Tunisian Derja + Arabic RTL + French) web + mobile **claims and dispute-management network**. An MSME files a claim against a provider in minutes; AI classifies and routes it, verifies the evidence, and generates a legally sound formal notice; the MSME tracks it **like a delivery app**; the provider desk resolves it within an SLA; and if unresolved, Sulha bundles a **standardized dossier** and escalates to a **neutral resolver** for digital mediation — settling out of court, on the record.
+**Moufehma** (صلح — "amicable settlement") is a bilingual (Tunisian Derja + Arabic RTL + French) web + mobile **claims and dispute-management network**. An MSME files a claim against a provider in minutes; AI classifies and routes it, verifies the evidence, and generates a legally sound formal notice; the MSME tracks it **like a delivery app**; the provider desk resolves it within an SLA; and if unresolved, Moufehma bundles a **standardized dossier** and escalates to a **neutral resolver** for digital mediation — settling out of court, on the record.
 
 ### 1.3 Lifecycle
 `FILE CLAIM → CLASSIFY & ROUTE → VERIFY EVIDENCE → NOTICE (Mise en demeure) → PROVIDER RESOLUTION (SLA) → [if unresolved] DOSSIER → NEUTRAL RESOLVER → DIGITAL MEDIATION → PV de Conciliation` (or hand-off to Injonction de payer).
@@ -278,9 +278,9 @@ Frontend: React (consoles) + React Native/Flutter (MSME), bilingual + Arabic RTL
 ---
 
 ## 15. The Agency Benefit (mandatory pitch model)
-*"If a provider/mediation center connects to Sulha, here's what each case saves."* Illustrative per-case model (replace with mentor-validated figures; transparent assumptions, not official stats):
+*"If a provider/mediation center connects to Moufehma, here's what each case saves."* Illustrative per-case model (replace with mentor-validated figures; transparent assumptions, not official stats):
 
-| Step | Manual/paper baseline | With Sulha | Saving |
+| Step | Manual/paper baseline | With Moufehma | Saving |
 |---|---|---|---|
 | Claim intake + completeness check | ~60–90 min | ~10 min (structured) | ~50–80 min |
 | Physical file handling / copies | 1–2 paper folders | 0 | 1–2 folders |

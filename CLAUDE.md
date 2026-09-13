@@ -1,4 +1,4 @@
-# Sulha — repo guide for AI agents
+# Moufehma — repo guide for AI agents
 
 Bilingual (FR + Arabic RTL) claims/dispute platform for Tunisian MSMEs. Hackathon MVP.
 Read `BUILD_PLAN.md` for scope/status and `docs/TECHNICAL_PRD.md` for the spec.

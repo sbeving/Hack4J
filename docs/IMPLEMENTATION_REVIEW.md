@@ -1,4 +1,4 @@
-# Sulha — implementation critique and next-step assessment
+# Moufehma — implementation critique and next-step assessment
 
 **Reviewed:** 12 September 2026. **Committed baseline:** `c1911e5`; review includes substantial uncommitted Claude work.  
 **Runtime-tested snapshot:** 17:52:55 UTC / 18:52:55 Tunis. **Later notice/PDF source review:** 18:08:18 UTC / 19:08:18 Tunis.  

@@ -1,6 +1,6 @@
-# Continue Sulha — implementation prompt, plan and todos
+# Continue Moufehma — implementation prompt, plan and todos
 
-You are continuing the existing Sulha application in this repository. Your objective is to complete a defensible, working hackathon journey from a newly created claim through reviewed evidence, notice, provider response, escalation, institutional mediation and recorded settlement, with honest integrity and Agency Benefit displays.
+You are continuing the existing Moufehma application in this repository. Your objective is to complete a defensible, working hackathon journey from a newly created claim through reviewed evidence, notice, provider response, escalation, institutional mediation and recorded settlement, with honest integrity and Agency Benefit displays.
 
 **Execute the work in tested increments. This is not a request for another proposal or a rewrite.** Start by reconciling the current code with this handoff; you were actively coding during the review, so some findings may already be fixed. Read `AGENTS.md`, `CLAUDE.md`, `BUILD_PLAN.md`, `docs/IMPLEMENTATION_REVIEW.md`, and the relevant sections of `docs/TECHNICAL_PRD.md`. Consult `docs/CONTEXT.md` for product intent and source must-haves.
 
