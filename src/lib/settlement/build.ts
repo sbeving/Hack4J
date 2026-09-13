@@ -49,7 +49,7 @@ export function buildSettlementHtml(s: SettlementSnapshot): string {
     .mono{font-family:ui-monospace,Menlo,monospace}
   </style></head><body>
     <div class="hd">
-      <div class="brand"><span class="ar">صلح</span> Sulha</div>
+      <div class="brand"><span class="ar">مفاهمة</span> Moufehma</div>
       <div style="text-align:right;font-size:10px;color:#555">${esc(s.caseNumber)}<br/>${fdate(s.generatedAt)}</div>
     </div>
     <div class="title">PV DE CONCILIATION</div>
@@ -82,6 +82,6 @@ export function buildSettlementHtml(s: SettlementSnapshot): string {
       <div>Le médiateur</div>
     </div>
 
-    <div class="foot">Sulha · Projet de PV généré à des fins de démonstration. Un clic « accuser réception » enregistre une intention dans Sulha ; il ne vaut ni signature ANCE, ni paiement, ni décision exécutoire. La compétence de l'institution et le modèle de PV doivent être validés.</div>
+    <div class="foot">Moufehma · Projet de PV généré à des fins de démonstration. Un clic « accuser réception » enregistre une intention dans Moufehma ; il ne vaut ni signature ANCE, ni paiement, ni décision exécutoire. La compétence de l'institution et le modèle de PV doivent être validés.</div>
   </body></html>`;
 }

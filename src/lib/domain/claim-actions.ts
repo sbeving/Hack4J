@@ -180,9 +180,10 @@ export async function acceptRemedyAction(caseId: string, responseId: string) {
     where: { id: responseId },
     data: { claimantDisposition: "accepted" },
   });
+  // Claimant confirms — awaits the provider's countersignature before "Réglé".
   await prisma.case.update({
     where: { id: caseId },
-    data: { state: "resolved", version: { increment: 1 } },
+    data: { state: "resolution_agreed", version: { increment: 1 } },
   });
   await recordEvent(caseId, "claimant_accepted_remedy", { actor: user.id, payload: { responseId } });
   await notifyProviderAgents(c.providerOrgId, caseId, c.caseNumber, "remedy_accepted");

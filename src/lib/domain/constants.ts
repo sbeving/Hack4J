@@ -1,4 +1,4 @@
-// Sulha domain vocabulary + state machine.
+// Moufehma domain vocabulary + state machine.
 // SQLite has no enums, so these string unions are the source of truth and are
 // enforced in the app layer (zod schemas in src/lib/domain/schemas.ts).
 
@@ -83,6 +83,7 @@ export type CaseState =
   | "notice_sent"
   | "provider_review"
   | "resolution_proposed"
+  | "resolution_agreed"
   | "resolved"
   | "escalation_pending"
   | "dossier_filed"
@@ -101,6 +102,7 @@ export const STATE_LABEL: Record<CaseState, Record<Locale, string>> = {
   notice_sent: { fr: "Mise en demeure envoyée", ar: "تم إرسال الإنذار" },
   provider_review: { fr: "En examen (fournisseur)", ar: "قيد المراجعة (المزوّد)" },
   resolution_proposed: { fr: "Résolution proposée", ar: "تم اقتراح حل" },
+  resolution_agreed: { fr: "Confirmation mutuelle (1/2)", ar: "تأكيد متبادل (1/2)" },
   resolved: { fr: "Réglé (accord direct)", ar: "تمت التسوية (اتفاق مباشر)" },
   escalation_pending: { fr: "Escalade en cours", ar: "قيد التصعيد" },
   dossier_filed: { fr: "Dossier transmis", ar: "تم إرسال الملف" },
@@ -118,6 +120,7 @@ export const STATE_OWNER: Record<CaseState, Role | "system" | null> = {
   notice_sent: "provider_agent",
   provider_review: "provider_agent",
   resolution_proposed: "claimant",
+  resolution_agreed: "provider_agent",
   resolved: null,
   escalation_pending: "system",
   dossier_filed: "resolver",
@@ -149,6 +152,7 @@ export const STATE_TO_STAGE: Record<CaseState, number> = {
   notice_sent: 1,
   provider_review: 2,
   resolution_proposed: 2,
+  resolution_agreed: 3,
   resolved: 5,
   escalation_pending: 3,
   dossier_filed: 4,
@@ -169,6 +173,7 @@ export type Command =
   | "provider_propose_remedy"
   | "claimant_accept_remedy"
   | "claimant_decline_remedy"
+  | "provider_confirm_resolution"
   | "request_escalation"
   | "file_dossier" // system/worker
   | "resolver_accept"
@@ -191,8 +196,11 @@ export const TRANSITIONS: Record<Command, TransitionRule> = {
   provider_request_info: { from: ["notice_sent", "provider_review"], to: "provider_review", by: "provider_agent" },
   provider_contest: { from: ["notice_sent", "provider_review"], to: "provider_review", by: "provider_agent" },
   provider_propose_remedy: { from: ["provider_review"], to: "resolution_proposed", by: "provider_agent" },
-  claimant_accept_remedy: { from: ["resolution_proposed"], to: "resolved", by: "claimant" },
+  // Direct path is a two-signature agreement: claimant confirms, then the provider
+  // countersigns → resolved. Both entities confirm before it becomes "Réglé".
+  claimant_accept_remedy: { from: ["resolution_proposed"], to: "resolution_agreed", by: "claimant" },
   claimant_decline_remedy: { from: ["resolution_proposed"], to: "provider_review", by: "claimant" },
+  provider_confirm_resolution: { from: ["resolution_agreed"], to: "resolved", by: "provider_agent" },
   request_escalation: {
     from: ["notice_sent", "provider_review", "resolution_proposed"],
     to: "escalation_pending",
@@ -211,6 +219,7 @@ export const TRANSITIONS: Record<Command, TransitionRule> = {
       "notice_sent",
       "provider_review",
       "resolution_proposed",
+      "resolution_agreed",
       "escalation_pending",
       "dossier_filed",
       "in_mediation",

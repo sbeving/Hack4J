@@ -76,12 +76,23 @@ export function ResolutionPanel({
           {proposal.message ? <p className="mt-1 text-sm text-ink-muted" dir="auto">{proposal.message}</p> : null}
           <div className="mt-3 flex gap-2">
             <form action={acceptRemedyAction.bind(null, caseId, proposal.id)}>
-              <SubmitButton>{isAr ? "قبول الحل" : "Accepter"}</SubmitButton>
+              <SubmitButton>{isAr ? "تأكيد الحل" : "Confirmer la résolution"}</SubmitButton>
             </form>
             <form action={declineRemedyAction.bind(null, caseId, proposal.id)}>
               <SubmitButton variant="outline">{isAr ? "رفض" : "Refuser"}</SubmitButton>
             </form>
           </div>
+        </div>
+      ) : null}
+
+      {state === "resolution_agreed" ? (
+        <div className="mt-4 flex items-start gap-2 rounded-lg border border-cobalt/25 bg-cobalt-tint p-3 text-sm text-cobalt">
+          <span className="dot mt-1.5 bg-cobalt" />
+          <span>
+            {isAr
+              ? "لقد أكّدت الحل. بانتظار تأكيد المزوّد ليصبح الملف «مسوًّى» (اتفاق مباشر)."
+              : "Vous avez confirmé. En attente de la confirmation du fournisseur pour passer en « Réglé » (accord direct)."}
+          </span>
         </div>
       ) : null}
     </Card>

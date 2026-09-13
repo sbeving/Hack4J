@@ -5,9 +5,9 @@ import type { Locale } from "@/lib/domain/constants";
 type Dict = Record<string, string>;
 
 const fr: Dict = {
-  "app.name": "Sulha",
+  "app.name": "Moufehma",
   "app.tagline": "Le réseau neutre de règlement des litiges pour les PME tunisiennes",
-  "app.arabic": "صلح",
+  "app.arabic": "مفاهمة",
   "nav.dashboard": "Tableau de bord",
   "nav.newClaim": "Nouvelle réclamation",
   "nav.notifications": "Notifications",
@@ -30,9 +30,9 @@ const fr: Dict = {
 };
 
 const ar: Dict = {
-  "app.name": "صلح",
+  "app.name": "مفاهمة",
   "app.tagline": "الشبكة المحايدة لتسوية نزاعات المؤسسات الصغرى والمتوسطة في تونس",
-  "app.arabic": "صلح",
+  "app.arabic": "مفاهمة",
   "nav.dashboard": "لوحة التحكّم",
   "nav.newClaim": "مطلب جديد",
   "nav.notifications": "الإشعارات",

@@ -6,6 +6,7 @@ import {
   requestInfoAction,
   contestAction,
   proposeRemedyAction,
+  confirmResolutionAction,
 } from "@/lib/domain/provider-actions";
 import { SubmitButton } from "@/components/SubmitButton";
 import { Button } from "@/components/ui";
@@ -47,10 +48,26 @@ export function ProviderActions({
 
   if (state === "resolution_proposed") {
     return (
-      <div className="rounded-lg bg-warning-tint p-4 text-sm text-warning">
+      <div className="rounded-lg bg-warning-tint p-4 text-sm text-warning-deep">
         {isAr
           ? "تم اقتراح حل — في انتظار قبول/رفض العميل."
           : "Résolution proposée — en attente de l'acceptation du client."}
+      </div>
+    );
+  }
+  if (state === "resolution_agreed") {
+    return (
+      <div className="space-y-3 rounded-lg border border-cobalt/25 bg-cobalt-tint p-4">
+        <p className="text-sm text-cobalt">
+          {isAr
+            ? "أكّد المشتكي الحل المقترح. أكّد بدورك لإغلاق الملف كـ «مسوًّى» (اتفاق مباشر) — يتطلّب تأكيد الطرفين."
+            : "Le réclamant a confirmé la résolution proposée. Confirmez à votre tour pour clôturer en « Réglé » (accord direct) — l'accord des deux parties est requis."}
+        </p>
+        <form action={confirmResolutionAction.bind(null, caseId)}>
+          <SubmitButton pendingLabel={isAr ? "تأكيد…" : "Confirmation…"}>
+            {isAr ? "تأكيد الحل" : "Confirmer la résolution"}
+          </SubmitButton>
+        </form>
       </div>
     );
   }

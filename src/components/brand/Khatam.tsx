@@ -1,4 +1,4 @@
-// The Khatam eight-point star — Sulha's single geometric motif.
+// The Khatam eight-point star — Moufehma's single geometric motif.
 // Gold/red are lines and marks only, never fills of large areas.
 export const KHATAM_PATH =
   "M50,2 L57.65,31.52 L83.94,16.06 L68.48,42.35 L98,50 L68.48,57.65 L83.94,83.94 L57.65,68.48 L50,98 L42.35,68.48 L16.06,83.94 L31.52,57.65 L2,50 L31.52,42.35 L16.06,16.06 L42.35,31.52 Z";

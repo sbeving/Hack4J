@@ -84,8 +84,8 @@ export default async function AdminHome() {
         </div>
         <p className="mt-1 text-sm text-ink-muted">
           {isAr
-            ? "ما توفّره كل مؤسسة متّصلة بـ Sulha، مضروبًا في عدد الملفّات."
-            : "Ce que chaque institution connectée à Sulha économise, multiplié par le volume."}
+            ? "ما توفّره كل مؤسسة متّصلة بـ Moufehma، مضروبًا في عدد الملفّات."
+            : "Ce que chaque institution connectée à Moufehma économise, multiplié par le volume."}
         </p>
 
         <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">

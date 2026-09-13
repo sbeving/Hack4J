@@ -31,7 +31,7 @@ export async function AppShell({
 
         <footer className="border-t border-border bg-surface/60">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 text-xs text-ink-muted md:px-8">
-            <span>Sulha · Hack4Justice 2026</span>
+            <span>Moufehma · Hack4Justice 2026</span>
             <span className="inline-flex items-center gap-1.5">
               <Icon name="shield" size={14} className="text-primary" />
               {isAr ? "السجل موثّق · بيانات عرض" : "Registre vérifié · données de démonstration"}

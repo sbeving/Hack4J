@@ -134,7 +134,7 @@ export function buildDossierHtml(s: DossierSnapshot): string {
     .foot{margin-top:14px;border-top:1px solid #e5e7eb;padding-top:6px;font-size:8.5px;color:#777}
   </style></head><body>
     <div class="hd">
-      <div class="brand"><span class="ar">صلح</span> Sulha</div>
+      <div class="brand"><span class="ar">مفاهمة</span> Moufehma</div>
       <div style="text-align:right;font-size:9px;color:#555">Dossier ${esc(s.caseNumber)}<br/>${fdate(s.generatedAt)}</div>
     </div>
     <div class="title">DOSSIER STANDARDISÉ DE RÉCLAMATION</div>
@@ -150,7 +150,7 @@ export function buildDossierHtml(s: DossierSnapshot): string {
     ${section(7, "Réponses et échanges", `<table><tr><th>Type</th><th>Message</th><th>Montant</th><th>Décision client</th></tr>${responsesRows}</table>`)}
     ${section(8, "Résumé neutre et action demandée", `<p><b>Résumé :</b> ${esc(s.summary.neutralSummary)}</p><p><b>Position réclamant :</b> ${esc(s.summary.claimantPosition || "—")}</p><p><b>Position fournisseur :</b> ${esc(s.summary.providerPosition || "—")}</p><p><b>Points non résolus :</b></p>${unresolved}<p style="margin-top:6px;color:#888">Résumé assisté par IA — l'officier vérifie avant adoption.</p>`)}
 
-    <div class="foot">Sulha · Dossier généré automatiquement à des fins de démonstration. Base légale invoquée : COC arts. 268-274, 278 (à valider). snapshot=${esc(s.snapshotId)} · through_event_sequence=${s.throughEventSeq}</div>
+    <div class="foot">Moufehma · Dossier généré automatiquement à des fins de démonstration. Base légale invoquée : COC arts. 268-274, 278 (à valider). snapshot=${esc(s.snapshotId)} · through_event_sequence=${s.throughEventSeq}</div>
   </body></html>`;
 }
 

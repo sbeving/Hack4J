@@ -20,7 +20,7 @@ export function Topbar({
   return (
     <header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-4 border-b border-border bg-surface/85 px-4 backdrop-blur md:px-6">
       <div className="flex min-w-0 items-center gap-4">
-        <Link href={ROLE_HOME[user.role]} className="md:hidden" aria-label="Sulha">
+        <Link href={ROLE_HOME[user.role]} className="md:hidden" aria-label="Moufehma">
           <Wordmark size={26} />
         </Link>
         <div className="md:hidden">

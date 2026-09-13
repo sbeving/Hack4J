@@ -115,7 +115,7 @@ export function buildNoticeHtml(facts: NoticeFacts): {
     .disclaimer .ar { font-family:'Noto Sans Arabic', sans-serif; direction:rtl; display:block; margin-top:4px; }
   </style></head><body><div class="sheet">
     <div class="doc-header">
-      <div class="brand"><span class="ar">صلح</span> Sulha</div>
+      <div class="brand"><span class="ar">مفاهمة</span> Moufehma</div>
       <div class="ref">Réf. ${esc(facts.caseNumber)}<br/>${esc(frDate)}</div>
     </div>
     <div class="demo-ribbon">DOCUMENT DE DÉMONSTRATION — NON VALIDÉ JURIDIQUEMENT · نموذج تجريبي غير مُصادَق عليه قانونيًّا</div>

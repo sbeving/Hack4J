@@ -1,7 +1,7 @@
 import { clsx } from "clsx";
 import { KHATAM_PATH } from "@/components/brand/Khatam";
 
-/** The صلح cachet: the word (Reem Kufi) seated inside the khatam ring.
+/** The مفاهمة cachet: the word (Reem Kufi) seated inside the khatam ring.
  *  tone: "brand" (gold ring + crimson word) or "mono" (single color, e.g. on teal). */
 export function Seal({
   size = 34,
@@ -22,7 +22,7 @@ export function Seal({
       height={size}
       className={clsx("shrink-0", className)}
       role="img"
-      aria-label="صلح Sulha"
+      aria-label="مفاهمة Moufehma"
     >
       <path d={KHATAM_PATH} fill="none" stroke={ring} strokeWidth={1.4} strokeLinejoin="round" opacity={0.95} />
       <circle cx="50" cy="50" r="30" fill="none" stroke={inner} strokeWidth={1.1} opacity={0.8} />
@@ -32,9 +32,9 @@ export function Seal({
         textAnchor="middle"
         dominantBaseline="central"
         direction="rtl"
-        style={{ fontFamily: "var(--font-kufi)", fontWeight: 700, fontSize: "30px", fill: word }}
+        style={{ fontFamily: "var(--font-kufi)", fontWeight: 700, fontSize: "17px", fill: word }}
       >
-        صلح
+        مفاهمة
       </text>
     </svg>
   );

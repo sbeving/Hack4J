@@ -1,6 +1,6 @@
 import type { SVGProps } from "react";
 
-// Bespoke line-icon set for Sulha. One grammar: 24-grid, 1.75 stroke,
+// Bespoke line-icon set for Moufehma. One grammar: 24-grid, 1.75 stroke,
 // round caps/joins, currentColor. Domain icons (seal, scales, handshake,
 // dossier, shield) are crafted; UI icons are clean geometric constructions.
 // No emoji anywhere — icons are how a product stops looking auto-generated.

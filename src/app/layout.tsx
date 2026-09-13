@@ -29,7 +29,7 @@ const reemKufi = Reem_Kufi({
 });
 
 export const metadata: Metadata = {
-  title: "Sulha · صلح — Règlement vérifié des litiges MSME",
+  title: "Moufehma · مفاهمة — Règlement vérifié des litiges MSME",
   description:
     "Le registre neutre de règlement des litiges commerciaux pour les PME tunisiennes face aux fournisseurs (STEG, SONEDE, La Poste). Preuves vérifiées, mise en demeure, dossier scellé.",
   icons: { icon: "/favicon.svg" },
