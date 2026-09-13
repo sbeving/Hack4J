@@ -5,14 +5,13 @@ import { createClaimAction } from "@/lib/domain/claim-actions";
 import { SubmitButton } from "@/components/SubmitButton";
 import { Field, Input, Textarea, Select, Card } from "@/components/ui";
 import { Icon } from "@/components/Icon";
+import { CLAIM_TYPE_LABEL, REMEDY_LABEL, type ClaimType, type Locale } from "@/lib/domain/constants";
 import {
-  CLAIM_TYPES,
-  CLAIM_TYPE_LABEL,
-  REMEDY_LABEL,
-  type ClaimType,
-  type Locale,
-} from "@/lib/domain/constants";
-import { intakeFor } from "@/lib/domain/claim-intake";
+  claimTypesForProvider,
+  intakeForContext,
+  isClaimTypeAllowed,
+  providerProfile,
+} from "@/lib/domain/provider-intake";
 
 type Provider = { id: string; name: string; nameAr: string | null };
 
@@ -24,19 +23,24 @@ const RECOG_LANGS = [
 
 export function NewClaimForm({ providers, locale }: { providers: Provider[]; locale: Locale }) {
   const isAr = locale === "ar";
+  const [providerId, setProviderId] = useState("");
   const [claimType, setClaimType] = useState<ClaimType | "auto">("auto");
   const [narrative, setNarrative] = useState("");
   const [listening, setListening] = useState(false);
   const [recogLang, setRecogLang] = useState(isAr ? "ar-TN" : "fr-FR");
   const recRef = useRef<{ stop: () => void } | null>(null);
 
-  const intake = intakeFor(claimType, locale);
+  const profile = providerProfile(providerId);
+  const allowedTypes = claimTypesForProvider(providerId);
+  const intake = intakeForContext(providerId, claimType, locale);
 
   const L = {
     provider: isAr ? "المزوّد المعني" : "Fournisseur concerné",
     pick: isAr ? "— اختر —" : "— Choisir —",
     type: isAr ? "نوع النزاع" : "Type de litige",
     auto: isAr ? "Détection automatique (IA)" : "Détection automatique (IA)",
+    pickProviderFirst: isAr ? "— اختر المزوّد أولاً —" : "— Choisir d'abord un fournisseur —",
+    sector: isAr ? "القطاع" : "Secteur",
     narrative: isAr ? "صف المشكلة" : "Décrivez le problème",
     narrativeHint: isAr
       ? "بالدارجة أو العربية أو الفرنسية — بصوتك أو كتابةً."
@@ -47,6 +51,13 @@ export function NewClaimForm({ providers, locale }: { providers: Provider[]; loc
     submit: isAr ? "إنشاء المطلب" : "Créer la réclamation",
     submitting: isAr ? "تحليل بالذكاء الاصطناعي…" : "Analyse IA…",
   };
+
+  function onProviderChange(id: string) {
+    setProviderId(id);
+    if (claimType !== "auto" && id && !isClaimTypeAllowed(id, claimType)) {
+      setClaimType("auto");
+    }
+  }
 
   function toggleVoice() {
     type SR = new () => {
@@ -86,13 +97,19 @@ export function NewClaimForm({ providers, locale }: { providers: Provider[]; loc
   }
 
   const detailCols = intake.showAmount ? "sm:grid-cols-3" : "sm:grid-cols-2";
+  const formKey = `${providerId}-${claimType}`;
 
   return (
     <Card className="p-6">
       <form action={createClaimAction} className="space-y-6">
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label={L.provider}>
-            <Select name="providerOrgId" required defaultValue="">
+            <Select
+              name="providerOrgId"
+              required
+              value={providerId}
+              onChange={(e) => onProviderChange(e.target.value)}
+            >
               <option value="" disabled>
                 {L.pick}
               </option>
@@ -102,20 +119,32 @@ export function NewClaimForm({ providers, locale }: { providers: Provider[]; loc
                 </option>
               ))}
             </Select>
+            {profile ? (
+              <span className="mt-1 block text-xs text-ink-muted">
+                {L.sector} : {profile.sectorLabel[locale]}
+              </span>
+            ) : null}
           </Field>
 
           <Field label={L.type}>
             <Select
               name="claimType"
               value={claimType}
+              disabled={!providerId}
               onChange={(e) => setClaimType(e.target.value as ClaimType | "auto")}
             >
-              <option value="auto">{L.auto}</option>
-              {CLAIM_TYPES.map((ct) => (
-                <option key={ct} value={ct}>
-                  {CLAIM_TYPE_LABEL[ct][locale]}
-                </option>
-              ))}
+              {!providerId ? (
+                <option value="auto">{L.pickProviderFirst}</option>
+              ) : (
+                <>
+                  <option value="auto">{L.auto}</option>
+                  {allowedTypes.map((ct) => (
+                    <option key={ct} value={ct}>
+                      {CLAIM_TYPE_LABEL[ct][locale]}
+                    </option>
+                  ))}
+                </>
+              )}
             </Select>
           </Field>
         </div>
@@ -167,7 +196,7 @@ export function NewClaimForm({ providers, locale }: { providers: Provider[]; loc
           <p className="mt-1 text-xs text-ink-muted">{L.narrativeHint}</p>
         </div>
 
-        <div className={`grid gap-5 ${detailCols}`}>
+        <div key={formKey} className={`grid gap-5 ${detailCols}`}>
           {intake.showAmount ? (
             <Field label={intake.amountLabel[locale]}>
               <Input
@@ -189,7 +218,7 @@ export function NewClaimForm({ providers, locale }: { providers: Provider[]; loc
             />
           </Field>
           <Field label={L.remedy}>
-            <Select key={`remedy-${claimType}`} name="requestedRemedy" defaultValue={intake.defaultRemedy}>
+            <Select name="requestedRemedy" defaultValue={intake.defaultRemedy}>
               {intake.remedies.map((r) => (
                 <option key={r} value={r}>
                   {REMEDY_LABEL[r][locale]}
@@ -204,7 +233,9 @@ export function NewClaimForm({ providers, locale }: { providers: Provider[]; loc
             <Icon name="sparkle" size={15} className="text-primary" />
             {intake.hint[locale]}
           </p>
-          <SubmitButton pendingLabel={L.submitting}>{L.submit}</SubmitButton>
+          <SubmitButton pendingLabel={L.submitting} disabled={!providerId}>
+            {L.submit}
+          </SubmitButton>
         </div>
       </form>
     </Card>

@@ -288,6 +288,7 @@ export default async function CaseDetailPage({
                         caseId={c.id}
                         evidenceId={ev.id}
                         extraction={ex}
+                        providerOrgId={c.providerOrgId}
                         claimType={c.claimType as ClaimType}
                         locale={locale}
                       />

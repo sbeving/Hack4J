@@ -4,7 +4,7 @@ import { confirmEvidenceAction, removeEvidenceAction } from "@/lib/domain/claim-
 import { SubmitButton } from "@/components/SubmitButton";
 import { Badge, Field, Input, Textarea } from "@/components/ui";
 import type { ClaimType, Locale } from "@/lib/domain/constants";
-import { intakeFor } from "@/lib/domain/claim-intake";
+import { intakeForContext } from "@/lib/domain/provider-intake";
 
 type Extraction = {
   documentKind?: string;
@@ -32,18 +32,20 @@ export function EvidenceReviewCard({
   caseId,
   evidenceId,
   extraction,
+  providerOrgId,
   claimType,
   locale,
 }: {
   caseId: string;
   evidenceId: string;
   extraction: Extraction;
+  providerOrgId: string;
   claimType: ClaimType;
   locale: Locale;
 }) {
   const isAr = locale === "ar";
   const manual = needsManualEntry(extraction);
-  const intake = intakeFor(claimType, locale);
+  const intake = intakeForContext(providerOrgId, claimType, locale);
 
   const L = {
     title: isAr ? "استخراج بالذكاء الاصطناعي" : "Extraction IA",
