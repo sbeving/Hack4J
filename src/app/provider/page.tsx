@@ -16,6 +16,7 @@ function stateTone(s: CaseState) {
   if (s === "resolved" || s === "settled") return "success" as const;
   if (s === "closed_unsettled" || s === "withdrawn") return "danger" as const;
   if (s === "escalation_pending" || s === "dossier_filed" || s === "in_mediation") return "warning" as const;
+  if (s === "filed") return "neutral" as const;
   return "brand" as const;
 }
 

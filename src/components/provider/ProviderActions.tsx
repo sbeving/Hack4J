@@ -54,6 +54,15 @@ export function ProviderActions({
       </div>
     );
   }
+  if (state === "filed") {
+    return (
+      <div className="rounded-lg bg-primary-tint p-4 text-sm text-ink">
+        {isAr
+          ? "تم إيداع المطلب — في انتظار إرسال الإنذار الرسمي من المشتكي."
+          : "Réclamation déposée — en attente de la mise en demeure du réclamant."}
+      </div>
+    );
+  }
   if (!["notice_sent", "provider_review"].includes(state)) {
     return (
       <div className="rounded-lg bg-surface-sand p-4 text-sm text-ink-muted">

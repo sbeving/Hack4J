@@ -6,6 +6,7 @@ import { millimesToTnd } from "@/lib/money";
 import type { CaseState } from "@/lib/domain/constants";
 
 const ACTIVE_STATES = [
+  "filed",
   "notice_sent",
   "provider_review",
   "resolution_proposed",

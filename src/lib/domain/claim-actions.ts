@@ -125,9 +125,16 @@ export async function removeEvidenceAction(caseId: string, evidenceId: string) {
 
 export async function submitClaimAction(caseId: string) {
   const user = await requireRole("claimant");
-  await Cases.submitClaim(caseId, user.id);
+  const updated = await Cases.submitClaim(caseId, user.id);
+  await notifyProviderAgents(
+    updated.providerOrgId,
+    caseId,
+    updated.caseNumber,
+    "claim_filed"
+  );
   revalidatePath(`/claimant/cases/${caseId}`);
   revalidatePath("/claimant");
+  revalidatePath("/provider");
 }
 
 export async function withdrawClaimAction(caseId: string) {

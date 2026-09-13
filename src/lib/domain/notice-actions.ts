@@ -15,4 +15,5 @@ export async function sendNoticeAction(caseId: string, noticeId: string) {
   await Notice.sendNotice(caseId, noticeId, user.id);
   revalidatePath(`/claimant/cases/${caseId}`);
   revalidatePath("/claimant");
+  revalidatePath("/provider");
 }

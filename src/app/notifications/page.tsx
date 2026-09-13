@@ -8,6 +8,7 @@ import { SubmitButton } from "@/components/SubmitButton";
 import { ROLE_HOME, type Locale } from "@/lib/domain/constants";
 
 const NOTIF_LABEL: Record<string, { fr: string; ar: string }> = {
+  claim_filed: { fr: "Nouvelle réclamation déposée", ar: "مطلب جديد تم إيداعه" },
   notice_received: { fr: "Nouvelle mise en demeure reçue", ar: "تم استلام إنذار جديد" },
   notice_sent: { fr: "Mise en demeure envoyée", ar: "تم إرسال الإنذار" },
   provider_acknowledged: { fr: "Le fournisseur a accusé réception", ar: "أقرّ المزوّد بالاستلام" },
