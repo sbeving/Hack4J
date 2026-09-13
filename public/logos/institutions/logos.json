@@ -1,0 +1,100 @@
+{
+  "downloadedAt": "2026-09-13",
+  "basePath": "/logos/institutions/",
+  "logos": [
+    {
+      "id": "steg",
+      "name": "STEG",
+      "fullName": "Société Tunisienne de l’Électricité et du Gaz",
+      "file": "steg.png",
+      "url": "/logos/institutions/steg.png",
+      "width": 512,
+      "height": 416,
+      "source": "https://www.steg.com.tn/",
+      "note": "Official inline header SVG; embedded blue/red colors from official site CSS.",
+      "svgUrl": "/logos/institutions/steg.svg"
+    },
+    {
+      "id": "sonede",
+      "name": "SONEDE",
+      "fullName": "Société Nationale d’Exploitation et de Distribution des Eaux",
+      "file": "sonede.png",
+      "url": "/logos/institutions/sonede.png",
+      "width": 512,
+      "height": 512,
+      "source": "https://www.sonede.com.tn/wp-content/uploads/2024/03/cropped-logo-sonede-2_Plan-de-travail-1.png",
+      "note": "Official PNG."
+    },
+    {
+      "id": "tunisie-telecom",
+      "name": "Tunisie Telecom",
+      "fullName": "Tunisie Telecom",
+      "file": "tunisie-telecom.png",
+      "url": "/logos/institutions/tunisie-telecom.png",
+      "width": 304,
+      "height": 198,
+      "source": "https://www.tunisietelecom.tn/assets/svg/logo.svg",
+      "note": "Official SVG with PNG version.",
+      "svgUrl": "/logos/institutions/tunisie-telecom.svg"
+    },
+    {
+      "id": "cnss",
+      "name": "CNSS",
+      "fullName": "Caisse Nationale de Sécurité Sociale — Tunisie",
+      "file": "cnss.png",
+      "url": "/logos/institutions/cnss.png",
+      "width": 132,
+      "height": 94,
+      "source": "https://www.cnss.tn/html/themes/images/logo.png",
+      "note": "Official header PNG."
+    },
+    {
+      "id": "la-poste-tunisienne",
+      "name": "La Poste Tunisienne",
+      "fullName": "La Poste Tunisienne",
+      "file": "la-poste-tunisienne.png",
+      "url": "/logos/institutions/la-poste-tunisienne.png",
+      "width": 121,
+      "height": 121,
+      "source": "https://www.poste.tn/image/gif/logo.gif",
+      "note": "PNG converted from official GIF. Additional GIF from STEG partner directory."
+    },
+    {
+      "id": "rne",
+      "name": "RNE",
+      "fullName": "Registre National des Entreprises — Tunisie",
+      "file": "rne.png",
+      "url": "/logos/institutions/rne.png",
+      "width": 1041,
+      "height": 105,
+      "source": "https://www.registre-entreprises.tn/rne-public/assets/images/logo.svg",
+      "note": "Official SVG with PNG version.",
+      "svgUrl": "/logos/institutions/rne.svg"
+    },
+    {
+      "id": "apii",
+      "name": "APII",
+      "fullName": "Agence de Promotion de l’Industrie et de l’Innovation",
+      "file": "apii.png",
+      "url": "/logos/institutions/apii.png",
+      "width": 187,
+      "height": 104,
+      "source": "https://www.tunisieindustrie.nat.tn/fr/images/bg/banner.png",
+      "note": "Logo cropped from official header banner: x=11,y=20,width=187,height=104; artwork otherwise unchanged."
+    },
+    {
+      "id": "apia",
+      "name": "APIA",
+      "fullName": "Agence de Promotion des Investissements Agricoles",
+      "file": "apia.png",
+      "url": "/logos/institutions/apia.png",
+      "width": 156,
+      "height": 75,
+      "source": "https://www.apia.com.tn/img/logo-fr.png",
+      "note": "Official PNG. User request APA interpreted as APIA; apa.png is an identical alias.",
+      "aliases": [
+        "apa"
+      ]
+    }
+  ]
+}

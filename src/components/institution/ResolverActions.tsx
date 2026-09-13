@@ -104,7 +104,9 @@ export function ResolverActions({
       <div className="space-y-3">
         {!bothAcknowledged ? <p className="text-xs text-warning">{L.ackNote}</p> : null}
         <form action={recordSettlementAction.bind(null, caseId, currentSettlementId)}>
-          <SubmitButton pendingLabel={isAr ? "توليد PV…" : "Génération du PV…"}>{L.record}</SubmitButton>
+          <SubmitButton pendingLabel={isAr ? "توليد PV…" : "Génération du PV…"} disabled={!bothAcknowledged}>
+            {L.record}
+          </SubmitButton>
         </form>
         <CloseForm caseId={caseId} show={showClose} setShow={setShowClose} L={L} field={field} />
       </div>

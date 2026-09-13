@@ -13,7 +13,7 @@ export default async function NewClaimPage() {
   const providers = await prisma.organization.findMany({
     where: { kind: "provider" },
     orderBy: { name: "asc" },
-    select: { id: true, name: true, nameAr: true },
+    select: { id: true, name: true, nameAr: true, branding: true },
   });
 
   return (
