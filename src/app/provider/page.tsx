@@ -185,7 +185,7 @@ export default async function ProviderHome({
 
   return (
     <AppShell user={user} locale={locale}>
-<<<<<<< Updated upstream
+      <LiveRefresh />
       <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="font-display text-[2rem] font-bold leading-tight tracking-tight text-ink">
@@ -194,51 +194,6 @@ export default async function ProviderHome({
           <p className="mt-1 text-[15px] text-ink-muted">
             {isAr ? "تذاكر المطالب الواردة وحالة معالجتها." : "Tickets de réclamations et leur traitement."}
           </p>
-=======
-      <LiveRefresh />
-      <PageTitle
-        icon="stamp"
-        title={isAr ? "قائمة المطالب" : "File d'attente des réclamations"}
-        subtitle={isAr ? "مرتّبة حسب أقرب أجل (SLA)." : "Triées par échéance SLA la plus proche."}
-      />
-
-      {cases.length === 0 ? (
-        <Card className="p-12 text-center text-sm text-ink-muted">
-          {isAr ? "لا توجد مطالب واردة." : "Aucune réclamation reçue."}
-        </Card>
-      ) : (
-        <div className="space-y-3">
-          {cases.map((c) => {
-            const business = isAr && c.claimantUser.org?.nameAr ? c.claimantUser.org.nameAr : c.claimantUser.org?.name;
-            const state = c.state as CaseState;
-            return (
-              <Link key={c.id} href={`/provider/cases/${c.id}`} className="block">
-                <Card className="flex flex-wrap items-center justify-between gap-4 p-4 transition hover:border-border-strong">
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold">{c.caseNumber}</span>
-                      <Badge tone={stateTone(state)}>{label(STATE_LABEL, c.state, locale)}</Badge>
-                    </div>
-                    <div className="mt-1 text-sm text-ink-muted">
-                      {label(CLAIM_TYPE_LABEL, c.claimType, locale)} · {business} · {c.evidence.length}{" "}
-                      {isAr ? "دليل" : "preuve(s)"}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    {c.slaDueAt && SLA_STATES.includes(state) ? (
-                      <SlaCountdown
-                        dueAtISO={new Date(c.slaDueAt).toISOString()}
-                        serverNowISO={serverNowISO}
-                        locale={locale}
-                      />
-                    ) : null}
-                    <div className="text-end font-semibold">{formatMillimes(c.amountMillimes, locale)}</div>
-                  </div>
-                </Card>
-              </Link>
-            );
-          })}
->>>>>>> Stashed changes
         </div>
         <Badge tone="brand" dot>
           {isAr ? "مكتب المزوّد" : "Guichet fournisseur"}
