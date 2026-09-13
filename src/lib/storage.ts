@@ -61,3 +61,7 @@ export async function saveArtifact(
 export function storagePath(storageKey: string): string {
   return path.join(STORAGE_ROOT, storageKey);
 }
+
+export async function deleteFile(storageKey: string): Promise<void> {
+  await fs.unlink(path.join(STORAGE_ROOT, storageKey));
+}

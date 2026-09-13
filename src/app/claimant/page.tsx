@@ -3,7 +3,6 @@ import { requireRole, getLocale } from "@/lib/session";
 import { getClaimantCases } from "@/lib/domain/cases";
 import { AppShell } from "@/components/AppShell";
 import { PageTitle, Card, Badge } from "@/components/ui";
-import { Icon } from "@/components/Icon";
 import { formatMillimes } from "@/lib/money";
 import {
   CLAIM_TYPE_LABEL,
@@ -27,34 +26,18 @@ export default async function ClaimantHome() {
 
   return (
     <AppShell user={user} locale={locale}>
-      <div className="flex items-center justify-between">
-        <PageTitle
-          title={isAr ? "مطالبي" : "Mes réclamations"}
-          subtitle={isAr ? "تابع مطالبك مثل تتبّع طرد بريدي." : "Suivez vos réclamations comme un colis."}
-        />
-        <Link
-          href="/claimant/new"
-          className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-deep"
-        >
-          <Icon name="plus" />
-          {isAr ? "مطلب جديد" : "Nouvelle réclamation"}
-        </Link>
-      </div>
+      <PageTitle
+        icon="document"
+        title={isAr ? "مطالبي" : "Mes réclamations"}
+        subtitle={isAr ? "تابع مطالبك مثل تتبّع طرد بريدي." : "Suivez vos réclamations comme un colis."}
+      />
 
       {cases.length === 0 ? (
-        <Card className="mt-4 p-12 text-center">
-          <div className="flex justify-center text-ink-muted">
-            <Icon name="document" className="h-10 w-10" />
-          </div>
-          <p className="mt-3 font-semibold">
-            {isAr ? "لا يوجد أي مطلب بعد" : "Aucune réclamation pour le moment"}
-          </p>
-          <p className="mt-1 text-sm text-ink-muted">
-            {isAr ? "ابدأ بإيداع مطلب ضد مزوّد الخدمة." : "Commencez par déposer une réclamation contre un fournisseur."}
-          </p>
+        <Card className="p-12 text-center text-sm text-ink-muted">
+          {isAr ? "لا يوجد أي مطلب بعد." : "Aucune réclamation pour le moment."}
         </Card>
       ) : (
-        <div className="mt-4 space-y-3">
+        <div className="space-y-3">
           {cases.map((c) => {
             const provider = isAr && c.providerOrg.nameAr ? c.providerOrg.nameAr : c.providerOrg.name;
             return (

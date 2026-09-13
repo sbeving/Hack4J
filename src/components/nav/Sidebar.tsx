@@ -17,8 +17,9 @@ function initials(name: string) {
 
 export function Sidebar({ user, locale, items }: { user: SessionUser; locale: Locale; items: NavItem[] }) {
   const isAr = locale === "ar";
-  const orgName = isAr && user.org?.nameAr ? user.org.nameAr : user.org?.name;
   const userName = isAr && user.nameAr ? user.nameAr : user.name;
+  const orgName =
+    (isAr && user.org?.nameAr ? user.org.nameAr : user.org?.name) ?? userName;
 
   return (
     <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col bg-primary-deep text-white md:flex">

@@ -6,7 +6,7 @@ import { requireRole } from "@/lib/session";
 import { prisma } from "@/lib/db";
 import { recordEvent } from "@/lib/domain/events";
 import * as Cases from "@/lib/domain/cases";
-import { tndToMillimes } from "@/lib/money";
+import { MAX_MILLIMES, tndToMillimes } from "@/lib/money";
 import type { ClaimType } from "@/lib/domain/constants";
 
 export async function createClaimAction(formData: FormData) {
@@ -23,6 +23,12 @@ export async function createClaimAction(formData: FormData) {
   }
   if (narrative.length < 5) {
     throw new Error("La description doit contenir au moins 5 caractères.");
+  }
+  if (amountTnd < 0) {
+    throw new Error("Le montant ne peut pas être négatif.");
+  }
+  if (Math.round(amountTnd * 1000) > MAX_MILLIMES) {
+    throw new Error("Montant trop élevé (max ~2 147 483 TND).");
   }
 
   const created = await Cases.createClaim({
@@ -61,15 +67,48 @@ export async function addEvidenceAction(caseId: string, formData: FormData) {
   revalidatePath(`/claimant/cases/${caseId}`);
 }
 
-export async function confirmEvidenceAction(caseId: string, evidenceId: string) {
+export async function confirmEvidenceAction(
+  caseId: string,
+  evidenceId: string,
+  formData: FormData
+) {
   const user = await requireRole("claimant");
   const ev = await prisma.evidence.findFirst({
     where: { id: evidenceId, caseId, case: { claimantUserId: user.id } },
   });
   if (!ev) throw new Error("evidence_not_found");
+
+  const summary = String(formData.get("summary") ?? "").trim();
+  const amountRaw = String(formData.get("amountTnd") ?? "").trim();
+  const amountTnd = amountRaw ? parseFloat(amountRaw) : null;
+  const reference = String(formData.get("reference") ?? "").trim() || null;
+  const providerName = String(formData.get("providerName") ?? "").trim() || null;
+  const documentDate = String(formData.get("documentDate") ?? "").trim() || null;
+
+  let extracted: Record<string, unknown> = {};
+  if (ev.extracted) {
+    try {
+      extracted = JSON.parse(ev.extracted) as Record<string, unknown>;
+    } catch {
+      extracted = {};
+    }
+  }
+
+  const updated = {
+    ...extracted,
+    ...(summary ? { summary } : {}),
+    amountTnd: amountTnd ?? extracted.amountTnd ?? null,
+    reference: reference ?? extracted.reference ?? null,
+    providerName: providerName ?? extracted.providerName ?? null,
+    documentDate: documentDate ?? extracted.documentDate ?? null,
+  };
+
   await prisma.evidence.update({
     where: { id: evidenceId },
-    data: { reviewState: "confirmed" },
+    data: {
+      reviewState: "confirmed",
+      extracted: JSON.stringify(updated),
+    },
   });
   await recordEvent(caseId, "evidence_confirmed", {
     actor: user.id,
@@ -78,11 +117,24 @@ export async function confirmEvidenceAction(caseId: string, evidenceId: string) 
   revalidatePath(`/claimant/cases/${caseId}`);
 }
 
+export async function removeEvidenceAction(caseId: string, evidenceId: string) {
+  const user = await requireRole("claimant");
+  await Cases.removeEvidence({ caseId, evidenceId, userId: user.id });
+  revalidatePath(`/claimant/cases/${caseId}`);
+}
+
 export async function submitClaimAction(caseId: string) {
   const user = await requireRole("claimant");
   await Cases.submitClaim(caseId, user.id);
   revalidatePath(`/claimant/cases/${caseId}`);
   revalidatePath("/claimant");
+}
+
+export async function withdrawClaimAction(caseId: string) {
+  const user = await requireRole("claimant");
+  await Cases.withdrawClaim(caseId, user.id);
+  revalidatePath("/claimant");
+  redirect("/claimant");
 }
 
 async function notifyProviderAgents(

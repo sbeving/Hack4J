@@ -17,8 +17,6 @@ export const NAV: Record<Role, NavConfigItem[]> = {
   admin: [{ href: "/admin", label: { fr: "Supervision", ar: "الإشراف" }, icon: "network" }],
 };
 
-export const CONSOLE_ROLES: Role[] = ["provider_agent", "resolver", "admin"];
-
 export function navFor(role: Role, locale: Locale) {
   return NAV[role].map((it) => ({ href: it.href, label: it.label[locale], icon: it.icon }));
 }

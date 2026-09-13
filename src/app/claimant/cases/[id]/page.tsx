@@ -1,12 +1,15 @@
 import { notFound } from "next/navigation";
 import { requireRole, getLocale } from "@/lib/session";
 import { getCaseForClaimant } from "@/lib/domain/cases";
-import { submitClaimAction, confirmEvidenceAction } from "@/lib/domain/claim-actions";
+import { submitClaimAction, withdrawClaimAction } from "@/lib/domain/claim-actions";
 import { AppShell } from "@/components/AppShell";
 import { Card, Badge, PageTitle, SectionHead } from "@/components/ui";
+import { Icon } from "@/components/Icon";
+import { SlaCountdown } from "@/components/SlaCountdown";
 import { SubmitButton } from "@/components/SubmitButton";
 import { Tracker } from "@/components/Tracker";
 import { EvidenceUploadForm } from "@/components/claimant/EvidenceUploadForm";
+import { EvidenceReviewCard } from "@/components/claimant/EvidenceReviewCard";
 import { NoticePanel } from "@/components/claimant/NoticePanel";
 import { ResolutionPanel } from "@/components/claimant/ResolutionPanel";
 import { IntegrityBadge } from "@/components/IntegrityBadge";
@@ -22,12 +25,15 @@ import {
   CLAIM_TYPE_DESK,
   PRIORITY_LABEL,
   REMEDY_LABEL,
+  ROLE_LABEL,
   STATE_LABEL,
   type CaseState,
   type ClaimType,
   type Priority,
   type RequestedRemedy,
 } from "@/lib/domain/constants";
+
+const SLA_STATES: CaseState[] = ["notice_sent", "provider_review", "resolution_proposed"];
 
 function stateTone(s: CaseState) {
   if (s === "resolved" || s === "settled") return "success" as const;
@@ -82,8 +88,25 @@ export default async function CaseDetailPage({
       ? await escalationEligibility(c.id, user.id)
       : null;
 
+  const business = isAr && user.org?.nameAr ? user.org.nameAr : user.org?.name;
+
   return (
     <AppShell user={user} locale={locale}>
+      <div className="card-flat mb-5 flex items-center justify-between gap-3 border-s-[3px] border-s-primary p-4">
+        <div className="flex items-center gap-3">
+          <span className="grid h-10 w-10 place-items-center rounded-lg bg-primary-tint text-primary-deep">
+            <Icon name="workshop" size={20} />
+          </span>
+          <div>
+            <div className="text-xs text-ink-muted">{ROLE_LABEL.claimant[locale]}</div>
+            <div className="font-semibold text-ink">{business ?? "—"}</div>
+          </div>
+        </div>
+        {slaDueAtISO && SLA_STATES.includes(state) ? (
+          <SlaCountdown dueAtISO={slaDueAtISO} serverNowISO={serverNowISO} locale={locale} />
+        ) : null}
+      </div>
+
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <PageTitle
           title={`${c.caseNumber}`}
@@ -224,37 +247,19 @@ export default async function CaseDetailPage({
                       </div>
                       {ev.reviewState === "confirmed" ? (
                         <Badge tone="success">{isAr ? "مؤكّد" : "confirmé"}</Badge>
-                      ) : (
-                        <form action={confirmEvidenceAction.bind(null, c.id, ev.id)}>
-                          <SubmitButton variant="outline" className="px-3 py-1 text-xs">
-                            {isAr ? "تأكيد" : "Confirmer"}
-                          </SubmitButton>
-                        </form>
-                      )}
+                      ) : null}
                     </div>
 
-                    {ex ? (
-                      <div className="mt-3 rounded-lg bg-surface-sand p-3 text-sm">
-                        <div className="mb-1 flex items-center gap-2">
-                          <span className="text-xs font-semibold text-primary">
-                            {isAr ? "استخراج بالذكاء الاصطناعي" : "Extraction IA"}
-                          </span>
-                          {ex.source === "fallback" ? (
-                            <Badge tone="warning">{isAr ? "غير متاح" : "indisponible"}</Badge>
-                          ) : null}
-                        </div>
-                        {ex.summary ? <p className="text-ink" dir="auto">{ex.summary}</p> : null}
-                        {ex.fields && ex.fields.length > 0 ? (
-                          <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
-                            {ex.fields.slice(0, 6).map((f, i) => (
-                              <div key={i} className="flex justify-between gap-2">
-                                <dt className="text-ink-muted">{f.label}</dt>
-                                <dd className="text-end font-medium" dir="auto">{f.value}</dd>
-                              </div>
-                            ))}
-                          </dl>
-                        ) : null}
-                      </div>
+                    {ex && ev.reviewState === "needs_confirmation" && state === "draft" ? (
+                      <EvidenceReviewCard
+                        caseId={c.id}
+                        evidenceId={ev.id}
+                        extraction={ex}
+                        claimType={c.claimType as ClaimType}
+                        locale={locale}
+                      />
+                    ) : ex ? (
+                      <ConfirmedExtraction extraction={ex} isAr={isAr} />
                     ) : null}
                   </Card>
                 );
@@ -270,16 +275,90 @@ export default async function CaseDetailPage({
                   ? "بعد إضافة الأدلة، أودِع المطلب لتوليد الإنذار الرسمي."
                   : "Une fois les preuves ajoutées, déposez la réclamation pour générer la mise en demeure."}
               </p>
-              <form action={submitClaimAction.bind(null, c.id)}>
-                <SubmitButton pendingLabel={isAr ? "جارٍ الإيداع…" : "Dépôt…"}>
-                  {isAr ? "إيداع المطلب" : "Déposer la réclamation"}
-                </SubmitButton>
-              </form>
+              <div className="flex flex-wrap items-center gap-2">
+                <form action={withdrawClaimAction.bind(null, c.id)}>
+                  <SubmitButton
+                    variant="outline"
+                    className="border-danger/40 text-danger hover:bg-danger-tint"
+                    pendingLabel={isAr ? "جارٍ الإلغاء…" : "Abandon…"}
+                  >
+                    {isAr ? "إلغاء المطلب" : "Abandonner la réclamation"}
+                  </SubmitButton>
+                </form>
+                <form action={submitClaimAction.bind(null, c.id)}>
+                  <SubmitButton pendingLabel={isAr ? "جارٍ الإيداع…" : "Dépôt…"}>
+                    {isAr ? "إيداع المطلب" : "Déposer la réclamation"}
+                  </SubmitButton>
+                </form>
+              </div>
             </Card>
           ) : null}
         </div>
       </div>
     </AppShell>
+  );
+}
+
+function ConfirmedExtraction({ extraction: ex, isAr }: { extraction: Extraction; isAr: boolean }) {
+  return (
+    <div className="mt-3 rounded-lg bg-surface-sand p-3 text-sm">
+      <div className="mb-1 flex items-center gap-2">
+        <span className="text-xs font-semibold text-primary">
+          {isAr ? "استخراج بالذكاء الاصطناعي" : "Extraction IA"}
+        </span>
+      </div>
+      {ex.summary ? (
+        <p className="text-ink" dir="auto">
+          {ex.summary}
+        </p>
+      ) : null}
+      {(ex.amountTnd != null || ex.reference || ex.providerName || ex.documentDate) && (
+        <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+          {ex.amountTnd != null ? (
+            <div className="flex justify-between gap-2">
+              <dt className="text-ink-muted">{isAr ? "المبلغ" : "Montant"}</dt>
+              <dd className="text-end font-medium">{ex.amountTnd} TND</dd>
+            </div>
+          ) : null}
+          {ex.reference ? (
+            <div className="flex justify-between gap-2">
+              <dt className="text-ink-muted">{isAr ? "المرجع" : "Référence"}</dt>
+              <dd className="text-end font-medium" dir="auto">
+                {ex.reference}
+              </dd>
+            </div>
+          ) : null}
+          {ex.providerName ? (
+            <div className="flex justify-between gap-2">
+              <dt className="text-ink-muted">{isAr ? "المزوّد" : "Fournisseur"}</dt>
+              <dd className="text-end font-medium" dir="auto">
+                {ex.providerName}
+              </dd>
+            </div>
+          ) : null}
+          {ex.documentDate ? (
+            <div className="flex justify-between gap-2">
+              <dt className="text-ink-muted">{isAr ? "التاريخ" : "Date"}</dt>
+              <dd className="text-end font-medium" dir="auto">
+                {ex.documentDate}
+              </dd>
+            </div>
+          ) : null}
+        </dl>
+      )}
+      {ex.fields && ex.fields.length > 0 ? (
+        <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+          {ex.fields.slice(0, 6).map((f, i) => (
+            <div key={i} className="flex justify-between gap-2">
+              <dt className="text-ink-muted">{f.label}</dt>
+              <dd className="text-end font-medium" dir="auto">
+                {f.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      ) : null}
+    </div>
   );
 }
 

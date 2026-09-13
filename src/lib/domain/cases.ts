@@ -3,9 +3,16 @@ import { prisma } from "@/lib/db";
 import { classifyClaim, extractEvidence } from "@/lib/ai/tasks";
 import { recordEvent } from "@/lib/domain/events";
 import { anchor } from "@/lib/ledger";
-import { saveFile } from "@/lib/storage";
+import { deleteFile, saveFile } from "@/lib/storage";
 import { makeCaseNumber } from "@/lib/ids";
-import { CLAIM_TYPES, type ClaimType, type Priority } from "@/lib/domain/constants";
+import { clampMillimes } from "@/lib/money";
+import {
+  canFire,
+  CLAIM_TYPES,
+  type CaseState,
+  type ClaimType,
+  type Priority,
+} from "@/lib/domain/constants";
 
 function guessKind(mime: string): string {
   if (mime === "application/pdf") return "bill";
@@ -56,7 +63,7 @@ export async function createClaim(input: {
       claimType,
       claimantUserId: input.userId,
       providerOrgId: input.providerOrgId,
-      amountMillimes: Math.max(0, Math.floor(input.amountMillimes || 0)),
+      amountMillimes: clampMillimes(input.amountMillimes || 0),
       reference: input.reference,
       narrative: input.narrative,
       requestedRemedy: input.requestedRemedy,
@@ -132,6 +139,38 @@ export async function addEvidence(input: {
   return ev;
 }
 
+export async function removeEvidence(input: {
+  caseId: string;
+  evidenceId: string;
+  userId: string;
+}) {
+  const c = await prisma.case.findFirst({
+    where: { id: input.caseId, claimantUserId: input.userId, state: "draft" },
+  });
+  if (!c) throw new Error("case_not_draft");
+
+  const ev = await prisma.evidence.findFirst({
+    where: {
+      id: input.evidenceId,
+      caseId: input.caseId,
+      reviewState: "needs_confirmation",
+    },
+  });
+  if (!ev) throw new Error("evidence_not_removable");
+
+  await prisma.evidence.delete({ where: { id: input.evidenceId } });
+  try {
+    await deleteFile(ev.storageKey);
+  } catch {
+    // File may already be gone — non-fatal.
+  }
+
+  await recordEvent(input.caseId, "evidence_removed", {
+    actor: input.userId,
+    payload: { evidenceId: input.evidenceId, filename: ev.filename },
+  });
+}
+
 export async function submitClaim(caseId: string, userId: string) {
   const c = await prisma.case.findFirst({
     where: { id: caseId, claimantUserId: userId },
@@ -144,6 +183,22 @@ export async function submitClaim(caseId: string, userId: string) {
     data: { state: "filed", version: { increment: 1 } },
   });
   await recordEvent(caseId, "filed", { actor: userId });
+  return updated;
+}
+
+export async function withdrawClaim(caseId: string, userId: string) {
+  const c = await prisma.case.findFirst({
+    where: { id: caseId, claimantUserId: userId },
+  });
+  if (!c) throw new Error("case_not_found");
+  const state = c.state as CaseState;
+  if (!canFire("withdraw", state)) throw new Error("not_withdrawable");
+
+  const updated = await prisma.case.update({
+    where: { id: caseId },
+    data: { state: "withdrawn", version: { increment: 1 } },
+  });
+  await recordEvent(caseId, "withdrawn", { actor: userId });
   return updated;
 }
 

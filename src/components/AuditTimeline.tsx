@@ -17,6 +17,7 @@ const EVENT_LABEL: Record<string, { fr: string; ar: string }> = {
   filed: { fr: "Réclamation déposée", ar: "إيداع المطلب" },
   evidence_added: { fr: "Preuve ajoutée", ar: "إضافة دليل" },
   evidence_confirmed: { fr: "Preuve confirmée", ar: "تأكيد دليل" },
+  evidence_removed: { fr: "Preuve supprimée", ar: "حذف دليل" },
   notice_generated: { fr: "Mise en demeure générée", ar: "توليد الإنذار" },
   notice_sent: { fr: "Mise en demeure envoyée", ar: "إرسال الإنذار" },
   sla_started: { fr: "Compteur SLA démarré", ar: "بدء عدّاد الأجل" },
@@ -34,6 +35,7 @@ const EVENT_LABEL: Record<string, { fr: string; ar: string }> = {
   terms_acknowledged: { fr: "Accusé des termes", ar: "الإقرار بالشروط" },
   settlement_recorded: { fr: "Règlement enregistré (PV)", ar: "تسجيل التسوية" },
   closed_unsettled: { fr: "Clôturé sans accord", ar: "إغلاق دون اتفاق" },
+  withdrawn: { fr: "Réclamation retirée", ar: "سحب المطلب" },
 };
 
 function eventLabel(type: string, locale: Locale) {

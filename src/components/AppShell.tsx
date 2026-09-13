@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import type { SessionUser } from "@/lib/session";
 import { getUnreadCount } from "@/lib/domain/notifications";
-import { navFor, CONSOLE_ROLES } from "@/components/nav/config";
+import { navFor } from "@/components/nav/config";
 import { Sidebar } from "@/components/nav/Sidebar";
 import { Topbar } from "@/components/nav/Topbar";
 import { Icon } from "@/components/Icon";
@@ -17,22 +17,15 @@ export async function AppShell({
   children: ReactNode;
 }) {
   const unread = await getUnreadCount(user.id);
-  const isConsole = CONSOLE_ROLES.includes(user.role);
   const items = navFor(user.role, locale);
   const isAr = locale === "ar";
 
   return (
     <div className="flex min-h-screen bg-paper">
-      {isConsole ? <Sidebar user={user} locale={locale} items={items} /> : null}
+      <Sidebar user={user} locale={locale} items={items} />
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <Topbar
-          user={user}
-          locale={locale}
-          unread={unread}
-          variant={isConsole ? "console" : "claimant"}
-          items={isConsole ? undefined : items}
-        />
+        <Topbar user={user} locale={locale} unread={unread} items={items} />
 
         <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 md:px-8">{children}</main>
 

@@ -9,13 +9,13 @@ import {
   CLAIM_TYPES,
   CLAIM_TYPE_LABEL,
   REMEDY_LABEL,
+  type ClaimType,
   type Locale,
-  type RequestedRemedy,
 } from "@/lib/domain/constants";
+import { intakeFor } from "@/lib/domain/claim-intake";
 
 type Provider = { id: string; name: string; nameAr: string | null };
 
-const REMEDIES = Object.keys(REMEDY_LABEL) as RequestedRemedy[];
 const RECOG_LANGS = [
   { code: "ar-TN", label: "الدارجة" },
   { code: "ar-SA", label: "العربية" },
@@ -24,10 +24,13 @@ const RECOG_LANGS = [
 
 export function NewClaimForm({ providers, locale }: { providers: Provider[]; locale: Locale }) {
   const isAr = locale === "ar";
+  const [claimType, setClaimType] = useState<ClaimType | "auto">("auto");
   const [narrative, setNarrative] = useState("");
   const [listening, setListening] = useState(false);
   const [recogLang, setRecogLang] = useState(isAr ? "ar-TN" : "fr-FR");
   const recRef = useRef<{ stop: () => void } | null>(null);
+
+  const intake = intakeFor(claimType, locale);
 
   const L = {
     provider: isAr ? "المزوّد المعني" : "Fournisseur concerné",
@@ -40,14 +43,9 @@ export function NewClaimForm({ providers, locale }: { providers: Provider[]; loc
       : "En derja, arabe ou français — à la voix ou au clavier.",
     voice: isAr ? "إملاء" : "Dicter",
     stop: isAr ? "إيقاف" : "Arrêter",
-    amount: isAr ? "المبلغ المتنازع عليه (د.ت)" : "Montant contesté (TND)",
-    reference: isAr ? "المرجع (رقم العقد/الفاتورة)" : "Référence (contrat / facture)",
     remedy: isAr ? "الحل المطلوب" : "Réparation demandée",
     submit: isAr ? "إنشاء المطلب" : "Créer la réclamation",
     submitting: isAr ? "تحليل بالذكاء الاصطناعي…" : "Analyse IA…",
-    hint: isAr
-      ? "يصنّف الذكاء الاصطناعي المطلب ويوجّهه إلى المكتب المناسب."
-      : "L'IA classe la réclamation et la route vers le bon guichet.",
   };
 
   function toggleVoice() {
@@ -87,6 +85,8 @@ export function NewClaimForm({ providers, locale }: { providers: Provider[]; loc
     setListening(true);
   }
 
+  const detailCols = intake.showAmount ? "sm:grid-cols-3" : "sm:grid-cols-2";
+
   return (
     <Card className="p-6">
       <form action={createClaimAction} className="space-y-6">
@@ -105,7 +105,11 @@ export function NewClaimForm({ providers, locale }: { providers: Provider[]; loc
           </Field>
 
           <Field label={L.type}>
-            <Select name="claimType" defaultValue="auto">
+            <Select
+              name="claimType"
+              value={claimType}
+              onChange={(e) => setClaimType(e.target.value as ClaimType | "auto")}
+            >
               <option value="auto">{L.auto}</option>
               {CLAIM_TYPES.map((ct) => (
                 <option key={ct} value={ct}>
@@ -158,23 +162,35 @@ export function NewClaimForm({ providers, locale }: { providers: Provider[]; loc
             onChange={(e) => setNarrative(e.target.value)}
             rows={5}
             dir="auto"
-            placeholder={
-              isAr ? "مثال: STEG فوترتني 900 دينار زيادة هذا الشهر…" : "Ex : STEG m'a facturé 900 dinars de trop ce mois-ci…"
-            }
+            placeholder={intake.narrativePlaceholder[locale]}
           />
           <p className="mt-1 text-xs text-ink-muted">{L.narrativeHint}</p>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-3">
-          <Field label={L.amount}>
-            <Input name="amountTnd" type="number" step="0.001" min="0" placeholder="900.000" />
-          </Field>
-          <Field label={L.reference}>
-            <Input name="reference" type="text" placeholder="STEG-0000-0000" />
+        <div className={`grid gap-5 ${detailCols}`}>
+          {intake.showAmount ? (
+            <Field label={intake.amountLabel[locale]}>
+              <Input
+                name="amountTnd"
+                type="number"
+                step="0.001"
+                min="0"
+                required={intake.amountRequired}
+                placeholder={intake.amountPlaceholder[locale]}
+              />
+            </Field>
+          ) : null}
+          <Field label={intake.referenceLabel[locale]}>
+            <Input
+              name="reference"
+              type="text"
+              dir="auto"
+              placeholder={intake.referencePlaceholder[locale]}
+            />
           </Field>
           <Field label={L.remedy}>
-            <Select name="requestedRemedy" defaultValue="correct_bill">
-              {REMEDIES.map((r) => (
+            <Select key={`remedy-${claimType}`} name="requestedRemedy" defaultValue={intake.defaultRemedy}>
+              {intake.remedies.map((r) => (
                 <option key={r} value={r}>
                   {REMEDY_LABEL[r][locale]}
                 </option>
@@ -186,7 +202,7 @@ export function NewClaimForm({ providers, locale }: { providers: Provider[]; loc
         <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border pt-5">
           <p className="inline-flex items-center gap-2 text-xs text-ink-muted">
             <Icon name="sparkle" size={15} className="text-primary" />
-            {L.hint}
+            {intake.hint[locale]}
           </p>
           <SubmitButton pendingLabel={L.submitting}>{L.submit}</SubmitButton>
         </div>

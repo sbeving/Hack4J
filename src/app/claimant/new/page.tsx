@@ -18,6 +18,7 @@ export default async function NewClaimPage() {
   return (
     <AppShell user={user} locale={locale}>
       <PageTitle
+        icon="plus"
         title={isAr ? "مطلب جديد" : "Nouvelle réclamation"}
         subtitle={
           isAr
