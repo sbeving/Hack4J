@@ -79,7 +79,7 @@ function MediationPending({ locale }: { locale: Locale }) {
   const isAr = locale === "ar";
   return (
     <Card className="flex items-center gap-3 border-s-[3px] border-s-cobalt bg-cobalt-tint p-5">
-      <span className="grid h-8 w-8 place-items-center rounded-lg bg-cobalt text-white">
+      <span className="grid h-8 w-8 place-items-center rounded-lg bg-cobalt text-surface">
         <Icon name="handshake" size={17} />
       </span>
       <div>
