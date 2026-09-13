@@ -1,6 +1,6 @@
 import "server-only";
 import { z } from "zod";
-import { AI_ENABLED, jsonComplete } from "@/lib/ai/client";
+import { AI_ENABLED, jsonComplete, parseJsonLoose, textComplete } from "@/lib/ai/client";
 
 // ── Negotiation brief (shared, neutral) ──────────────────────────────────────
 // A single neutral read of where the claimant ↔ provider negotiation stands,
@@ -93,10 +93,12 @@ Historique des échanges:
 ${ex}`,
       maxTokens: 900,
     });
-    return { ...BriefSchema.parse(raw), source: "ai" };
+    const parsed = BriefSchema.safeParse(raw);
+    if (parsed.success) return { ...parsed.data, source: "ai" };
   } catch {
-    return BRIEF_FALLBACK;
+    /* try text fallback below */
   }
+  return BRIEF_FALLBACK;
 }
 
 // ── Mediator chat (per-party, advisory) ──────────────────────────────────────
@@ -124,6 +126,52 @@ Règles STRICTES :
 - Rappelle au besoin que l'accord final doit être confirmé par les deux parties, et qu'un réviseur humain peut être saisi sur demande.
 Retourne UNIQUEMENT: {"reply":"..."}`;
 
+function chatPrompt(input: {
+  party: "claimant" | "provider";
+  history: { role: "user" | "assistant"; text: string }[];
+  userMessage: string;
+  context: {
+    claimType: string;
+    narrative: string;
+    amountTnd: number;
+    providerName: string;
+    brief?: MediationBrief | null;
+  };
+}) {
+  const partyLabel = input.party === "claimant" ? "le réclamant (PME)" : "le fournisseur";
+  const briefText = input.context.brief
+    ? `Compromis suggéré: ${input.context.brief.suggestedCompromise.remedyType}` +
+      (input.context.brief.suggestedCompromise.amountTnd != null
+        ? ` ${input.context.brief.suggestedCompromise.amountTnd} TND`
+        : "") +
+      ` — ${input.context.brief.suggestedCompromise.rationale}`
+    : "Aucun compromis calculé pour l'instant.";
+  const convo =
+    input.history
+      .slice(-8)
+      .map((m) => `${m.role === "user" ? partyLabel : "Médiateur IA"}: ${m.text}`)
+      .join("\n") || "(début de la conversation)";
+  return `Tu parles avec ${partyLabel}.
+Contexte du litige — Fournisseur: ${input.context.providerName} · Type: ${input.context.claimType} · Montant contesté: ${input.context.amountTnd} TND
+Réclamation: """${input.context.narrative}"""
+${briefText}
+Conversation récente:
+${convo}
+Nouveau message de ${partyLabel}: """${input.userMessage}"""`;
+}
+
+function normalizeChatReply(text: string): string | null {
+  const trimmed = text.trim();
+  if (!trimmed) return null;
+  try {
+    const j = parseJsonLoose<{ reply?: string }>(trimmed);
+    if (j.reply?.trim()) return j.reply.trim();
+  } catch {
+    /* plain prose */
+  }
+  return trimmed;
+}
+
 export async function mediatorChatReply(input: {
   party: "claimant" | "provider";
   history: { role: "user" | "assistant"; text: string }[];
@@ -137,34 +185,34 @@ export async function mediatorChatReply(input: {
   };
 }): Promise<MediatorReply> {
   if (!AI_ENABLED) return CHAT_FALLBACK;
+
+  const prompt = chatPrompt(input);
+
   try {
-    const partyLabel = input.party === "claimant" ? "le réclamant (PME)" : "le fournisseur";
-    const briefText = input.context.brief
-      ? `Compromis suggéré: ${input.context.brief.suggestedCompromise.remedyType}` +
-        (input.context.brief.suggestedCompromise.amountTnd != null
-          ? ` ${input.context.brief.suggestedCompromise.amountTnd} TND`
-          : "") +
-        ` — ${input.context.brief.suggestedCompromise.rationale}`
-      : "Aucun compromis calculé pour l'instant.";
-    const convo =
-      input.history
-        .slice(-8)
-        .map((m) => `${m.role === "user" ? partyLabel : "Médiateur IA"}: ${m.text}`)
-        .join("\n") || "(début de la conversation)";
     const raw = await jsonComplete<unknown>({
       system: CHAT_SYSTEM,
-      content: `Tu parles avec ${partyLabel}.
-Contexte du litige — Fournisseur: ${input.context.providerName} · Type: ${input.context.claimType} · Montant contesté: ${input.context.amountTnd} TND
-Réclamation: """${input.context.narrative}"""
-${briefText}
-Conversation récente:
-${convo}
-Nouveau message de ${partyLabel}: """${input.userMessage}"""`,
+      content: prompt,
       maxTokens: 500,
     });
-    const parsed = ReplySchema.parse(raw);
-    return { reply: parsed.reply || CHAT_FALLBACK.reply, source: "ai" };
+    const parsed = ReplySchema.safeParse(raw);
+    if (parsed.success && parsed.data.reply.trim()) {
+      return { reply: parsed.data.reply.trim(), source: "ai" };
+    }
   } catch {
-    return CHAT_FALLBACK;
+    /* fall through to plain-text completion */
   }
+
+  try {
+    const text = await textComplete({
+      system: CHAT_SYSTEM,
+      content: prompt,
+      maxTokens: 500,
+    });
+    const reply = normalizeChatReply(text);
+    if (reply) return { reply, source: "ai" };
+  } catch {
+    /* fall through */
+  }
+
+  return CHAT_FALLBACK;
 }

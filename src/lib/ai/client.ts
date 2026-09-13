@@ -2,7 +2,10 @@ import "server-only";
 import { AnthropicFoundry } from "@anthropic-ai/foundry-sdk";
 import type Anthropic from "@anthropic-ai/sdk";
 
-export const AI_ENABLED = process.env.AI_ENABLED === "true";
+/** ON when explicitly enabled or when Foundry credentials are configured (same gate as OCR). */
+export const AI_ENABLED =
+  process.env.AI_ENABLED === "true" ||
+  Boolean(String(process.env.ANTHROPIC_FOUNDRY_API_KEY ?? "").trim());
 export const AI_MODEL = process.env.AI_MODEL || "claude-opus-4-8";
 
 let _client: AnthropicFoundry | null = null;
@@ -79,4 +82,21 @@ export async function jsonComplete<T>(opts: {
   } catch {
     return await attempt("Return ONLY a single valid JSON object. No prose, no markdown fences.");
   }
+}
+
+/** Plain-text completion — used when JSON shape is optional (e.g. mediator chat). */
+export async function textComplete(opts: {
+  system: string;
+  content: Content;
+  maxTokens?: number;
+}): Promise<string> {
+  const { system, content, maxTokens = 1000 } = opts;
+  const client = ai();
+  const msg = await client.messages.create({
+    model: AI_MODEL,
+    max_tokens: maxTokens,
+    system,
+    messages: [{ role: "user", content }],
+  });
+  return textOf(msg).trim();
 }

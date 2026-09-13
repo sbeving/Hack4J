@@ -49,7 +49,13 @@ export async function getOrCreateMediationBrief(
   if (existing?.message) {
     try {
       const stored = JSON.parse(existing.message) as StoredBrief;
-      if (stored.fingerprint === fingerprint && stored.brief) return stored.brief;
+      if (
+        stored.fingerprint === fingerprint &&
+        stored.brief &&
+        stored.brief.source !== "fallback"
+      ) {
+        return stored.brief;
+      }
     } catch {
       /* regenerate below */
     }
@@ -126,15 +132,7 @@ export async function postMediationMessage(caseId: string, party: Party, text: s
     data: { caseId, party, role: "user", text: trimmed },
   });
 
-  let brief: MediationBrief | null = null;
-  const stored = await prisma.providerResponse.findFirst({ where: { caseId, kind: "ai_mediation" } });
-  if (stored?.message) {
-    try {
-      brief = (JSON.parse(stored.message) as StoredBrief).brief;
-    } catch {
-      brief = null;
-    }
-  }
+  const brief = await getOrCreateMediationBrief(caseId);
 
   const reply = await mediatorChatReply({
     party,
