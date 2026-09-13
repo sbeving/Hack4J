@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { requireRole, getLocale } from "@/lib/session";
 import { getResolverCase } from "@/lib/domain/resolver";
 import { AppShell } from "@/components/AppShell";
+import { BackLink } from "@/components/nav/BackLink";
 import { Card, Badge, PageTitle, SectionHead } from "@/components/ui";
 import { Icon } from "@/components/Icon";
 import { Tracker } from "@/components/Tracker";
@@ -53,6 +54,11 @@ export default async function ResolverCaseDetail({ params }: PageProps<"/institu
 
   return (
     <AppShell user={user} locale={locale}>
+      <BackLink
+        href="/institution"
+        locale={locale}
+        label={isAr ? "الملفّات المصعّدة" : "Dossiers escaladés"}
+      />
       <div className="card-flat mb-5 flex items-center gap-3 border-s-[3px] border-s-cobalt p-4">
         <span className="grid h-10 w-10 place-items-center rounded-lg bg-cobalt-tint text-cobalt">
           <Icon name="scales" size={20} />

@@ -1,6 +1,7 @@
 import { requireRole, getLocale } from "@/lib/session";
 import { prisma } from "@/lib/db";
 import { AppShell } from "@/components/AppShell";
+import { BackLink } from "@/components/nav/BackLink";
 import { PageTitle } from "@/components/ui";
 import { NewClaimForm } from "@/components/claimant/NewClaimForm";
 
@@ -17,6 +18,11 @@ export default async function NewClaimPage() {
 
   return (
     <AppShell user={user} locale={locale}>
+      <BackLink
+        href="/claimant"
+        locale={locale}
+        label={isAr ? "مطالبي" : "Mes réclamations"}
+      />
       <PageTitle
         icon="plus"
         title={isAr ? "مطلب جديد" : "Nouvelle réclamation"}

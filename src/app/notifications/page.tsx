@@ -3,6 +3,7 @@ import { requireSession, getLocale } from "@/lib/session";
 import { getNotifications } from "@/lib/domain/notifications";
 import { markAllReadAction } from "@/lib/domain/notification-actions";
 import { AppShell } from "@/components/AppShell";
+import { BackLink } from "@/components/nav/BackLink";
 import { PageTitle, Card } from "@/components/ui";
 import { SubmitButton } from "@/components/SubmitButton";
 import { ROLE_HOME, type Locale } from "@/lib/domain/constants";
@@ -41,6 +42,7 @@ export default async function NotificationsPage() {
 
   return (
     <AppShell user={user} locale={locale}>
+      <BackLink href={ROLE_HOME[user.role] ?? "/"} locale={locale} />
       <div className="flex items-center justify-between">
         <PageTitle title={isAr ? "الإشعارات" : "Notifications"} />
         {notifs.some((n) => !n.readAt) ? (

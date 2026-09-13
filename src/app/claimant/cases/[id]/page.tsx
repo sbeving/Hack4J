@@ -3,6 +3,7 @@ import { requireRole, getLocale } from "@/lib/session";
 import { getCaseForClaimant } from "@/lib/domain/cases";
 import { submitClaimAction, withdrawClaimAction } from "@/lib/domain/claim-actions";
 import { AppShell } from "@/components/AppShell";
+import { BackLink } from "@/components/nav/BackLink";
 import { Card, Badge, PageTitle, SectionHead } from "@/components/ui";
 import { Icon } from "@/components/Icon";
 import { SlaCountdown } from "@/components/SlaCountdown";
@@ -107,6 +108,11 @@ export default async function CaseDetailPage({
 
   return (
     <AppShell user={user} locale={locale}>
+      <BackLink
+        href="/claimant"
+        locale={locale}
+        label={isAr ? "مطالبي" : "Mes réclamations"}
+      />
       <div className="card-flat mb-5 flex items-center justify-between gap-3 border-s-[3px] border-s-primary p-4">
         <div className="flex items-center gap-3">
           <span className="grid h-10 w-10 place-items-center rounded-lg bg-primary-tint text-primary-deep">

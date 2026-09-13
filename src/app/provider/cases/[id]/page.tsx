@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { requireRole, getLocale } from "@/lib/session";
 import { getProviderCase, getOrCreateSuggestion } from "@/lib/domain/provider";
 import { AppShell } from "@/components/AppShell";
+import { BackLink } from "@/components/nav/BackLink";
 import { Card, Badge, PageTitle } from "@/components/ui";
 import { Icon } from "@/components/Icon";
 import { SlaCountdown } from "@/components/SlaCountdown";
@@ -80,6 +81,11 @@ export default async function ProviderCaseDetail({ params }: PageProps<"/provide
 
   return (
     <AppShell user={user} locale={locale}>
+      <BackLink
+        href="/provider"
+        locale={locale}
+        label={isAr ? "قائمة المطالب" : "File d'attente"}
+      />
       <div className="card-flat mb-5 flex items-center justify-between gap-3 border-s-[3px] p-4" style={{ borderInlineStartColor: brand.color ?? "var(--primary)" }}>
         <div className="flex items-center gap-3">
           <span
