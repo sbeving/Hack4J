@@ -52,6 +52,17 @@ function evidenceSummary(extracted: string | null): string {
   }
 }
 
+/** The stored suggestion if there is one, without ever calling the model. */
+export async function readSuggestion(caseId: string): Promise<ResolutionSuggestion | null> {
+  const row = await prisma.providerResponse.findFirst({ where: { caseId, kind: "ai_suggestion" } });
+  if (!row?.message) return null;
+  try {
+    return JSON.parse(row.message) as ResolutionSuggestion;
+  } catch {
+    return null;
+  }
+}
+
 /** Generate the AI resolution suggestion once, then reuse it (stored as a
  * provider-only ProviderResponse of kind "ai_suggestion"). */
 export async function getOrCreateSuggestion(

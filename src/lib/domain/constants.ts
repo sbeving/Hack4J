@@ -67,6 +67,12 @@ export const REMEDY_LABEL: Record<RequestedRemedy, Record<Locale, string>> = {
   compensation: { fr: "Indemnisation", ar: "تعويض" },
 };
 
+// ── Provider response kinds ──────────────────────────────────────────────────
+// AI rows are cached on the case as ProviderResponse rows (their `message` holds
+// JSON). They are never real exchanges — never render them in a thread.
+export const AI_RESPONSE_KINDS = ["ai_suggestion", "ai_mediation", "ai_report"];
+export const isAiResponse = (kind: string) => AI_RESPONSE_KINDS.includes(kind);
+
 // ── Priority ─────────────────────────────────────────────────────────────────
 export type Priority = "low" | "normal" | "high" | "urgent";
 export const PRIORITY_LABEL: Record<Priority, Record<Locale, string>> = {

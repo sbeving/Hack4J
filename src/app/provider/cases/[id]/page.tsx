@@ -1,32 +1,27 @@
 import { notFound } from "next/navigation";
 import { requireRole, getLocale } from "@/lib/session";
-import { getProviderCase, getOrCreateSuggestion } from "@/lib/domain/provider";
+import { getProviderCase, readSuggestion } from "@/lib/domain/provider";
 import { AppShell } from "@/components/AppShell";
 import { BackLink } from "@/components/nav/BackLink";
 import { Card, Badge, PageTitle } from "@/components/ui";
 import { Icon } from "@/components/Icon";
 import { SlaCountdown } from "@/components/SlaCountdown";
+import { LiveRefresh } from "@/components/LiveRefresh";
 import { Tracker } from "@/components/Tracker";
 import { ProviderActions } from "@/components/provider/ProviderActions";
+import { SuggestionCard } from "@/components/provider/SuggestionCard";
 import { IntegrityBadge } from "@/components/IntegrityBadge";
 import { SettlementPanel } from "@/components/SettlementPanel";
-import { MediatorCard } from "@/components/mediation/MediatorCard";
-import { MediatorChat } from "@/components/mediation/MediatorChat";
-import { MediationReport } from "@/components/mediation/MediationReport";
-import {
-  getOrCreateMediationBrief,
-  getMediationMessages,
-  buildMediationReport,
-} from "@/lib/domain/mediation";
+import { MediationSection } from "@/components/mediation/MediationSection";
+import { mediationFingerprint, readMediationBrief } from "@/lib/domain/mediation";
 import { verifyMany } from "@/lib/integrity";
 import { formatMillimes, millimesToTnd } from "@/lib/money";
 import {
   CLAIM_TYPE_LABEL,
-  REMEDY_LABEL,
+  isAiResponse,
   STATE_LABEL,
   type CaseState,
   type ClaimType,
-  type RequestedRemedy,
 } from "@/lib/domain/constants";
 
 const SLA_STATES: CaseState[] = ["notice_sent", "provider_review", "resolution_proposed"];
@@ -52,24 +47,26 @@ export default async function ProviderCaseDetail({ params }: PageProps<"/provide
   const c = await getProviderCase(id, user.orgId ?? "");
   if (!c) notFound();
 
-  const suggestion = await getOrCreateSuggestion(id, user.orgId ?? "");
   const state = c.state as CaseState;
   const business = isAr && c.claimantUser.org?.nameAr ? c.claimantUser.org.nameAr : c.claimantUser.org?.name;
   const serverNowISO = new Date().toISOString();
   const integrity = await verifyMany(c.evidence);
   const sentNotice = c.notices.find((n) => n.status === "sent");
-  const responses = c.responses.filter((r) => r.kind !== "ai_suggestion" && r.kind !== "ai_mediation");
+  const responses = c.responses.filter((r) => !isAiResponse(r.kind));
 
-  // AI mediator — only during the pre-escalation negotiation window.
+  // AI mediator — only during the pre-escalation negotiation window. Streamed
+  // separately (see MediationSection) so the model never delays this page; the
+  // response form only needs the last cached compromise, never a fresh one.
   const inNegotiation = ["notice_sent", "provider_review", "resolution_proposed"].includes(state);
   const canPropose = ["notice_sent", "provider_review"].includes(state);
-  const brief = inNegotiation ? await getOrCreateMediationBrief(c.id) : null;
-  const mediatorMessages = inNegotiation ? await getMediationMessages(c.id, "provider") : [];
-  const mediationReport = inNegotiation ? await buildMediationReport(c.id) : null;
-  const reviewRequested = c.events.some((e) => e.type === "human_review_requested");
-  const compromiseRemedy = brief?.suggestedCompromise.remedyType ?? suggestion?.suggestedRemedyType ?? "correct_bill";
+  const [cachedBrief, cachedSuggestion] = await Promise.all([
+    inNegotiation ? readMediationBrief(c.id) : null,
+    readSuggestion(c.id),
+  ]);
+  const compromiseRemedy =
+    cachedBrief?.suggestedCompromise.remedyType ?? cachedSuggestion?.suggestedRemedyType ?? "correct_bill";
   const compromiseAmountTnd =
-    brief?.suggestedCompromise.amountTnd ?? millimesToTnd(c.amountMillimes);
+    cachedBrief?.suggestedCompromise.amountTnd ?? millimesToTnd(c.amountMillimes);
 
   const brand = (() => {
     try {
@@ -81,6 +78,7 @@ export default async function ProviderCaseDetail({ params }: PageProps<"/provide
 
   return (
     <AppShell user={user} locale={locale}>
+      <LiveRefresh caseId={c.id} />
       <BackLink
         href="/provider"
         locale={locale}
@@ -113,21 +111,15 @@ export default async function ProviderCaseDetail({ params }: PageProps<"/provide
         <Tracker state={state} locale={locale} />
       </Card>
 
-      {inNegotiation && brief ? (
-        <div className="mt-6 space-y-6">
-          <div className="grid gap-6 lg:grid-cols-2">
-            <MediatorCard brief={brief} party="provider" canUseCompromise={canPropose} locale={locale} />
-            <MediatorChat caseId={c.id} party="provider" messages={mediatorMessages} locale={locale} />
-          </div>
-          {mediationReport ? (
-            <MediationReport
-              caseId={c.id}
-              party="provider"
-              report={mediationReport}
-              reviewRequested={reviewRequested}
-              locale={locale}
-            />
-          ) : null}
+      {inNegotiation ? (
+        <div className="mt-6">
+          <MediationSection
+            caseId={c.id}
+            party="provider"
+            fingerprint={mediationFingerprint(c)}
+            canPropose={canPropose}
+            locale={locale}
+          />
         </div>
       ) : null}
 
@@ -149,25 +141,7 @@ export default async function ProviderCaseDetail({ params }: PageProps<"/provide
             ) : null}
           </Card>
 
-          {suggestion ? (
-            <Card className="border-border bg-primary-tint p-5">
-              <div className="mb-2 flex items-center gap-2">
-                <h3 className="text-[15px] font-semibold text-primary-deep">
-                  {isAr ? "مساعدة الذكاء الاصطناعي" : "Assistance IA"}
-                </h3>
-                {suggestion.source === "fallback" ? <Badge tone="warning">{isAr ? "تقريبي" : "repli"}</Badge> : null}
-              </div>
-              <p className="text-sm text-ink-muted" dir="auto">{suggestion.neutralSummary}</p>
-              <div className="mt-3 rounded-lg bg-surface p-3 text-sm">
-                <div className="text-xs font-semibold text-ink-muted">{isAr ? "حل مقترح" : "Résolution suggérée"}</div>
-                <p className="mt-1" dir="auto">{suggestion.suggestedResolution}</p>
-                <Badge tone="info" className="mt-2">
-                  {REMEDY_LABEL[suggestion.suggestedRemedyType as RequestedRemedy]?.[locale] ?? suggestion.suggestedRemedyType}
-                </Badge>
-              </div>
-              <p className="mt-2 text-[11px] text-ink-muted">{isAr ? "اقتراح غير مُلزِم — القرار لك." : "Suggestion non contraignante — la décision vous appartient."}</p>
-            </Card>
-          ) : null}
+          <SuggestionCard caseId={c.id} orgId={user.orgId ?? ""} locale={locale} />
         </div>
 
         <div className="space-y-6 lg:col-span-2">

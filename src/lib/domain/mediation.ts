@@ -7,11 +7,9 @@ import {
   type MediationBrief,
 } from "@/lib/ai/mediation-tasks";
 import { summarizeForDossier, type DossierSummary } from "@/lib/ai/dossier-tasks";
+import { isAiResponse } from "@/lib/domain/constants";
 
 export type Party = "claimant" | "provider";
-
-// Rows we cache on the case but never show as real "exchanges".
-const AI_KINDS = ["ai_suggestion", "ai_mediation"];
 
 function evidenceSummary(extracted: string | null): string {
   if (!extracted) return "";
@@ -22,13 +20,67 @@ function evidenceSummary(extracted: string | null): string {
   }
 }
 
-type StoredBrief = { brief: MediationBrief; fingerprint: string };
+// ── AI payload cache ─────────────────────────────────────────────────────────
+// AI output is cached on the case as a ProviderResponse row (see AI_RESPONSE_KINDS)
+// keyed by a fingerprint: case version + number of real exchanges. The model is
+// therefore called once per actual move in the negotiation, not once per render —
+// which is what keeps a page refresh sub-second.
+
+type CachedAi<T> = { value: T; fingerprint: string };
+
+/** The negotiation state the AI output is valid for. */
+export function mediationFingerprint(c: {
+  version: number;
+  responses: { kind: string }[];
+}): string {
+  return `${c.version}:${c.responses.filter((r) => !isAiResponse(r.kind)).length}`;
+}
+
+async function readAiCache<T extends { source: string }>(
+  caseId: string,
+  kind: string,
+  fingerprint: string | null
+): Promise<T | null> {
+  const row = await prisma.providerResponse.findFirst({ where: { caseId, kind } });
+  if (!row?.message) return null;
+  try {
+    const stored = JSON.parse(row.message) as CachedAi<T>;
+    if (!stored.value) return null;
+    // A fallback payload means the model failed — always worth retrying.
+    if (stored.value.source === "fallback") return null;
+    if (fingerprint !== null && stored.fingerprint !== fingerprint) return null;
+    return stored.value;
+  } catch {
+    return null;
+  }
+}
+
+async function writeAiCache<T>(
+  caseId: string,
+  kind: string,
+  fingerprint: string,
+  value: T,
+  columns?: { remedyType?: string | null; amountMillimes?: number | null }
+): Promise<void> {
+  const message = JSON.stringify({ value, fingerprint } satisfies CachedAi<T>);
+  const row = await prisma.providerResponse.findFirst({
+    where: { caseId, kind },
+    select: { id: true },
+  });
+  if (row) {
+    await prisma.providerResponse.update({ where: { id: row.id }, data: { message, ...columns } });
+  } else {
+    await prisma.providerResponse.create({ data: { caseId, kind, message, ...columns } });
+  }
+}
+
+/** The cached brief without ever calling the model — for form defaults. */
+export async function readMediationBrief(caseId: string): Promise<MediationBrief | null> {
+  return readAiCache<MediationBrief>(caseId, "ai_mediation", null);
+}
 
 /**
- * Generate the shared neutral mediation brief, cached on the case as a
- * ProviderResponse of kind "ai_mediation" (mirrors getOrCreateSuggestion).
- * A fingerprint (case version + number of real exchanges) invalidates the
- * cache so the brief follows the negotiation as it evolves.
+ * The shared neutral mediation brief, regenerated only when the negotiation moves.
  * Not org-scoped — the caller has already checked access.
  */
 export async function getOrCreateMediationBrief(
@@ -40,26 +92,11 @@ export async function getOrCreateMediationBrief(
   });
   if (!c) return null;
 
-  const exchanges = c.responses.filter((r) => !AI_KINDS.includes(r.kind));
-  const fingerprint = `${c.version}:${exchanges.length}`;
+  const exchanges = c.responses.filter((r) => !isAiResponse(r.kind));
+  const fingerprint = mediationFingerprint(c);
 
-  const existing = await prisma.providerResponse.findFirst({
-    where: { caseId, kind: "ai_mediation" },
-  });
-  if (existing?.message) {
-    try {
-      const stored = JSON.parse(existing.message) as StoredBrief;
-      if (
-        stored.fingerprint === fingerprint &&
-        stored.brief &&
-        stored.brief.source !== "fallback"
-      ) {
-        return stored.brief;
-      }
-    } catch {
-      /* regenerate below */
-    }
-  }
+  const cached = await readAiCache<MediationBrief>(caseId, "ai_mediation", fingerprint);
+  if (cached) return cached;
 
   const brief = await mediateNegotiation({
     claimType: c.claimType,
@@ -77,28 +114,13 @@ export async function getOrCreateMediationBrief(
     })),
   });
 
-  const payload = JSON.stringify({ brief, fingerprint } satisfies StoredBrief);
-  const compromiseMillimes =
-    brief.suggestedCompromise.amountTnd != null
-      ? tndToMillimes(brief.suggestedCompromise.amountTnd)
-      : null;
-
-  if (existing) {
-    await prisma.providerResponse.update({
-      where: { id: existing.id },
-      data: { message: payload, remedyType: brief.suggestedCompromise.remedyType, amountMillimes: compromiseMillimes },
-    });
-  } else {
-    await prisma.providerResponse.create({
-      data: {
-        caseId,
-        kind: "ai_mediation",
-        message: payload,
-        remedyType: brief.suggestedCompromise.remedyType,
-        amountMillimes: compromiseMillimes,
-      },
-    });
-  }
+  await writeAiCache(caseId, "ai_mediation", fingerprint, brief, {
+    remedyType: brief.suggestedCompromise.remedyType,
+    amountMillimes:
+      brief.suggestedCompromise.amountTnd != null
+        ? tndToMillimes(brief.suggestedCompromise.amountTnd)
+        : null,
+  });
   return brief;
 }
 
@@ -185,15 +207,21 @@ export async function buildMediationReport(caseId: string): Promise<MediationRep
   });
   if (!c) return null;
 
-  const exchanges = c.responses.filter((r) => !AI_KINDS.includes(r.kind));
-  const summary = await summarizeForDossier({
-    claimType: c.claimType,
-    narrative: c.narrative,
-    amountTnd: millimesToTnd(c.amountMillimes),
-    providerName: c.providerOrg.name,
-    evidence: c.evidence.map((e) => ({ kind: e.kind, summary: evidenceSummary(e.extracted) })),
-    responses: exchanges.map((r) => ({ kind: r.kind, message: r.message })),
-  });
+  const exchanges = c.responses.filter((r) => !isAiResponse(r.kind));
+  const fingerprint = mediationFingerprint(c);
+
+  let summary = await readAiCache<DossierSummary>(caseId, "ai_report", fingerprint);
+  if (!summary) {
+    summary = await summarizeForDossier({
+      claimType: c.claimType,
+      narrative: c.narrative,
+      amountTnd: millimesToTnd(c.amountMillimes),
+      providerName: c.providerOrg.name,
+      evidence: c.evidence.map((e) => ({ kind: e.kind, summary: evidenceSummary(e.extracted) })),
+      responses: exchanges.map((r) => ({ kind: r.kind, message: r.message })),
+    });
+    await writeAiCache(caseId, "ai_report", fingerprint, summary);
+  }
 
   return {
     summary,

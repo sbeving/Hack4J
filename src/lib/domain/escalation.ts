@@ -11,7 +11,7 @@ import { summarizeForDossier } from "@/lib/ai/dossier-tasks";
 import { buildDossierHtml, buildDossierJson, type DossierSnapshot } from "@/lib/dossier/build";
 import { millimesToTnd } from "@/lib/money";
 import { uuid } from "@/lib/ids";
-import { CLAIM_TYPE_LABEL, label } from "@/lib/domain/constants";
+import { AI_RESPONSE_KINDS, CLAIM_TYPE_LABEL, label } from "@/lib/domain/constants";
 
 const DOSSIER_DOMAIN = keccakOfString("SULHA_DOSSIER_V1");
 const ESCALATABLE = ["notice_sent", "provider_review", "resolution_proposed"];
@@ -67,7 +67,7 @@ export async function escalateAndFileDossier(caseId: string, userId: string) {
       providerOrg: true,
       evidence: { orderBy: { createdAt: "asc" } },
       notices: { orderBy: { createdAt: "desc" } },
-      responses: { orderBy: { createdAt: "asc" }, where: { NOT: { kind: "ai_suggestion" } } },
+      responses: { orderBy: { createdAt: "asc" }, where: { kind: { notIn: AI_RESPONSE_KINDS } } },
       events: { orderBy: { sequence: "asc" } },
       anchors: true,
     },

@@ -3,6 +3,7 @@ import { requireRole, getLocale } from "@/lib/session";
 import { getClaimantCases } from "@/lib/domain/cases";
 import { AppShell } from "@/components/AppShell";
 import { PageTitle, Card, Badge } from "@/components/ui";
+import { LiveRefresh } from "@/components/LiveRefresh";
 import { formatMillimes } from "@/lib/money";
 import {
   CLAIM_TYPE_LABEL,
@@ -26,6 +27,7 @@ export default async function ClaimantHome() {
 
   return (
     <AppShell user={user} locale={locale}>
+      <LiveRefresh />
       <PageTitle
         icon="document"
         title={isAr ? "مطالبي" : "Mes réclamations"}

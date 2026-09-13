@@ -2,7 +2,7 @@ import { acceptRemedyAction, declineRemedyAction } from "@/lib/domain/claim-acti
 import { SubmitButton } from "@/components/SubmitButton";
 import { Card, Badge, SectionHead } from "@/components/ui";
 import { formatMillimes } from "@/lib/money";
-import { REMEDY_LABEL, type CaseState, type Locale, type RequestedRemedy } from "@/lib/domain/constants";
+import { isAiResponse, REMEDY_LABEL, type CaseState, type Locale, type RequestedRemedy } from "@/lib/domain/constants";
 
 type Resp = {
   id: string;
@@ -25,7 +25,7 @@ export function ResolutionPanel({
   locale: Locale;
 }) {
   const isAr = locale === "ar";
-  const visible = responses.filter((r) => r.kind !== "ai_suggestion");
+  const visible = responses.filter((r) => !isAiResponse(r.kind));
   if (visible.length === 0) return null;
 
   const proposal =

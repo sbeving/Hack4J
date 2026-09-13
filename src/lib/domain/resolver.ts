@@ -7,7 +7,7 @@ import { keccakOfString } from "@/lib/hash";
 import { renderHtmlToPdf } from "@/lib/pdf/render";
 import { saveArtifact } from "@/lib/storage";
 import { buildSettlementHtml, type SettlementSnapshot } from "@/lib/settlement/build";
-import { REMEDY_LABEL, label } from "@/lib/domain/constants";
+import { AI_RESPONSE_KINDS, REMEDY_LABEL, label } from "@/lib/domain/constants";
 
 const ACTIVE = ["dossier_filed", "in_mediation", "settlement_pending", "settled", "closed_unsettled"];
 
@@ -32,7 +32,7 @@ export async function getResolverCase(caseId: string, orgId: string) {
       institutionOrg: true,
       evidence: { orderBy: { createdAt: "asc" } },
       notices: { orderBy: { createdAt: "desc" } },
-      responses: { orderBy: { createdAt: "asc" }, where: { NOT: { kind: "ai_suggestion" } } },
+      responses: { orderBy: { createdAt: "asc" }, where: { kind: { notIn: AI_RESPONSE_KINDS } } },
       dossiers: { orderBy: { createdAt: "desc" } },
       mediations: { include: { settlements: { orderBy: { createdAt: "desc" } } }, orderBy: { createdAt: "desc" } },
       events: { orderBy: { sequence: "asc" } },

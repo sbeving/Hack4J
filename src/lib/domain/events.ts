@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { keccakOfString } from "@/lib/hash";
 import { canonicalJson } from "@/lib/canonical";
 import { anchor } from "@/lib/ledger";
+import { publishCaseChange } from "@/lib/realtime/bus";
 
 export type EventVisibility =
   | "shared"
@@ -47,6 +48,10 @@ export async function recordEvent(
   // Anchor the event's commitment to the append-only ledger.
   const digest = payloadHash ?? keccakOfString(canonicalJson({ caseId, sequence, type }));
   await anchor({ caseId, subjectType: "event", subjectId: ev.id, digest });
+
+  // Every state change funnels through here, so this is where open screens
+  // learn that they are stale.
+  publishCaseChange(caseId);
 
   return ev;
 }
