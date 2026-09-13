@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   acknowledgeAction,
   requestInfoAction,
@@ -30,6 +30,20 @@ export function ProviderActions({
 }) {
   const isAr = locale === "ar";
   const [panel, setPanel] = useState<Panel>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  // The AI mediator card's "Utiliser ce compromis" button opens the remedy panel
+  // (which is already pre-filled with the suggested compromise via props).
+  useEffect(() => {
+    const open = () => {
+      setPanel("remedy");
+      requestAnimationFrame(() =>
+        rootRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
+      );
+    };
+    window.addEventListener("sulha:open-remedy", open);
+    return () => window.removeEventListener("sulha:open-remedy", open);
+  }, []);
 
   if (state === "resolution_proposed") {
     return (
@@ -61,7 +75,7 @@ export function ProviderActions({
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3" ref={rootRef}>
       <div className="flex flex-wrap gap-2">
         <form action={acknowledgeAction.bind(null, caseId)}>
           <SubmitButton variant="outline">{L.ack}</SubmitButton>

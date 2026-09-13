@@ -18,6 +18,14 @@ import { EscalationPanel } from "@/components/claimant/EscalationPanel";
 import { DossierPanel } from "@/components/DossierPanel";
 import { SettlementPanel } from "@/components/SettlementPanel";
 import { AuditTimeline } from "@/components/AuditTimeline";
+import { MediatorCard } from "@/components/mediation/MediatorCard";
+import { MediatorChat } from "@/components/mediation/MediatorChat";
+import { MediationReport } from "@/components/mediation/MediationReport";
+import {
+  getOrCreateMediationBrief,
+  getMediationMessages,
+  buildMediationReport,
+} from "@/lib/domain/mediation";
 import { escalationEligibility } from "@/lib/domain/escalation";
 import { formatMillimes } from "@/lib/money";
 import {
@@ -90,6 +98,13 @@ export default async function CaseDetailPage({
 
   const business = isAr && user.org?.nameAr ? user.org.nameAr : user.org?.name;
 
+  // AI mediator — only during the pre-escalation negotiation window.
+  const inNegotiation = ["notice_sent", "provider_review", "resolution_proposed"].includes(state);
+  const brief = inNegotiation ? await getOrCreateMediationBrief(c.id) : null;
+  const mediatorMessages = inNegotiation ? await getMediationMessages(c.id, "claimant") : [];
+  const mediationReport = inNegotiation ? await buildMediationReport(c.id) : null;
+  const reviewRequested = c.events.some((e) => e.type === "human_review_requested");
+
   return (
     <AppShell user={user} locale={locale}>
       <div className="card-flat mb-5 flex items-center justify-between gap-3 border-s-[3px] border-s-primary p-4">
@@ -143,6 +158,24 @@ export default async function CaseDetailPage({
       {state !== "draft" ? (
         <div className="mt-6">
           <ResolutionPanel caseId={c.id} state={state} responses={c.responses} locale={locale} />
+        </div>
+      ) : null}
+
+      {inNegotiation && brief ? (
+        <div className="mt-6 space-y-6">
+          <div className="grid gap-6 lg:grid-cols-2">
+            <MediatorCard brief={brief} party="claimant" locale={locale} />
+            <MediatorChat caseId={c.id} party="claimant" messages={mediatorMessages} locale={locale} />
+          </div>
+          {mediationReport ? (
+            <MediationReport
+              caseId={c.id}
+              party="claimant"
+              report={mediationReport}
+              reviewRequested={reviewRequested}
+              locale={locale}
+            />
+          ) : null}
         </div>
       ) : null}
 

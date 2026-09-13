@@ -27,6 +27,7 @@ const EVENT_LABEL: Record<string, { fr: string; ar: string }> = {
   provider_proposed_remedy: { fr: "Résolution proposée", ar: "اقتراح حل" },
   claimant_accepted_remedy: { fr: "Résolution acceptée", ar: "قبول الحل" },
   claimant_declined_remedy: { fr: "Résolution refusée", ar: "رفض الحل" },
+  human_review_requested: { fr: "Réviseur humain demandé", ar: "طلب مُراجِع بشري" },
   escalation_requested: { fr: "Escalade demandée", ar: "طلب التصعيد" },
   dossier_filed: { fr: "Dossier transmis", ar: "إرسال الملفّ" },
   resolver_accepted: { fr: "Dossier accepté (médiateur)", ar: "قبول الوسيط" },

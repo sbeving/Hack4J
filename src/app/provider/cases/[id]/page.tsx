@@ -9,6 +9,14 @@ import { Tracker } from "@/components/Tracker";
 import { ProviderActions } from "@/components/provider/ProviderActions";
 import { IntegrityBadge } from "@/components/IntegrityBadge";
 import { SettlementPanel } from "@/components/SettlementPanel";
+import { MediatorCard } from "@/components/mediation/MediatorCard";
+import { MediatorChat } from "@/components/mediation/MediatorChat";
+import { MediationReport } from "@/components/mediation/MediationReport";
+import {
+  getOrCreateMediationBrief,
+  getMediationMessages,
+  buildMediationReport,
+} from "@/lib/domain/mediation";
 import { verifyMany } from "@/lib/integrity";
 import { formatMillimes, millimesToTnd } from "@/lib/money";
 import {
@@ -49,7 +57,18 @@ export default async function ProviderCaseDetail({ params }: PageProps<"/provide
   const serverNowISO = new Date().toISOString();
   const integrity = await verifyMany(c.evidence);
   const sentNotice = c.notices.find((n) => n.status === "sent");
-  const responses = c.responses.filter((r) => r.kind !== "ai_suggestion");
+  const responses = c.responses.filter((r) => r.kind !== "ai_suggestion" && r.kind !== "ai_mediation");
+
+  // AI mediator — only during the pre-escalation negotiation window.
+  const inNegotiation = ["notice_sent", "provider_review", "resolution_proposed"].includes(state);
+  const canPropose = ["notice_sent", "provider_review"].includes(state);
+  const brief = inNegotiation ? await getOrCreateMediationBrief(c.id) : null;
+  const mediatorMessages = inNegotiation ? await getMediationMessages(c.id, "provider") : [];
+  const mediationReport = inNegotiation ? await buildMediationReport(c.id) : null;
+  const reviewRequested = c.events.some((e) => e.type === "human_review_requested");
+  const compromiseRemedy = brief?.suggestedCompromise.remedyType ?? suggestion?.suggestedRemedyType ?? "correct_bill";
+  const compromiseAmountTnd =
+    brief?.suggestedCompromise.amountTnd ?? millimesToTnd(c.amountMillimes);
 
   const brand = (() => {
     try {
@@ -87,6 +106,24 @@ export default async function ProviderCaseDetail({ params }: PageProps<"/provide
       <Card className="p-6">
         <Tracker state={state} locale={locale} />
       </Card>
+
+      {inNegotiation && brief ? (
+        <div className="mt-6 space-y-6">
+          <div className="grid gap-6 lg:grid-cols-2">
+            <MediatorCard brief={brief} party="provider" canUseCompromise={canPropose} locale={locale} />
+            <MediatorChat caseId={c.id} party="provider" messages={mediatorMessages} locale={locale} />
+          </div>
+          {mediationReport ? (
+            <MediationReport
+              caseId={c.id}
+              party="provider"
+              report={mediationReport}
+              reviewRequested={reviewRequested}
+              locale={locale}
+            />
+          ) : null}
+        </div>
+      ) : null}
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-1">
@@ -185,8 +222,8 @@ export default async function ProviderCaseDetail({ params }: PageProps<"/provide
             <ProviderActions
               caseId={c.id}
               state={state}
-              suggestedRemedyType={suggestion?.suggestedRemedyType ?? "correct_bill"}
-              suggestedAmountTnd={millimesToTnd(c.amountMillimes)}
+              suggestedRemedyType={compromiseRemedy}
+              suggestedAmountTnd={compromiseAmountTnd}
               locale={locale}
             />
           </Card>

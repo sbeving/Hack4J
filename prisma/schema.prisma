@@ -79,6 +79,7 @@ model Case {
   mediations Mediation[]
   events     CaseEvent[]
   anchors    AnchorReceipt[]
+  mediationMessages MediationMessage[]
 
   @@index([claimantUserId, updatedAt])
   @@index([providerOrgId, state, slaDueAt])
@@ -229,6 +230,22 @@ model AnchorReceipt {
   confirmedAt     DateTime?
 
   @@index([caseId])
+}
+
+// ── AI mediator (advisory) — per-party chat threads ────────────────────────
+// Kept OUT of the tamper-evident CaseEvent hash-chain / ledger on purpose:
+// this is non-binding conversational scratch space, not part of the record.
+model MediationMessage {
+  id        String   @id @default(cuid())
+  caseId    String
+  case      Case     @relation(fields: [caseId], references: [id])
+  party     String // "claimant" | "provider" — each party has a private thread
+  role      String // "user" | "assistant"
+  text      String
+  source    String? // "ai" | "fallback" on assistant turns
+  createdAt DateTime @default(now())
+
+  @@index([caseId, party, createdAt])
 }
 
 model Notification {

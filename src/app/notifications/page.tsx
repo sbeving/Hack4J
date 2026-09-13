@@ -16,6 +16,7 @@ const NOTIF_LABEL: Record<string, { fr: string; ar: string }> = {
   remedy_proposed: { fr: "Une résolution vous est proposée", ar: "تم اقتراح حل عليك" },
   remedy_accepted: { fr: "Le client a accepté la résolution", ar: "قبل العميل الحل" },
   remedy_declined: { fr: "Le client a refusé la résolution", ar: "رفض العميل الحل" },
+  human_review_requested: { fr: "Un réviseur humain a été demandé", ar: "تم طلب مُراجِع بشري" },
   dossier_received: { fr: "Nouveau dossier escaladé", ar: "ملفّ مصعّد جديد" },
   case_accepted: { fr: "Le médiateur a accepté le dossier", ar: "قبل الوسيط الملفّ" },
   mediation_scheduled: { fr: "Médiation programmée", ar: "تمت برمجة الوساطة" },
